@@ -53,7 +53,7 @@
     },
     {
       "title": "Milestone 6 - Déploiement & Finitions",
-      "description": "Déploiement final sur Vercel et tests qualité.",
+      "description": "Déploiement final sur Vercel et tests qualiuЩ.",
       "due_on": "2026-02-01",
       "tasks": [
         { "title": "Déployer sur Vercel et tester la prod", "assignee": "Dev A", "duration": "2j" },
