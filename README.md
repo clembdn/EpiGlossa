@@ -1,96 +1,94 @@
-# 🧭 EpiGlossa – Roadmap de Développement
-
-## 👥 Équipe
-- **Dev A** : Frontend, intégration Supabase, UI/UX
-- **Dev B** : Base de données, backend logic, contenu TOEIC (questions, audios, images)
-
-Durée totale estimée : **10 à 12 semaines (≈ 3 mois à deux)**  
-Méthodologie : **Agile – sprints de 2 semaines**
+<h1 align="center">EpiGlossa</h1>
+<p align="center">
+  <i>“Avec EpiGlossa, le TepiTech n’a plus de secret pour toi.”</i>
+</p>
 
 ---
 
-## 🏁 Milestone 1 : Initialisation & Structure du Projet
-**Durée : 1 semaine**  
-**Objectif :** Mettre en place la base technique et la structure du projet.
+## 🧠 Description
 
-### Tâches
-- [ ] **Dev A :**
-  - [ ] Créer le repo GitHub et initialiser le projet Next.js.
-  - [ ] Configurer TailwindCSS + shadcn/ui.
-  - [ ] Créer la structure du layout (Navbar, Sidebar, Footer).
+L’idée d’**EpiGlossa** est née d’une expérience personnelle à **Epitech**.  
+En première année, j’ai obtenu un score de **450 au TepiTech**, révélant mes difficultés en anglais.  
+Malgré les outils existants comme **Altissia**, aucun ne correspondait réellement aux exigences du test.  
+Chaque année, de nombreux étudiants vivent le même stress, sans ressource adaptée à leur niveau ou à leurs besoins.
 
-- [ ] **Dev B :**
-  - [ ] Créer le projet Supabase.
-  - [ ] Mettre en place la base de données (`questions`).
-  - [ ] Créer les buckets `question-audio` et `question-images`.
-  - [ ] Connecter Supabase au projet Next.js via `.env.local`.
+**EpiGlossa** a donc été imaginé comme une **plateforme claire, interactive et ciblée**, conçue **par un étudiant pour les étudiants**, afin de progresser efficacement et sereinement vers la réussite du **TepiTech**.
 
 ---
 
-## 🧩 Milestone 2 : Espace d’Entraînement (MVP)
-**Durée : 2 à 3 semaines**  
-**Objectif :** Afficher et valider des questions TOEIC (QCM, audio, image).
+## 🧩 Structure du projet
 
-### Tâches
-- [ ] **Dev A :**
-  - [ ] Créer la page “Entraînement”.
-  - [ ] Mettre en place le composant QCM (question, choix A–D, bouton “Valider”).
-  - [ ] Afficher feedback (✅/❌ + explication).
-  - [ ] Gérer l’audio et les images dans l’interface.
+### 📘 Espace d’apprentissage  
+Cours de **grammaire**, **conjugaison** et **vocabulaire** adaptés au format du test.  
+Chaque leçon est accompagnée d’exercices courts et interactifs pour renforcer la compréhension.
 
-- [ ] **Dev B :**
-  - [ ] Ajouter des exemples de questions dans Supabase.
-  - [ ] Écrire la logique de récupération (fetch Supabase).
-  - [ ] Tester la base de données et corriger les erreurs.
-  - [ ] Vérifier la cohérence des URLs audio/image.
+### 🎧 Espace d’entraînement  
+Entraînement par catégories :
+- Audio avec images  
+- Short conversations  
+- Short talks  
+- Reading comprehension  
+- Incomplete sentences  
+- Text completion  
 
----
+Ou entraînement complet via un **TepiTech blanc** simulant les conditions réelles de l’examen.
 
-## 📚 Milestone 3 : Espace d’Apprentissage (Cours Interactifs)
-**Durée : 2 à 3 semaines**  
-**Objectif :** Créer un espace dédié à la grammaire, conjugaison et vocabulaire TOEIC.
+### 👤 Espace utilisateur  
+Un système complet comprenant :
+- Authentification et profil personnalisé  
+- Suivi des progrès et statistiques  
+- Historique des résultats  
+- Classement entre utilisateurs  
 
-### Tâches
-- [ ] **Dev A :**
-  - [ ] Créer les pages “Grammaire”, “Conjugaison”, “Vocabulaire”.
-  - [ ] Intégrer un affichage de leçons + mini quiz.
-  - [ ] Ajouter un design responsive et clair.
-
-- [ ] **Dev B :**
-  - [ ] Créer la table `lessons` (type, contenu, quiz lié).
-  - [ ] Ajouter des leçons de test.
-  - [ ] Gérer la récupération et l’affichage dynamique via Supabase.
+L’objectif : offrir un environnement **structuré, motivant et 100 % gratuit**.
 
 ---
 
-## 👤 Milestone 4 : Espace Utilisateur & Authentification
-**Durée : 2 semaines**  
-**Objectif :** Permettre la connexion, le suivi et la sauvegarde des progrès utilisateurs.
+## 🎯 Objectifs
 
-### Tâches
-- [ ] **Dev A :**
-  - [ ] Créer pages Login / Signup / Profil.
-  - [ ] Intégrer Supabase Auth (email, Google).
-  - [ ] Afficher la progression utilisateur (score, questions réussies).
-
-- [ ] **Dev B :**
-  - [ ] Créer les tables `users`, `user_answers`, `leaderboard`.
-  - [ ] Gérer la sauvegarde des réponses et le calcul de score.
-  - [ ] Générer le classement global.
+-  Créer une plateforme web complète d’entraînement au **TepiTech**.  
+- Proposer un espace d’apprentissage couvrant **grammaire**, **conjugaison** et **vocabulaire professionnel**.  
+-  Développer un espace d’entraînement interactif par **catégories** et **mode examen blanc**.  
+-  Offrir une expérience réaliste avec **audios**, **images** et **QCM similaires** à l’examen officiel.  
+-  Mettre en place un système d’**authentification** et de **suivi des performances**.  
+-  Ajouter un **classement** et une **gamification** pour stimuler la motivation.  
+-  Concevoir une interface **fluide, responsive et intuitive**.  
+-  Utiliser des **technologies modernes** pour garantir performance et évolutivité.  
+-  Favoriser l’**autonomie des étudiants** dans leur apprentissage de l’anglais.  
+-  Réduire le stress avant le test grâce à une préparation structurée et efficace.
 
 ---
 
-## 🧠 Milestone 5 : Mode TOEIC Blanc & Statistiques
-**Durée : 2 à 3 semaines**  
-**Objectif :** Créer un mode de test complet avec score et analyse des résultats.
+## 🛠️ Technologies utilisées
 
-### Tâches
-- [ ] **Dev A :**
-  - [ ] Créer interface TOEIC blanc (chronomètre, navigation par section).
-  - [ ] Afficher résultats + score final.
-  - [ ] Intégrer graphiques de progression (Recharts / Chart.js).
+| Catégorie | Technologies |
+|------------|---------------|
+| Frontend | **Next.js**, **React**, **TailwindCSS**, **shadcn/ui** |
+| Backend | **Supabase** (Database / Auth / Storage) |
+| Déploiement | **Vercel** |
+| Outils divers | GitHub Projects, Recharts, ESLint/Prettier |
 
-- [ ] **Dev B :**
-  - [ ] Créer la logique serveur de scoring.
-  - [ ] Sauvegarder historique de chaque test.
-  - [ ] Optimiser les requête
+---
+
+## 👥 Équipe du projet
+
+| Rôle | Nom / Contact |
+|------|----------------|
+| 🎓 Créateur & Dev Frontend | [clement.boudon@epitech.eu](mailto:clement.boudon@epitech.eu) |
+| 💻 Dev Backend & Base de données | [lucas.lejeune@epitech.eu](mailto:lucas.lejeune@epitech.eu) |
+
+---
+
+## 📅 Informations générales
+
+- **Nombre d'étudiants impliqués** : 2  
+- **Soumission prévue** : 17 octobre 2025  
+- **Début du développement** : 20 octobre 2025  
+- **Déploiement cible** : fin décembre 2025  
+- **Plateforme de déploiement** : [Vercel](https://vercel.com)
+
+---
+
+<p align="center">
+  <b>EpiGlossa — La préparation au TepiTech réinventée.</b>
+</p>
