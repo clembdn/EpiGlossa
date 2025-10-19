@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+:root {
+  /* Couleurs de fond - Pastel ludique */
+  --background: 220 100% 98%;
+  --foreground: 220 20% 20%;
+  
+  /* Cartes - Blanc pur avec ombre douce */
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 20%;
+  
+  /* Popover */
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 20%;
+  
+  /* Primaire - Bleu Duolingo pastel */
+  --primary: 210 85% 65%;
+  --primary-foreground: 0 0% 100%;
+  
+  /* Secondaire - Vert pastel ludique */
+  --secondary: 145 60% 70%;
+  --secondary-foreground: 145 60% 20%;
+  
+  /* Accent - Jaune/Orange pastel */
+  --accent: 45 95% 75%;
+  --accent-foreground: 45 95% 25%;
+  
+  /* Success - Vert pastel */
+  --success: 145 60% 65%;
+  --success-foreground: 0 0% 100%;
+  
+  /* Warning - Orange pastel */
+  --warning: 35 95% 70%;
+  --warning-foreground: 35 95% 25%;
+  
+  /* Error - Rouge pastel */
+  --error: 0 85% 70%;
+  --error-foreground: 0 0% 100%;
+  
+  /* Info - Violet pastel */
+  --info: 270 70% 75%;
+  --info-foreground: 270 70% 25%;
+  
+  /* Muted */
+  --muted: 220 25% 92%;
+  --muted-foreground: 220 15% 50%;
+  
+  /* Bordures et inputs */
+  --border: 220 30% 88%;
+  --input: 220 30% 88%;
+  --ring: 210 85% 65%;
+  
+  /* Radius plus prononcé pour look ludique */
+  --radius: 1rem;
+  
+  /* Couleurs spécifiques pour les catégories */
+  --category-vocabulaire: 280 70% 75%;
+  --category-grammaire: 45 90% 70%;
+  --category-conjugaison: 340 75% 75%;
+  --category-comprehension: 200 80% 70%;
+  --category-expression: 160 65% 70%;
+  --category-prononciation: 25 90% 72%;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--error));
+  --color-destructive-foreground: hsl(var(--error-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-error: hsl(var(--error));
+  --color-error-foreground: hsl(var(--error-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 220 25% 12%;
+    --foreground: 220 10% 95%;
+    --card: 220 20% 16%;
+    --card-foreground: 220 10% 95%;
+    --popover: 220 20% 16%;
+    --popover-foreground: 220 10% 95%;
+    --primary: 210 80% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 145 55% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 45 90% 65%;
+    --accent-foreground: 45 90% 15%;
+    --success: 145 55% 55%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 90% 60%;
+    --warning-foreground: 35 90% 15%;
+    --error: 0 75% 60%;
+    --error-foreground: 0 0% 100%;
+    --info: 270 65% 65%;
+    --info-foreground: 270 65% 15%;
+    --muted: 220 20% 22%;
+    --muted-foreground: 220 10% 65%;
+    --border: 220 20% 25%;
+    --input: 220 20% 25%;
+    --ring: 210 80% 60%;
+  }
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Nunito', 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animations ludiques */
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-scale-pulse {
+  animation: scale-pulse 2s ease-in-out infinite;
+}
+
+/* Scrollbar personnalisée ludique */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
+}
+
+/* Effets de focus ludiques */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: calc(var(--radius) * 0.5);
+}
+
+/* Effet de brillance pour les boutons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  transition: transform 0.6s;
+}
+
+.btn-shine:hover::before {
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+}
