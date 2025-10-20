@@ -324,6 +324,21 @@ export default function Navbar() {
 
             {/* Navigation items */}
             <div className="flex items-center gap-2">
+              {/* Bouton Admin */}
+              <Link href="/admin">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-4 py-2 rounded-xl font-semibold transition-all ${
+                    pathname === '/admin'
+                      ? 'bg-gradient-to-br from-red-500 to-pink-500 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  ⚙️ Admin
+                </motion.button>
+              </Link>
+
               {navItems.map(({ name, href, icon: Icon, color, activeColor, emoji, hasDropdown }) => {
                 const active = pathname.startsWith(href);
                 const categories = name === "S'entraîner" ? trainCategories : learnCategories;
