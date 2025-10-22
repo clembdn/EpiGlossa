@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2 } from 'lucide-react';
+import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
@@ -83,16 +83,48 @@ export default function TrainCategoryPage() {
         setLoading(true);
         setError(null);
         
-        const { data, error: fetchError } = await supabase
-          .from('questions')
-          .select('*')
-          .eq('category', category);
+        if (category === 'reading_comprehension') {
+          // For READING COMPREHENSION: group by passage_id
+          const { data, error: fetchError } = await supabase
+            .from('questions')
+            .select('*')
+            .eq('category', category)
+            .order('passage_id', { ascending: false });
 
-        if (fetchError) {
-          throw fetchError;
+          if (fetchError) throw fetchError;
+          
+          // Group by passage_id and keep all 3 questions together
+          const passageMap = new Map<string, any>();
+          (data || []).forEach((q) => {
+            if (q.passage_id) {
+              if (!passageMap.has(q.passage_id)) {
+                passageMap.set(q.passage_id, {
+                  passage_id: q.passage_id,
+                  image_url: q.image_url,
+                  questions: [],
+                });
+              }
+              passageMap.get(q.passage_id).questions.push(q);
+            }
+          });
+          
+          // Convert to array and sort questions by question_number
+          const passages = Array.from(passageMap.values()).map(passage => ({
+            ...passage,
+            questions: passage.questions.sort((a: any, b: any) => a.question_number - b.question_number),
+          }));
+          
+          setQuestions(passages);
+        } else {
+          // For other categories: standard fetch
+          const { data, error: fetchError } = await supabase
+            .from('questions')
+            .select('*')
+            .eq('category', category);
+
+          if (fetchError) throw fetchError;
+          setQuestions(data || []);
         }
-
-        setQuestions(data || []);
       } catch (err) {
         console.error('Error fetching questions:', err);
         setError('Impossible de charger les questions');
@@ -214,43 +246,108 @@ export default function TrainCategoryPage() {
 
         {!loading && !error && questions.length > 0 && (
           <div className="space-y-4">
-            {questions.map((question, index) => (
-              <Link key={question.id} href={`/train/${category}/${question.id}`}>
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                      {index + 1}
-                    </div>
+            {questions.map((item, index) => {
+              // For READING COMPREHENSION: item is a passage with 3 questions
+              if (category === 'reading_comprehension' && item.passage_id) {
+                const passage = item;
+                const firstQuestion = passage.questions[0];
+                
+                return (
+                  <motion.div
+                    key={passage.passage_id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link href={`/train/${category}/${passage.passage_id}`}>
+                      <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all cursor-pointer group">
+                        <div className="flex items-start gap-4">
+                          <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
+                            <span className="text-3xl">{info.emoji}</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h3 className="text-lg font-bold text-gray-800">
+                                Passage de lecture (3 questions)
+                              </h3>
+                              <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-bold">
+                                3 Q
+                              </span>
+                            </div>
+                            <p className="text-gray-600 text-sm line-clamp-2">
+                              {passage.questions.map((q: any, i: number) => 
+                                `Q${i+1}: ${q.question_text?.substring(0, 30)}...`
+                              ).join(' • ')}
+                            </p>
+                            {passage.image_url && (
+                              <div className="mt-3">
+                                <img 
+                                  src={passage.image_url} 
+                                  alt="Passage" 
+                                  className="w-full h-32 object-cover rounded-xl"
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-yellow-50 rounded-full border border-yellow-200">
+                              <Trophy className="w-4 h-4 text-yellow-600" />
+                              <span className="text-sm font-bold text-yellow-600">150 XP</span>
+                            </div>
+                            <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              }
+              
+              // For other categories: standard question display
+              const question = item;
+              const questionUrl = `/train/${category}/${question.id}`;
+              const displayTitle = 
+                category === 'text_completion'
+                  ? `Texte à compléter (4 trous)`
+                  : question.question_text || 'Question audio';
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4 mb-2">
-                        <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
-                          {question.question_text || 'Question audio'}
-                        </h3>
-                        <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
-                          TOEIC
-                        </span>
+              return (
+                <Link key={question.id} href={questionUrl}>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.02, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                        {index + 1}
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>3 min</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-4 mb-2">
+                          <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                            {displayTitle}
+                          </h3>
+                          <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
+                            TOEIC
+                          </span>
                         </div>
+
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>3 min</span>
+                          </div>
                         <div className="flex items-center gap-1">
                           <Trophy className="w-4 h-4 text-yellow-500" />
                           <span className="font-bold text-yellow-600">+50 XP</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Target className="w-4 h-4 text-blue-500" />
-                          <span>{question.choices.length} choix</span>
+                          <span>{question.choices?.length || 0} choix</span>
                         </div>
                       </div>
                     </div>
@@ -265,7 +362,8 @@ export default function TrainCategoryPage() {
                   </div>
                 </motion.div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

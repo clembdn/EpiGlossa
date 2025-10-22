@@ -13,6 +13,11 @@ export interface Choice {
   is_correct: boolean
 }
 
+// Pour TEXT COMPLETION : choix pour chaque trou
+export interface GapChoices {
+  [gapNumber: string]: Choice[] // "1": [choices], "2": [choices], etc.
+}
+
 export interface Question {
   id: string
   category: QuestionCategory
@@ -22,6 +27,14 @@ export interface Question {
   choices: Choice[]
   explanation: string
   created_at?: string
+  
+  // Pour READING COMPREHENSION (1 passage avec 3 questions)
+  passage_id?: string | null
+  question_number?: number | null
+  
+  // Pour TEXT COMPLETION (texte avec trous)
+  text_with_gaps?: string | null
+  gap_choices?: GapChoices | null
 }
 
 export interface AnswerState {

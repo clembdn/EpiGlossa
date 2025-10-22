@@ -185,19 +185,20 @@ export default function AdminQuestionsPage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-gray-800 mb-2 line-clamp-2">
-                      {question.question_text || '🔊 Question audio'}
+                      {question.question_text || question.text_with_gaps?.substring(0, 100) || '🔊 Question audio'}
                     </h3>
                     
                     <div className="flex items-center gap-3 text-sm text-gray-500 mb-2">
                       {question.audio_url && <span>🎵 Audio</span>}
                       {question.image_url && <span>🖼️ Image</span>}
-                      <span>• {question.choices.length} choix</span>
+                      {question.choices && <span>• {question.choices.length} choix</span>}
+                      {question.gap_choices && <span>• 4 trous à compléter</span>}
                       <span>• {new Date(question.created_at || '').toLocaleDateString('fr-FR')}</span>
                     </div>
 
                     {/* Choices preview */}
                     <div className="flex flex-wrap gap-2">
-                      {question.choices.map((choice) => (
+                      {question.choices && question.choices.map((choice) => (
                         <span
                           key={choice.option}
                           className={`px-2 py-1 rounded-lg text-xs font-medium ${
@@ -211,6 +212,16 @@ export default function AdminQuestionsPage() {
                           {choice.is_correct && ' ✓'}
                         </span>
                       ))}
+                      {question.gap_choices && (
+                        <span className="px-2 py-1 rounded-lg text-xs font-medium bg-purple-100 text-purple-700">
+                          📝 Text Completion (4 trous)
+                        </span>
+                      )}
+                      {question.text_with_gaps && (
+                        <span className="px-2 py-1 rounded-lg text-xs font-medium bg-indigo-100 text-indigo-700">
+                          {question.text_with_gaps.substring(0, 50)}...
+                        </span>
+                      )}
                     </div>
                   </div>
 

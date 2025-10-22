@@ -210,6 +210,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
         audio_url: audioUrl || null,
         image_url: imageUrl || null,
         choices: JSON.parse(JSON.stringify(choices)),
+        gap_choices: null, // NULL pour questions standards
         explanation,
       };
 
