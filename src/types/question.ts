@@ -42,3 +42,10 @@ export interface AnswerState {
   isSubmitted: boolean
   isCorrect: boolean | null
 }
+
+// Pour READING COMPREHENSION : groupe de 3 questions partageant le même passage
+export interface ReadingPassage {
+  passage_id: string
+  image_url: string | null
+  questions: Question[]
+}

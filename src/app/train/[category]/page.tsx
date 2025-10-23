@@ -6,16 +6,7 @@ import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight }
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question } from '@/types/question';
-
-interface Exercise {
-  id: number;
-  title: string;
-  duration: number;
-  xp: number;
-  difficulty: 'Facile' | 'Moyen' | 'Difficile';
-  completed: boolean;
-}
+import type { Question, ReadingPassage } from '@/types/question';
 
 const categoryInfo: Record<string, {
   name: string;
@@ -73,7 +64,7 @@ export default function TrainCategoryPage() {
   const category = params.category as string;
   const info = categoryInfo[category];
   
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[] | ReadingPassage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -248,9 +239,8 @@ export default function TrainCategoryPage() {
           <div className="space-y-4">
             {questions.map((item, index) => {
               // For READING COMPREHENSION: item is a passage with 3 questions
-              if (category === 'reading_comprehension' && item.passage_id) {
-                const passage = item;
-                const firstQuestion = passage.questions[0];
+              if (category === 'reading_comprehension' && 'questions' in item) {
+                const passage = item as ReadingPassage;
                 
                 return (
                   <motion.div
@@ -304,7 +294,7 @@ export default function TrainCategoryPage() {
               }
               
               // For other categories: standard question display
-              const question = item;
+              const question = item as Question;
               const questionUrl = `/train/${category}/${question.id}`;
               const displayTitle = 
                 category === 'text_completion'
