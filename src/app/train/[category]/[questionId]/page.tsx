@@ -49,6 +49,28 @@ const categoryInfo: Record<string, {
   },
 };
 
+// Fonction pour mélanger un tableau
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// Fonction pour mélanger les choix en gardant les lettres A, B, C, D dans l'ordre
+function shuffleChoicesKeepingLabels(choices: Choice[]): Choice[] {
+  const labels: Array<'A' | 'B' | 'C' | 'D'> = ['A', 'B', 'C', 'D'];
+  const shuffledTexts = shuffleArray(choices);
+  
+  return shuffledTexts.map((choice, index) => ({
+    option: labels[index],
+    text: choice.text,
+    is_correct: choice.is_correct
+  }));
+}
+
 export default function QuestionPage() {
   const params = useParams();
   const router = useRouter();
@@ -80,7 +102,15 @@ export default function QuestionPage() {
             .order('question_number', { ascending: true });
 
           if (error) throw error;
-          setQuestions(data || []);
+          const questionsData = data || [];
+          
+          // Mélanger les choix pour chaque question en gardant A, B, C, D
+          const questionsWithShuffledChoices = questionsData.map(q => ({
+            ...q,
+            choices: shuffleChoicesKeepingLabels(q.choices)
+          }));
+          
+          setQuestions(questionsWithShuffledChoices);
         } else {
           // Fetch single question
           const { data, error } = await supabase
@@ -90,7 +120,30 @@ export default function QuestionPage() {
             .single();
 
           if (error) throw error;
-          setQuestion(data);
+          
+          // Mélanger les choix de réponses en gardant A, B, C, D
+          let questionWithShuffledChoices = data;
+          if (data?.choices) {
+            questionWithShuffledChoices = {
+              ...data,
+              choices: shuffleChoicesKeepingLabels(data.choices)
+            };
+          }
+          
+          // Mélanger les choix pour les gap_choices (text completion)
+          if (data?.gap_choices) {
+            const shuffledGapChoices: Record<string, Choice[]> = {};
+            Object.keys(data.gap_choices).forEach(gapNumber => {
+              shuffledGapChoices[gapNumber] = shuffleChoicesKeepingLabels(data.gap_choices[gapNumber]);
+            });
+            questionWithShuffledChoices = {
+              ...questionWithShuffledChoices,
+              gap_choices: shuffledGapChoices
+            };
+          }
+          
+          setQuestion(questionWithShuffledChoices);
+          
         }
       } catch (err) {
         console.error('Error fetching question:', err);
@@ -163,6 +216,28 @@ export default function QuestionPage() {
     // For standard questions
     const correctAnswer = getCorrectAnswer();
     return selectedAnswer === correctAnswer?.option;
+  };
+
+  const handleNextQuestion = () => {
+    // Récupérer l'ordre des questions depuis sessionStorage
+    const orderStr = sessionStorage.getItem(`question_order_${category}`);
+    if (!orderStr) {
+      // Si pas d'ordre sauvegardé, retourner à la liste
+      router.push(`/train/${category}`);
+      return;
+    }
+    
+    const questionOrder = JSON.parse(orderStr);
+    const currentIndex = questionOrder.indexOf(questionId);
+    
+    if (currentIndex >= 0 && currentIndex < questionOrder.length - 1) {
+      // Il y a une question suivante
+      const nextQuestionId = questionOrder[currentIndex + 1];
+      router.push(`/train/${category}/${nextQuestionId}`);
+    } else {
+      // C'est la dernière question, retourner à la liste
+      router.push(`/train/${category}`);
+    }
   };
 
   if (loading) {
@@ -453,10 +528,10 @@ export default function QuestionPage() {
                 </div>
 
                 <button
-                  onClick={() => router.back()}
+                  onClick={handleNextQuestion}
                   className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-2xl hover:shadow-2xl transition-all"
                 >
-                  Retour aux questions
+                  Question suivante
                 </button>
               </motion.div>
             )}
@@ -534,10 +609,10 @@ export default function QuestionPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <Volume2 className="w-6 h-6 text-purple-600" />
-                <h3 className="font-bold text-gray-800">Écoute l'audio</h3>
+                <h3 className="font-bold text-gray-800">Écoute l&apos;audio</h3>
               </div>
               <audio controls className="w-full" src={question.audio_url}>
-                Votre navigateur ne supporte pas l'élément audio.
+                Votre navigateur ne supporte pas l&apos;élément audio.
               </audio>
             </motion.div>
           )}
@@ -595,15 +670,14 @@ export default function QuestionPage() {
                     const selectedOption = selectedGapAnswers[gapNumber];
                     const isGapSubmitted = isSubmitted;
                     
-                    let selectBorderColor = 'border-gray-300';
-                    let selectBgColor = 'bg-white';
-                    
+                    // Calculer les classes CSS en fonction de l'état
+                    let selectClasses = 'border-gray-300 bg-white';
                     if (isGapSubmitted && selectedOption) {
                       const selectedChoice = gapChoices.find(c => c.option === selectedOption);
                       if (selectedChoice?.is_correct) {
-                        selectBorderColor = 'border-green-400 bg-green-50';
+                        selectClasses = 'border-green-400 bg-green-50';
                       } else {
-                        selectBorderColor = 'border-red-400 bg-red-50';
+                        selectClasses = 'border-red-400 bg-red-50';
                       }
                     }
 
@@ -620,7 +694,7 @@ export default function QuestionPage() {
                           }
                         }}
                         disabled={isSubmitted}
-                        className={`inline-block mx-1 px-3 py-2 rounded-lg border-2 ${selectBorderColor} ${selectBgColor} font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                        className={`inline-block mx-1 px-3 py-2 rounded-lg border-2 ${selectClasses} font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
                           isSubmitted ? 'cursor-default' : 'cursor-pointer'
                         }`}
                       >
@@ -829,7 +903,7 @@ export default function QuestionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.back()}
+                  onClick={() => router.push(`/train/${category}`)}
                   className="flex-1 py-3 bg-white border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Retour aux questions
@@ -837,10 +911,7 @@ export default function QuestionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    // TODO: Navigate to next question
-                    router.back();
-                  }}
+                  onClick={handleNextQuestion}
                   className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
                 >
                   Question suivante

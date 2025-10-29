@@ -8,6 +8,16 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Question, ReadingPassage } from '@/types/question';
 
+// Fonction pour mélanger un tableau
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 const categoryInfo: Record<string, {
   name: string;
   emoji: string;
@@ -85,7 +95,7 @@ export default function TrainCategoryPage() {
           if (fetchError) throw fetchError;
           
           // Group by passage_id and keep all 3 questions together
-          const passageMap = new Map<string, any>();
+          const passageMap = new Map<string, ReadingPassage>();
           (data || []).forEach((q) => {
             if (q.passage_id) {
               if (!passageMap.has(q.passage_id)) {
@@ -95,17 +105,23 @@ export default function TrainCategoryPage() {
                   questions: [],
                 });
               }
-              passageMap.get(q.passage_id).questions.push(q);
+              passageMap.get(q.passage_id)!.questions.push(q);
             }
           });
           
           // Convert to array and sort questions by question_number
           const passages = Array.from(passageMap.values()).map(passage => ({
             ...passage,
-            questions: passage.questions.sort((a: any, b: any) => a.question_number - b.question_number),
+            questions: passage.questions.sort((a, b) => (a.question_number || 0) - (b.question_number || 0)),
           }));
           
-          setQuestions(passages);
+          // Mélanger l'ordre des passages
+          const shuffledPassages = shuffleArray(passages);
+          setQuestions(shuffledPassages);
+          
+          // Sauvegarder l'ordre des passage_ids dans sessionStorage
+          const passageIds = shuffledPassages.map(p => p.passage_id);
+          sessionStorage.setItem(`question_order_${category}`, JSON.stringify(passageIds));
         } else {
           // For other categories: standard fetch
           const { data, error: fetchError } = await supabase
@@ -114,7 +130,14 @@ export default function TrainCategoryPage() {
             .eq('category', category);
 
           if (fetchError) throw fetchError;
-          setQuestions(data || []);
+          
+          // Mélanger l'ordre des questions
+          const shuffledQuestions = shuffleArray(data || []);
+          setQuestions(shuffledQuestions);
+          
+          // Sauvegarder l'ordre des question IDs dans sessionStorage
+          const questionIds = shuffledQuestions.map(q => q.id);
+          sessionStorage.setItem(`question_order_${category}`, JSON.stringify(questionIds));
         }
       } catch (err) {
         console.error('Error fetching questions:', err);
@@ -265,7 +288,7 @@ export default function TrainCategoryPage() {
                               </span>
                             </div>
                             <p className="text-gray-600 text-sm line-clamp-2">
-                              {passage.questions.map((q: any, i: number) => 
+                              {passage.questions.map((q, i) => 
                                 `Q${i+1}: ${q.question_text?.substring(0, 30)}...`
                               ).join(' • ')}
                             </p>
