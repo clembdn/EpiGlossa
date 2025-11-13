@@ -6,9 +6,7 @@ import {
   BookText, 
   Languages, 
   MessageSquare, 
-  Volume2,
   Lightbulb,
-  Award,
   ChevronRight,
   Star,
   Clock
@@ -18,7 +16,7 @@ interface Category {
   id: string;
   name: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   gradient: string;
   emoji: string;
