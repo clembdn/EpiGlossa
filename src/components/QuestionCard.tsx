@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Question, AnswerState } from '@/types/question'
+import { Question, AnswerState, Choice } from '@/types/question'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -42,7 +42,8 @@ export default function QuestionCard({ question, onNext }: QuestionCardProps) {
   const handleSubmit = () => {
     if (!answerState.selectedAnswer) return
 
-    const isCorrect = answerState.selectedAnswer === question.correct_answer
+    const correctOption = question.choices.find((c: Choice) => c.is_correct)?.option || null
+    const isCorrect = answerState.selectedAnswer === correctOption
     setAnswerState((prev) => ({
       ...prev,
       isSubmitted: true,
@@ -73,7 +74,8 @@ export default function QuestionCard({ question, onNext }: QuestionCardProps) {
         : 'border-gray-200 dark:border-gray-700'
     }
 
-    if (choice === question.correct_answer) {
+    const correctOption = question.choices.find((c: Choice) => c.is_correct)?.option || null
+    if (choice === correctOption) {
       return 'border-green-500 bg-green-50 dark:bg-green-950'
     }
 
@@ -142,26 +144,30 @@ export default function QuestionCard({ question, onNext }: QuestionCardProps) {
             disabled={answerState.isSubmitted}
             className="space-y-3"
           >
-            {(['A', 'B', 'C', 'D'] as const).map((choice) => (
-              <label
-                key={choice}
-                className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${getChoiceClassName(choice)} ${answerState.isSubmitted ? 'cursor-not-allowed' : 'hover:border-blue-300 dark:hover:border-blue-700'}`}
-              >
-                <RadioGroupItem value={choice} id={`choice-${choice}`} className="mt-1" />
-                <div className="flex-1">
-                  <span className="font-semibold mr-2">{choice}.</span>
-                  <span>{question.choices[choice]}</span>
-                </div>
-                {answerState.isSubmitted && choice === question.correct_answer && (
-                  <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                )}
-                {answerState.isSubmitted &&
-                  choice === answerState.selectedAnswer &&
-                  !answerState.isCorrect && (
-                    <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+            {question.choices.map((c: Choice) => {
+              const choice = c.option
+              const correctOption = question.choices.find((cc: Choice) => cc.is_correct)?.option || null
+              return (
+                <label
+                  key={choice}
+                  className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${getChoiceClassName(choice)} ${answerState.isSubmitted ? 'cursor-not-allowed' : 'hover:border-blue-300 dark:hover:border-blue-700'}`}
+                >
+                  <RadioGroupItem value={choice} id={`choice-${choice}`} className="mt-1" />
+                  <div className="flex-1">
+                    <span className="font-semibold mr-2">{choice}.</span>
+                    <span>{c.text}</span>
+                  </div>
+                  {answerState.isSubmitted && choice === correctOption && (
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                   )}
-              </label>
-            ))}
+                  {answerState.isSubmitted &&
+                    choice === answerState.selectedAnswer &&
+                    !answerState.isCorrect && (
+                      <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    )}
+                </label>
+              )
+            })}
           </RadioGroup>
         </div>
 
