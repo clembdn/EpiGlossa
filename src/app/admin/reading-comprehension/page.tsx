@@ -199,9 +199,9 @@ export default function AddReadingComprehensionPage() {
       setTimeout(() => {
         router.push('/admin/questions');
       }, 1500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating questions:', error);
-      setMessage(`❌ Erreur: ${error?.message || 'Erreur inconnue'}`);
+      setMessage(`❌ Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     } finally {
       setSaving(false);
     }

@@ -33,7 +33,7 @@ export default function Home() {
           </h1>
           
           <p className="text-lg md:text-xl text-gray-600 font-medium mb-8 max-w-2xl mx-auto">
-            Apprends l'anglais en t'amusant avec des exercices interactifs, des défis quotidiens et bien plus !
+            Apprends l&apos;anglais en t&apos;amusant avec des exercices interactifs, des défis quotidiens et bien plus !
           </p>
 
           <motion.div
@@ -153,7 +153,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">
-                          S'entraîner
+                          S&apos;entraîner
                         </h2>
                         <p className="text-white/90 text-sm md:text-base">
                           Pratique avec des exercices
@@ -198,7 +198,7 @@ export default function Home() {
                 Défi du jour
               </h3>
               <p className="text-gray-600 mb-4">
-                Complète 3 leçons aujourd'hui pour gagner un bonus de 100 XP !
+                Complète 3 leçons aujourd&apos;hui pour gagner un bonus de 100 XP !
               </p>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">

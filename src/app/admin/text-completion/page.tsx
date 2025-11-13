@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Loader2, ArrowLeft, Upload, Plus, Trash2 } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import type { Choice } from '@/types/question';
 
@@ -127,9 +127,9 @@ export default function AddTextCompletionPage() {
       setTimeout(() => {
         router.push('/admin/questions');
       }, 1500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating question:', error);
-      setMessage(`❌ Erreur: ${error?.message || 'Erreur inconnue'}`);
+      setMessage(`❌ Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     } finally {
       setSaving(false);
     }

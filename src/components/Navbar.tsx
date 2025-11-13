@@ -2,11 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Dumbbell, User, Sparkles, ChevronDown, Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText } from 'lucide-react';
+import { BookOpen, Dumbbell, User, ChevronDown, Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText, Languages } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
 const trainCategories = [
+  { 
+    name: 'TOEIC BLANC', 
+    href: '/train/toeic-blanc',
+    icon: Volume2,
+    emoji: '🎯',
+    color: 'from-red-500 to-orange-500',
+    description: 'Test complet 2h'
+  },
   { 
     name: 'Audio avec Images', 
     href: '/train/audio_with_images',
@@ -107,7 +115,6 @@ const navItems = [
     icon: BookOpen, 
     color: 'bg-gradient-to-br from-purple-400 to-pink-400',
     activeColor: 'text-purple-600',
-    emoji: '📚',
     hasDropdown: true
   },
   { 
@@ -116,7 +123,6 @@ const navItems = [
     icon: Dumbbell, 
     color: 'bg-gradient-to-br from-blue-400 to-cyan-400',
     activeColor: 'text-blue-600',
-    emoji: '💪',
     hasDropdown: true
   },
   { 
@@ -125,7 +131,6 @@ const navItems = [
     icon: User, 
     color: 'bg-gradient-to-br from-yellow-400 to-orange-400',
     activeColor: 'text-orange-600',
-    emoji: '👤',
     hasDropdown: false
   },
 ];
@@ -147,7 +152,7 @@ export default function Navbar() {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-50 border-t border-gray-100">
         <div className="safe-area-inset-bottom">
           <div className="flex justify-around items-center px-2 py-2">
-            {navItems.map(({ name, href, icon: Icon, color, activeColor, emoji, hasDropdown }) => {
+            {navItems.map(({ name, href, icon: Icon, color, activeColor, hasDropdown }) => {
               const active = pathname.startsWith(href);
               
               if (hasDropdown) {
@@ -310,7 +315,7 @@ export default function Navbar() {
                 className="relative"
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Sparkles className="w-6 h-6 text-white" />
+                  <Languages className="w-6 h-6 text-white" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full border-2 border-white" />
               </motion.div>
@@ -318,7 +323,7 @@ export default function Navbar() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   EpiGlossa
                 </h1>
-                <p className="text-xs text-gray-500 font-medium">Apprendre en s'amusant</p>
+                <p className="text-xs text-gray-500 font-medium">Apprendre en s&apos;amusant</p>
               </div>
             </Link>
 
@@ -339,9 +344,10 @@ export default function Navbar() {
                 </motion.button>
               </Link>
 
-              {navItems.map(({ name, href, icon: Icon, color, activeColor, emoji, hasDropdown }) => {
+              {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+              {navItems.map(({ name, href, icon: Icon, color, activeColor, hasDropdown }) => {
                 const active = pathname.startsWith(href);
-                const categories = name === "S'entraîner" ? trainCategories : learnCategories;
+                const categories = name === "S&apos;entraîner" ? trainCategories : learnCategories;
                 
                 if (hasDropdown) {
                   return (
@@ -362,7 +368,6 @@ export default function Navbar() {
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className="text-xl">{emoji}</span>
                             <Icon size={20} strokeWidth={2.5} />
                             <span>{name}</span>
                             <ChevronDown 
@@ -423,12 +428,10 @@ export default function Navbar() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
-                                    whileHover={{ scale: 1.03, y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="group relative overflow-hidden bg-gradient-to-br from-gray-50 to-white hover:from-white hover:to-gray-50 rounded-2xl p-4 border-2 border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all cursor-pointer"
+                                    className="group relative overflow-hidden bg-gradient-to-br from-gray-50 to-white hover:from-white hover:to-gray-50 rounded-2xl p-4 border-2 border-gray-100 hover:border-gray-200 transition-colors cursor-pointer"
                                   >
                                     <div className="flex items-start gap-3">
-                                      <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                                      <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
                                         <span className="text-2xl">{category.emoji}</span>
                                       </div>
                                       <div className="flex-1 min-w-0">
@@ -442,7 +445,7 @@ export default function Navbar() {
                                     </div>
                                     
                                     {/* Shine effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 will-change-transform" />
                                   </motion.div>
                                 </Link>
                               ))}
@@ -469,7 +472,6 @@ export default function Navbar() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-xl">{emoji}</span>
                         <Icon size={20} strokeWidth={2.5} />
                         <span>{name}</span>
                       </div>

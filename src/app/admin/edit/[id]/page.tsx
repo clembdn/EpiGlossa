@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { Loader2, ArrowLeft, Upload, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import type { Question, Choice, QuestionCategory } from '@/types/question';
+import type { Choice, QuestionCategory } from '@/types/question';
 
 const categoryOptions: { value: QuestionCategory; label: string }[] = [
   { value: 'audio_with_images', label: '🎧 Audio avec Images' },
@@ -231,9 +231,9 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
       setTimeout(() => {
         router.push('/admin/questions');
       }, 1500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating question:', error);
-      setMessage(`❌ Erreur: ${error?.message || 'Erreur inconnue'}`);
+      setMessage(`❌ Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     } finally {
       setSaving(false);
     }

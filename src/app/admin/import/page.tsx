@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Loader2, ArrowLeft, Upload, CheckCircle2, AlertCircle, FileJson } from 'lucide-react';
+import { Loader2, ArrowLeft, CheckCircle2, FileJson } from 'lucide-react';
 import Link from 'next/link';
 
 interface JsonQuestion {
@@ -12,12 +12,12 @@ interface JsonQuestion {
   question_text?: string;
   audio_url?: string;
   image_url?: string;
-  choices?: any[];
+  choices?: Array<{ option: string; text: string; is_correct: boolean }>;
   explanation: string;
   passage_id?: string;
   question_number?: number;
   text_with_gaps?: string;
-  gap_choices?: any;
+  gap_choices?: Record<string, Array<{ option: string; text: string; is_correct: boolean }>>;
 }
 
 export default function ImportJsonPage() {
@@ -75,9 +75,9 @@ export default function ImportJsonPage() {
 
       setPreview(questions);
       setMessage(`✅ ${questions.length} question(s) valide(s) prête(s) à être importée(s)`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Validation error:', error);
-      setMessage(`❌ ${error.message}`);
+      setMessage(`❌ ${error instanceof Error ? error.message : 'Une erreur est survenue'}`);
       setPreview(null);
     } finally {
       setValidating(false);
@@ -111,7 +111,7 @@ export default function ImportJsonPage() {
         text_with_gaps: q.text_with_gaps || null,
       }));
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('questions')
         .insert(questionsToInsert)
         .select();
@@ -126,9 +126,9 @@ export default function ImportJsonPage() {
       setTimeout(() => {
         router.push('/admin/questions');
       }, 1500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Import error:', error);
-      setMessage(`❌ Erreur d'import: ${error?.message || 'Erreur inconnue'}`);
+      setMessage(`❌ Erreur d'import: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     } finally {
       setImporting(false);
     }
