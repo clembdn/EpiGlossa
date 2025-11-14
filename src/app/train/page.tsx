@@ -224,7 +224,7 @@ export default function TrainPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.06 * index }}
-                className="group relative overflow-hidden bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 cursor-pointer"
+                className="group relative overflow-hidden bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all cursor-pointer"
               >
                 {/* Hover color-fill overlay */}
                 <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br ${category.color}`} />
