@@ -10,7 +10,7 @@ const trainCategories = [
     href: '/train/audio_with_images',
     icon: Volume2,
     emoji: '🎧',
-    color: 'from-purple-400 to-pink-400',
+    color: 'from-purple-500 to-fuchsia-400',
     description: 'Écoute des audios tout en regardant des images pour améliorer ta compréhension orale',
     difficulty: 'Compréhension Orale',
     exercises: 45
@@ -20,7 +20,7 @@ const trainCategories = [
     href: '/train/qa',
     icon: MessageSquare,
     emoji: '❓',
-    color: 'from-blue-400 to-cyan-400',
+    color: 'from-sky-500 to-blue-400',
     description: 'Réponds à des questions variées pour tester ta compréhension',
     difficulty: 'Compréhension Orale',
     exercises: 38
@@ -30,7 +30,7 @@ const trainCategories = [
     href: '/train/short_conversation',
     icon: Users,
     emoji: '💬',
-    color: 'from-green-400 to-emerald-400',
+    color: 'from-emerald-500 to-green-400',
     description: 'Écoute et comprends des dialogues du quotidien',
     difficulty: 'Compréhension Orale',
     exercises: 52
@@ -40,7 +40,7 @@ const trainCategories = [
     href: '/train/short_talks',
     icon: Radio,
     emoji: '📻',
-    color: 'from-yellow-400 to-orange-400',
+    color: 'from-orange-500 to-amber-400',
     description: 'Analyse des présentations et discours courts',
     difficulty: 'Compréhension Orale',
     exercises: 31
@@ -50,7 +50,7 @@ const trainCategories = [
     href: '/train/incomplete_sentences',
     icon: FileText,
     emoji: '✍️',
-    color: 'from-amber-400 to-yellow-400',
+    color: 'from-yellow-400 to-lime-300',
     description: 'Complète les phrases avec le mot ou expression correcte',
     difficulty: 'Compréhension Écrite',
     exercises: 67
@@ -60,7 +60,7 @@ const trainCategories = [
     href: '/train/text_completion',
     icon: CheckSquare,
     emoji: '📝',
-    color: 'from-indigo-400 to-purple-400',
+    color: 'from-indigo-500 to-indigo-400',
     description: 'Remplis les blancs dans des textes suivis',
     difficulty: 'Compréhension Écrite',
     exercises: 29
@@ -70,7 +70,7 @@ const trainCategories = [
     href: '/train/reading_comprehension',
     icon: BookText,
     emoji: '📖',
-    color: 'from-pink-400 to-rose-400',
+    color: 'from-rose-500 to-pink-400',
     description: 'Lis des textes et réponds aux questions de compréhension',
     difficulty: 'Compréhension Écrite',
     exercises: 41
@@ -130,7 +130,7 @@ export default function TrainPage() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <span className="px-3 py-1 bg-white/30 backdrop-blur-sm rounded-full text-xs font-bold text-white">
-                          TEST COMPLET
+                          CONDITIONS EXAMEN
                         </span>
                         <span className="px-3 py-1 bg-white/30 backdrop-blur-sm rounded-full text-xs font-bold text-white">
                           2H00
