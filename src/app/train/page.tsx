@@ -224,38 +224,43 @@ export default function TrainPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.06 * index }}
-                className="group relative overflow-hidden bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-gray-100 hover:border-blue-200 cursor-pointer"
+                className="group relative overflow-hidden bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 cursor-pointer"
               >
+                {/* Hover color-fill overlay */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br ${category.color}`} />
+
                 {/* Difficulty Badge */}
-                <div className="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-gray-600 shadow-md">
+                <div className="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-gray-600 shadow-md border border-gray-200 group-hover:bg-white/20 group-hover:text-white group-hover:border-white/40">
                   {category.difficulty}
                 </div>
 
                 {/* Icon */}
-                <div className="mb-4">
+                <div className="mb-4 relative z-10">
                   <div className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center shadow-lg`}>
                     <span className="text-4xl">{category.emoji}</span>
                   </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                  {category.name}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                  {category.description}
-                </p>
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2 transition-colors group-hover:text-white">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed mb-4 transition-colors group-hover:text-white/90">
+                    {category.description}
+                  </p>
+                </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 text-sm">
-                  <div className="flex items-center gap-1.5 text-gray-600">
-                    <Target className="w-4 h-4" />
+                <div className="relative z-10 flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-1.5 text-gray-600 transition-colors group-hover:text-white/90">
+                    <Target className="w-4 h-4 text-gray-600 group-hover:text-white" />
                     <span className="font-semibold">{category.exercises} exercices</span>
                   </div>
                 </div>
 
                 {/* Shine Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none z-20" />
               </motion.div>
             </Link>
           ))}

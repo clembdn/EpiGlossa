@@ -282,14 +282,16 @@ export default function Navbar() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-br hover:shadow-lg transition-all border-2 border-gray-100 hover:border-gray-200"
+                      className="group relative overflow-hidden flex items-center gap-3 p-3 rounded-2xl bg-white hover:shadow-lg transition-all border-2 border-gray-100"
                     >
-                      <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md`}>
+                      {/* Hover color-fill overlay */}
+                      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br ${category.color}`} />
+                      <div className={`relative z-10 w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md`}>
                         <span className="text-2xl">{category.emoji}</span>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-gray-800 text-sm">{category.name}</p>
-                        <p className="text-xs text-gray-500">{category.description}</p>
+                      <div className="relative z-10 flex-1">
+                        <p className="font-bold text-gray-800 text-sm transition-colors group-hover:text-white">{category.name}</p>
+                        <p className="text-xs text-gray-500 transition-colors group-hover:text-white/90">{category.description}</p>
                       </div>
                     </motion.div>
                   </Link>
@@ -420,24 +422,27 @@ export default function Navbar() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
-                                    className="group relative overflow-hidden bg-gradient-to-br from-gray-50 to-white hover:from-white hover:to-gray-50 rounded-2xl p-4 border-2 border-gray-100 hover:border-gray-200 transition-colors cursor-pointer"
+                                    className="group relative overflow-hidden bg-white rounded-2xl p-4 border-2 border-gray-100 transition-colors cursor-pointer"
                                   >
-                                    <div className="flex items-start gap-3">
+                                    {/* Hover color-fill overlay */}
+                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br ${category.color}`} />
+
+                                    <div className="relative z-10 flex items-start gap-3">
                                       <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
                                         <span className="text-2xl">{category.emoji}</span>
                                       </div>
                                       <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-gray-800 text-sm mb-0.5 group-hover:text-blue-600 transition-colors">
+                                        <p className="font-bold text-gray-800 text-sm mb-0.5 transition-colors group-hover:text-white">
                                           {category.name}
                                         </p>
-                                        <p className="text-xs text-gray-500 leading-relaxed">
+                                        <p className="text-xs text-gray-500 leading-relaxed transition-colors group-hover:text-white/90">
                                           {category.description}
                                         </p>
                                       </div>
                                     </div>
                                     
                                     {/* Shine effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 will-change-transform" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 will-change-transform z-20" />
                                   </motion.div>
                                 </Link>
                               ))}

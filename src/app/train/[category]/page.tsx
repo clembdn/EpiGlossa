@@ -289,15 +289,17 @@ export default function TrainCategoryPage() {
           <>
             {/* Barre de recherche */}
             <div className="mb-4">
-              <div className="relative">
-                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Rechercher une question ou une réponse..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-400 outline-none transition-colors bg-white"
-                />
+              <div className="group rounded-xl p-[2px] bg-gradient-to-r from-blue-300 to-purple-400 focus-within:from-blue-500 focus-within:to-purple-600 transition-colors">
+                <div className="relative">
+                  <Search className="w-5 h-5 text-gray-600 absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-blue-600" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Rechercher une question ou une réponse..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-[10px] border-0 outline-none bg-white text-gray-900 placeholder-gray-700"
+                  />
+                </div>
               </div>
             </div>
 
