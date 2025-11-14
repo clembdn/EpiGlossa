@@ -464,8 +464,6 @@ export default function ToeicBlancTestPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     onClick={() => setSelectedAnswer(choice.option)}
-                    whileHover={{ scale: 1.01, x: 4 }}
-                    whileTap={{ scale: 0.99 }}
                     className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all cursor-pointer ${
                       isSelected
                         ? 'border-blue-400 bg-blue-50'
@@ -497,8 +495,6 @@ export default function ToeicBlancTestPage() {
         <motion.button
           onClick={handleSubmitAnswer}
           disabled={!canSubmit()}
-          whileHover={canSubmit() ? { scale: 1.02 } : {}}
-          whileTap={canSubmit() ? { scale: 0.98 } : {}}
           className={`w-full py-5 rounded-2xl font-bold text-xl shadow-xl transition-all ${
             canSubmit()
               ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-2xl'
