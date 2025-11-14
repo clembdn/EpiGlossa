@@ -280,11 +280,12 @@ export default function ToeicBlancTestPage() {
   const progress = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pb-8">
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        {/* Header fixe */}
-        <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg border-2 border-gray-100 mb-6">
-          <div className="flex items-center justify-between mb-3">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="h-screen flex flex-col lg:flex-row">
+        {/* Left Sidebar - Progress & Visual Grid */}
+        <div className="lg:w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto flex flex-col">
+          <div className="space-y-6 flex-1">
+            {/* Header */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">🎯</span>
@@ -292,217 +293,449 @@ export default function ToeicBlancTestPage() {
               <div>
                 <h1 className="font-bold text-gray-800">TOEIC BLANC</h1>
                 <p className="text-sm text-gray-600">
-                  Question {getCurrentQuestionNumber()} / {allQuestions.length}
+                  Test complet
                 </p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-4">
-              {/* Timer */}
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${
-                timeRemaining < 600 ? 'bg-red-100 border-2 border-red-300' : 'bg-blue-100 border-2 border-blue-300'
-              }`}>
+
+            {/* Timer */}
+            <div className={`p-4 rounded-xl ${
+              timeRemaining < 600 ? 'bg-red-100 border-2 border-red-300' : 'bg-blue-100 border-2 border-blue-300'
+            }`}>
+              <div className="flex items-center gap-2 mb-2">
                 <Clock className={`w-5 h-5 ${timeRemaining < 600 ? 'text-red-600' : 'text-blue-600'}`} />
-                <span className={`font-bold ${timeRemaining < 600 ? 'text-red-800' : 'text-blue-800'}`}>
-                  {formatTime(timeRemaining)}
+                <span className="text-sm font-medium text-gray-700">Temps restant</span>
+              </div>
+              <div className={`text-2xl font-bold ${timeRemaining < 600 ? 'text-red-800' : 'text-blue-800'}`}>
+                {formatTime(timeRemaining)}
+              </div>
+            </div>
+
+            {/* Progress Summary */}
+            <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700">Progression</span>
+                <span className="text-sm font-bold text-blue-600">
+                  {results.length} / {allQuestions.length}
                 </span>
               </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                />
+              </div>
+              <div className="mt-2 text-xs text-gray-600 text-center">
+                {progress.toFixed(0)}% complété
+              </div>
             </div>
+
+            {/* Visual Question Grid */}
+            <div className="space-y-4">
+              <h3 className="font-bold text-gray-800 text-sm">Grille de progression</h3>
+              
+              {/* Audio with Images (1-20) */}
+              <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                <div className="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1">
+                  <span>🎧</span> Audio + Images (1-20)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 20 }).map((_, i) => {
+                    const questionNum = i + 1;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-purple-300 text-purple-600'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Q&A (21-50) */}
+              <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                <div className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-1">
+                  <span>❓</span> Q&A (21-50)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 30 }).map((_, i) => {
+                    const questionNum = i + 21;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-blue-300 text-blue-600'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Short Conversation (51-80) */}
+              <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                <div className="text-xs font-bold text-green-700 mb-2 flex items-center gap-1">
+                  <span>💬</span> Conversations (51-80)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 30 }).map((_, i) => {
+                    const questionNum = i + 51;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-green-300 text-green-600'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Short Talks (81-99) */}
+              <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                <div className="text-xs font-bold text-yellow-700 mb-2 flex items-center gap-1">
+                  <span>📻</span> Exposés (81-99)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 19 }).map((_, i) => {
+                    const questionNum = i + 81;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-yellow-300 text-yellow-700'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Incomplete Sentences (100-139) */}
+              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
+                <div className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1">
+                  <span>✍️</span> Phrases (100-139)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 40 }).map((_, i) => {
+                    const questionNum = i + 100;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-amber-300 text-amber-700'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Text Completion (140-144) */}
+              <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
+                <div className="text-xs font-bold text-indigo-700 mb-2 flex items-center gap-1">
+                  <span>📝</span> Textes (140-144)
+                </div>
+                <div className="grid grid-cols-5 gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => {
+                    const questionNum = i + 140;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-indigo-300 text-indigo-600'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Reading Comprehension (145-157) */}
+              <div className="bg-pink-50 rounded-lg p-3 border border-pink-200">
+                <div className="text-xs font-bold text-pink-700 mb-2 flex items-center gap-1">
+                  <span>📖</span> Lecture (145-157)
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 13 }).map((_, i) => {
+                    const questionNum = i + 145;
+                    const isAnswered = results.some(r => r.questionNumber === questionNum);
+                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
+                    return (
+                      <div
+                        key={questionNum}
+                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
+                          isAnswered
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-400 text-white'
+                            : 'bg-white border border-pink-300 text-pink-600'
+                        }`}
+                      >
+                        {questionNum}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Alert si changement d'onglet */}
+            <AnimatePresence>
+              {tabChangeDetected && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-red-100 border-2 border-red-300 rounded-xl p-3"
+                >
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-red-800 font-semibold">
+                      Changement de page détecté ! Question comptée comme incorrecte.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Progress bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-            />
-          </div>
+          {/* Exit Button - Bottom Left */}
+          <button
+            onClick={() => {
+              if (confirm('Êtes-vous sûr de vouloir quitter le test ? Votre progression sera perdue.')) {
+                router.push('/');
+              }
+            }}
+            className="mt-4 w-full px-4 py-3 bg-white hover:bg-red-50 border-2 border-gray-200 hover:border-red-300 rounded-xl font-semibold text-gray-700 hover:text-red-600 transition-all shadow-lg"
+          >
+            ← Quitter le test
+          </button>
         </div>
 
-        {/* Alert si changement d'onglet */}
-        <AnimatePresence>
-          {tabChangeDetected && (
+        {/* Right Side - Question Content */}
+        <div className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <div className="max-w-3xl mx-auto">
+            {/* Question Card */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="bg-red-100 border-2 border-red-300 rounded-xl p-4 mb-6 flex items-center gap-3"
+              key={currentQuestionIndex}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100 mb-6"
             >
-              <AlertTriangle className="w-6 h-6 text-red-600" />
-              <p className="text-red-800 font-semibold">
-                Changement de page détecté ! Question comptée comme incorrecte.
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {/* Audio Player */}
+              {currentQuestion.audio_url && (
+                <div className="mb-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Volume2 className="w-6 h-6 text-purple-600" />
+                    <h3 className="font-bold text-gray-800">
+                      {isAudioPlaying ? '🔊 Lecture en cours...' : audioHasPlayed ? '✓ Audio lu' : '⏳ Audio va démarrer...'}
+                    </h3>
+                  </div>
+                  <audio
+                    ref={audioRef}
+                    src={currentQuestion.audio_url}
+                    onEnded={handleAudioEnded}
+                    className="hidden"
+                  />
+                  <p className="text-sm text-gray-600">
+                    {audioHasPlayed ? 'L\'audio a été lu une fois.' : 'L\'audio va se lire automatiquement.'}
+                  </p>
+                </div>
+              )}
 
-        {/* Question Card */}
-        <motion.div
-          key={currentQuestionIndex}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100 mb-6"
-        >
-          {/* Audio Player */}
-          {currentQuestion.audio_url && (
-            <div className="mb-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
-              <div className="flex items-center gap-3 mb-4">
-                <Volume2 className="w-6 h-6 text-purple-600" />
-                <h3 className="font-bold text-gray-800">
-                  {isAudioPlaying ? '🔊 Lecture en cours...' : audioHasPlayed ? '✓ Audio lu' : '⏳ Audio va démarrer...'}
-                </h3>
-              </div>
-              <audio
-                ref={audioRef}
-                src={currentQuestion.audio_url}
-                onEnded={handleAudioEnded}
-                className="hidden"
-              />
-              <p className="text-sm text-gray-600">
-                {audioHasPlayed ? 'L\'audio a été lu une fois.' : 'L\'audio va se lire automatiquement.'}
-              </p>
-            </div>
-          )}
+              {/* Image */}
+              {currentQuestion.image_url && (
+                <div className="mb-6">
+                  <img
+                    src={currentQuestion.image_url}
+                    alt="Question illustration"
+                    className="w-full rounded-2xl shadow-lg"
+                  />
+                </div>
+              )}
 
-          {/* Image */}
-          {currentQuestion.image_url && (
-            <div className="mb-6">
-              <img
-                src={currentQuestion.image_url}
-                alt="Question illustration"
-                className="w-full rounded-2xl shadow-lg"
-              />
-            </div>
-          )}
+              {/* Question Text */}
+              {currentQuestion.question_text && !currentQuestion.text_with_gaps && (
+                <div className="mb-8">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-relaxed">
+                    {currentQuestion.question_text}
+                  </h2>
+                </div>
+              )}
 
-          {/* Question Text */}
-          {currentQuestion.question_text && !currentQuestion.text_with_gaps && (
-            <div className="mb-8">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-relaxed">
-                {currentQuestion.question_text}
-              </h2>
-            </div>
-          )}
+              {/* Text with gaps (pour text_completion) */}
+              {currentQuestion.text_with_gaps && currentQuestion.gap_choices && (
+                <div className="mb-8">
+                  <div className="prose prose-lg max-w-none">
+                    {(() => {
+                      const text = currentQuestion.text_with_gaps;
+                      const parts: React.ReactNode[] = [];
+                      let lastIndex = 0;
+                      const regex = /\{\{(\d+)\}\}/g;
+                      let match;
 
-          {/* Text with gaps (pour text_completion) */}
-          {currentQuestion.text_with_gaps && currentQuestion.gap_choices && (
-            <div className="mb-8">
-              <div className="prose prose-lg max-w-none">
-                {(() => {
-                  const text = currentQuestion.text_with_gaps;
-                  const parts: React.ReactNode[] = [];
-                  let lastIndex = 0;
-                  const regex = /\{\{(\d+)\}\}/g;
-                  let match;
+                      while ((match = regex.exec(text)) !== null) {
+                        const gapNumber = match[1];
+                        const beforeText = text.substring(lastIndex, match.index);
+                        
+                        if (beforeText) {
+                          parts.push(
+                            <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                              {beforeText}
+                            </span>
+                          );
+                        }
 
-                  while ((match = regex.exec(text)) !== null) {
-                    const gapNumber = match[1];
-                    const beforeText = text.substring(lastIndex, match.index);
-                    
-                    if (beforeText) {
-                      parts.push(
-                        <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
-                          {beforeText}
-                        </span>
-                      );
-                    }
+                        const gapChoices = currentQuestion.gap_choices?.[gapNumber] || [];
+                        const selectedOption = selectedGapAnswers[gapNumber];
 
-                    const gapChoices = currentQuestion.gap_choices?.[gapNumber] || [];
-                    const selectedOption = selectedGapAnswers[gapNumber];
+                        parts.push(
+                          <select
+                            key={`gap-${gapNumber}`}
+                            value={selectedOption || ''}
+                            onChange={(e) => {
+                              setSelectedGapAnswers(prev => ({
+                                ...prev,
+                                [gapNumber]: e.target.value
+                              }));
+                            }}
+                            className="inline-block mx-1 px-3 py-2 rounded-lg border-2 border-gray-300 bg-white font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer"
+                          >
+                            <option value="" disabled>
+                              ({gapNumber})
+                            </option>
+                            {gapChoices.map((choice) => (
+                              <option key={choice.option} value={choice.option}>
+                                {choice.option}. {choice.text}
+                              </option>
+                            ))}
+                          </select>
+                        );
 
-                    parts.push(
-                      <select
-                        key={`gap-${gapNumber}`}
-                        value={selectedOption || ''}
-                        onChange={(e) => {
-                          setSelectedGapAnswers(prev => ({
-                            ...prev,
-                            [gapNumber]: e.target.value
-                          }));
-                        }}
-                        className="inline-block mx-1 px-3 py-2 rounded-lg border-2 border-gray-300 bg-white font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer"
+                        lastIndex = match.index + match[0].length;
+                      }
+
+                      if (lastIndex < text.length) {
+                        parts.push(
+                          <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                            {text.substring(lastIndex)}
+                          </span>
+                        );
+                      }
+
+                      return <div className="leading-relaxed">{parts}</div>;
+                    })()}
+                  </div>
+                </div>
+              )}
+
+              {/* Choices */}
+              {currentQuestion.choices && currentQuestion.choices.length > 0 && (
+                <div className="space-y-3">
+                  {currentQuestion.choices.map((choice, index) => {
+                    const isSelected = selectedAnswer === choice.option;
+
+                    return (
+                      <motion.button
+                        key={choice.option}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        onClick={() => setSelectedAnswer(choice.option)}
+                        className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all cursor-pointer ${
+                          isSelected
+                            ? 'border-blue-400 bg-blue-50'
+                            : 'border-gray-200 bg-white hover:bg-gray-50'
+                        }`}
                       >
-                        <option value="" disabled>
-                          ({gapNumber})
-                        </option>
-                        {gapChoices.map((choice) => (
-                          <option key={choice.option} value={choice.option}>
-                            {choice.option}. {choice.text}
-                          </option>
-                        ))}
-                      </select>
+                        <div className="flex items-center gap-4">
+                          <div className={`w-10 h-10 flex-shrink-0 rounded-xl flex items-center justify-center font-bold text-lg ${
+                            isSelected
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-100 text-gray-600'
+                          }`}>
+                            {choice.option}
+                          </div>
+                          <span className={`flex-1 font-medium ${
+                            isSelected ? 'text-blue-800' : 'text-gray-800'
+                          }`}>
+                            {choice.text}
+                          </span>
+                        </div>
+                      </motion.button>
                     );
+                  })}
+                </div>
+              )}
+            </motion.div>
 
-                    lastIndex = match.index + match[0].length;
-                  }
-
-                  if (lastIndex < text.length) {
-                    parts.push(
-                      <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
-                        {text.substring(lastIndex)}
-                      </span>
-                    );
-                  }
-
-                  return <div className="leading-relaxed">{parts}</div>;
-                })()}
-              </div>
-            </div>
-          )}
-
-          {/* Choices */}
-          {currentQuestion.choices && currentQuestion.choices.length > 0 && (
-            <div className="space-y-3">
-              {currentQuestion.choices.map((choice, index) => {
-                const isSelected = selectedAnswer === choice.option;
-
-                return (
-                  <motion.button
-                    key={choice.option}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    onClick={() => setSelectedAnswer(choice.option)}
-                    className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-blue-400 bg-blue-50'
-                        : 'border-gray-200 bg-white hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 flex-shrink-0 rounded-xl flex items-center justify-center font-bold text-lg ${
-                        isSelected
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        {choice.option}
-                      </div>
-                      <span className={`flex-1 font-medium ${
-                        isSelected ? 'text-blue-800' : 'text-gray-800'
-                      }`}>
-                        {choice.text}
-                      </span>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          )}
-        </motion.div>
-
-        {/* Submit Button */}
-        <motion.button
-          onClick={handleSubmitAnswer}
-          disabled={!canSubmit()}
-          className={`w-full py-5 rounded-2xl font-bold text-xl shadow-xl transition-all ${
-            canSubmit()
-              ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-2xl'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          {currentQuestionIndex < allQuestions.length - 1 ? 'Question suivante →' : 'Terminer le test 🏁'}
-        </motion.button>
+            {/* Submit Button */}
+            <motion.button
+              onClick={handleSubmitAnswer}
+              disabled={!canSubmit()}
+              className={`w-full py-5 rounded-2xl font-bold text-xl shadow-xl transition-all ${
+                canSubmit()
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-2xl'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              {currentQuestionIndex < allQuestions.length - 1 ? 'Question suivante →' : 'Terminer le test 🏁'}
+            </motion.button>
+          </div>
+        </div>
       </div>
     </div>
   );

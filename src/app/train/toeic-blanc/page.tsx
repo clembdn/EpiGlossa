@@ -198,7 +198,7 @@ export default function ToeicBlancPage() {
             onClick={() => setShowConfirm(true)}
             className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all"
           >
-            🚀 Commencer le TOEIC BLANC
+            Commencer le TEPITECH
           </motion.button>
         ) : (
           <motion.div
@@ -223,7 +223,7 @@ export default function ToeicBlancPage() {
                 onClick={handleStartTest}
                 className="flex-1 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
               >
-                ✅ Oui, commencer !
+                Oui, commencer !
               </button>
             </div>
           </motion.div>

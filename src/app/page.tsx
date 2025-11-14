@@ -42,7 +42,7 @@ export default function Home() {
             <Flame className="w-8 h-8" fill="white" />
             <div className="text-left">
               <p className="text-sm font-medium opacity-90">Ta série actuelle</p>
-              <p className="text-3xl font-bold">0 jours 🔥</p>
+              <p className="text-3xl font-bold">0 jours</p>
             </div>
           </motion.div>
         </motion.div>

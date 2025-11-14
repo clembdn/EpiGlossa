@@ -50,7 +50,7 @@ const trainCategories = [
     href: '/train/incomplete_sentences',
     icon: FileText,
     emoji: '✍️',
-    color: 'from-red-400 to-pink-400',
+    color: 'from-amber-400 to-yellow-400',
     description: 'Complète les phrases avec le mot ou expression correcte',
     difficulty: 'Compréhension Écrite',
     exercises: 67

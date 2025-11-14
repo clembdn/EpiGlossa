@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from '@/components/Navbar';
+import NavbarWrapper from '@/components/NavbarWrapper';
 
 export const metadata: Metadata = {
   title: "EpiGlossa - Apprends l'anglais en t'amusant",
@@ -21,7 +21,7 @@ export default function RootLayout({
       </head>
       <body className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen antialiased">
         {children}
-        <Navbar />
+        <NavbarWrapper />
       </body>
     </html>
   );

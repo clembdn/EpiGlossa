@@ -51,7 +51,7 @@ const categoryInfo: Record<string, {
   'incomplete_sentences': {
     name: 'Phrases à Compléter',
     emoji: '✍️',
-    color: 'from-pink-400 to-rose-400',
+    color: 'from-amber-400 to-yellow-400',
     description: 'Complète les phrases avec le bon mot ou expression',
   },
   'text_completion': {
