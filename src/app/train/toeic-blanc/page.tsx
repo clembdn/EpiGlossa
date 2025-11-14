@@ -196,8 +196,6 @@ export default function ToeicBlancPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             onClick={() => setShowConfirm(true)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all"
           >
             🚀 Commencer le TOEIC BLANC

@@ -37,7 +37,6 @@ export default function Home() {
           </p>
 
           <motion.div
-            whileHover={{ scale: 1.05 }}
             className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-red-400 text-white px-6 py-4 rounded-2xl shadow-xl mb-8"
           >
             <Flame className="w-8 h-8" fill="white" />
@@ -97,8 +96,6 @@ export default function Home() {
           >
             <Link href="/learn">
               <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
-                whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all group relative overflow-hidden"
               >
                 <div className="relative z-10">
@@ -141,8 +138,6 @@ export default function Home() {
           >
             <Link href="/train">
               <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
-                whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-br from-blue-400 to-cyan-400 rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all group relative overflow-hidden"
               >
                 <div className="relative z-10">

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight } from 'lucide-react';
+import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
@@ -77,6 +77,7 @@ export default function TrainCategoryPage() {
   const [questions, setQuestions] = useState<Question[] | ReadingPassage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -173,6 +174,32 @@ export default function TrainCategoryPage() {
   const totalXP = questions.length * 50;
   const completedCount = 0;
 
+  // Filtrage des questions par texte de question ou de réponse
+  const term = search.trim().toLowerCase();
+  const matchesQuestion = (q: any) => {
+    if (!term) return true;
+    const text = (q.question_text || q.text_with_gaps || '').toLowerCase();
+    if (text.includes(term)) return true;
+    // choices (A-D)
+    if (Array.isArray(q.choices)) {
+      if (q.choices.some((c: any) => (c.text || '').toLowerCase().includes(term))) return true;
+    }
+    // gap_choices for text_completion
+    if (q.gap_choices && typeof q.gap_choices === 'object') {
+      const all = Object.values(q.gap_choices as Record<string, any[]>).flat();
+      if (all.some((c: any) => (c.text || '').toLowerCase().includes(term))) return true;
+    }
+    return false;
+  };
+
+  const filteredItems = ((): (Question | ReadingPassage)[] => {
+    if (!term) return questions as (Question | ReadingPassage)[];
+    if (category === 'reading_comprehension') {
+      return (questions as ReadingPassage[]).filter(p => p.questions.some(q => matchesQuestion(q)));
+    }
+    return (questions as Question[]).filter(q => matchesQuestion(q));
+  })();
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <div className="max-w-4xl mx-auto px-4 py-6">
@@ -259,8 +286,23 @@ export default function TrainCategoryPage() {
         )}
 
         {!loading && !error && questions.length > 0 && (
-          <div className="space-y-4">
-            {questions.map((item, index) => {
+          <>
+            {/* Barre de recherche */}
+            <div className="mb-4">
+              <div className="relative">
+                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Rechercher une question ou une réponse..."
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-400 outline-none transition-colors bg-white"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-6 md:space-y-8">
+              {filteredItems.map((item, index) => {
               // For READING COMPREHENSION: item is a passage with 3 questions
               if (category === 'reading_comprehension' && 'questions' in item) {
                 const passage = item as ReadingPassage;
@@ -275,7 +317,7 @@ export default function TrainCategoryPage() {
                     <Link href={`/train/${category}/${passage.passage_id}`}>
                       <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all cursor-pointer group">
                         <div className="flex items-start gap-4">
-                          <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
+                          <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md`}>
                             <span className="text-3xl">{info.emoji}</span>
                           </div>
                           <div className="flex-1">
@@ -330,8 +372,6 @@ export default function TrainCategoryPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 4 }}
-                    whileTap={{ scale: 0.98 }}
                     className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
                   >
                     <div className="flex items-center gap-4">
@@ -366,8 +406,6 @@ export default function TrainCategoryPage() {
                     </div>
 
                     <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
                       className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
                     >
                       <Play className="w-5 h-5 fill-current" />
@@ -378,6 +416,7 @@ export default function TrainCategoryPage() {
               );
             })}
           </div>
+          </>
         )}
       </div>
     </div>

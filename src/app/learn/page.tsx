@@ -168,8 +168,6 @@ export default function LearnPage() {
             <motion.div key={category.id} variants={itemVariants}>
               <Link href={`/learn/${category.id}`}>
                 <motion.div
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  whileTap={{ scale: 0.98 }}
                   className={`relative overflow-hidden ${category.gradient} rounded-3xl p-6 border-2 border-white shadow-lg hover:shadow-2xl transition-all duration-300 group`}
                 >
                   {/* Badge de progression */}
@@ -182,7 +180,6 @@ export default function LearnPage() {
                   {/* Icône et émoji */}
                   <div className="flex items-start gap-4 mb-4">
                     <motion.div
-                      whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                       transition={{ duration: 0.5 }}
                       className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center shadow-lg`}
                     >

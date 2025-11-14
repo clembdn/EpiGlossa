@@ -163,7 +163,6 @@ export default function Navbar() {
                       className="w-full"
                     >
                       <motion.div
-                        whileTap={{ scale: 0.85 }}
                         className="relative flex flex-col items-center gap-1 py-2"
                       >
                         <div className="relative">
@@ -206,7 +205,6 @@ export default function Navbar() {
               return (
                 <Link key={name} href={href} className="flex-1">
                   <motion.div
-                    whileTap={{ scale: 0.85 }}
                     className="relative flex flex-col items-center gap-1 py-2"
                   >
                     <div className="relative">
@@ -284,7 +282,6 @@ export default function Navbar() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      whileTap={{ scale: 0.97 }}
                       className="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-br hover:shadow-lg transition-all border-2 border-gray-100 hover:border-gray-200"
                     >
                       <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-md`}>
@@ -310,7 +307,6 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <motion.div
-                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
                 className="relative"
               >
@@ -332,8 +328,6 @@ export default function Navbar() {
               {/* Bouton Admin */}
               <Link href="/admin">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   className={`px-4 py-2 rounded-xl font-semibold transition-all ${
                     pathname === '/admin'
                       ? 'bg-gradient-to-br from-red-500 to-pink-500 text-white shadow-lg'
@@ -347,7 +341,7 @@ export default function Navbar() {
               {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
               {navItems.map(({ name, href, icon: Icon, color, activeColor, hasDropdown }) => {
                 const active = pathname.startsWith(href);
-                const categories = name === "S&apos;entraîner" ? trainCategories : learnCategories;
+                const categories = href === '/train' ? trainCategories : learnCategories;
                 
                 if (hasDropdown) {
                   return (
@@ -359,8 +353,6 @@ export default function Navbar() {
                     >
                       <Link href={href}>
                         <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
                           className={`relative px-6 py-3 rounded-2xl font-semibold transition-all duration-200 ${
                             active
                               ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
@@ -463,8 +455,6 @@ export default function Navbar() {
                 return (
                   <Link key={name} href={href}>
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
                       className={`relative px-6 py-3 rounded-2xl font-semibold transition-all duration-200 ${
                         active
                           ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
@@ -497,7 +487,6 @@ export default function Navbar() {
 
             {/* Streak indicator */}
             <motion.div
-              whileHover={{ scale: 1.05 }}
               className="flex items-center gap-2 bg-gradient-to-br from-orange-100 to-orange-50 px-4 py-2 rounded-xl border-2 border-orange-200"
             >
               <span className="text-2xl">🔥</span>

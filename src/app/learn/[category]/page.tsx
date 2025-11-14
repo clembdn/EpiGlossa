@@ -172,8 +172,6 @@ export default function CategoryPage() {
 
                 {/* Lesson Card */}
                 <motion.div
-                  whileHover={lesson.locked ? {} : { scale: 1.02, x: 4 }}
-                  whileTap={lesson.locked ? {} : { scale: 0.98 }}
                   className={`ml-16 ${
                     lesson.locked 
                       ? 'bg-gray-50 opacity-60' 
@@ -230,8 +228,6 @@ export default function CategoryPage() {
                     {!lesson.locked && !lesson.completed && (
                       <Link href={`/learn/${category}/${lesson.id}`}>
                         <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
                           className={`mt-4 w-full bg-gradient-to-r ${categoryInfo.color} text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2`}
                         >
                           <Play className="w-5 h-5" fill="white" />
@@ -243,8 +239,6 @@ export default function CategoryPage() {
                     {lesson.completed && (
                       <Link href={`/learn/${category}/${lesson.id}`}>
                         <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
                           className="mt-4 w-full bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-xl hover:bg-gray-200 transition-all"
                         >
                           Revoir la leçon

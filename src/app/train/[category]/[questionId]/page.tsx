@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy, Timer, Volume2 } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy, Volume2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Question, Choice } from '@/types/question';
@@ -86,7 +86,6 @@ export default function QuestionPage() {
   const [selectedGapAnswers, setSelectedGapAnswers] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -155,15 +154,6 @@ export default function QuestionPage() {
     fetchQuestion();
   }, [questionId, category]);
 
-  useEffect(() => {
-    if (!isSubmitted && !loading) {
-      const timer = setInterval(() => {
-        setTimeElapsed((prev) => prev + 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [isSubmitted, loading]);
-
   const handleSubmit = () => {
     // For READING COMPREHENSION: check if all 3 questions are answered
     if (category === 'reading_comprehension') {
@@ -184,11 +174,7 @@ export default function QuestionPage() {
     setShowExplanation(true);
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  // Removed unused time tracking utilities to reduce lint warnings
 
   const getCorrectAnswer = () => {
     return question?.choices.find(choice => choice.is_correct);
@@ -303,12 +289,6 @@ export default function QuestionPage() {
                   <p className="text-sm text-gray-500">3 questions sur le passage</p>
                 </div>
               </div>
-
-              {/* Timer */}
-              <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 shadow-md border-2 border-gray-100">
-                <Timer className="w-5 h-5 text-blue-500" />
-                <span className="font-bold text-gray-800">{formatTime(timeElapsed)}</span>
-              </div>
             </div>
           </motion.div>
 
@@ -385,8 +365,7 @@ export default function QuestionPage() {
                         transition={{ delay: choiceIndex * 0.1 }}
                         onClick={() => !isSubmitted && setSelectedAnswers(prev => ({ ...prev, [q.id]: choice.option }))}
                         disabled={isSubmitted}
-                        whileHover={!isSubmitted ? { scale: 1.02, x: 4 } : {}}
-                        whileTap={!isSubmitted ? { scale: 0.98 } : {}}
+                        
                         className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 ${borderColor} ${bgColor} transition-all ${
                           isSubmitted ? 'cursor-default' : 'cursor-pointer'
                         } relative overflow-hidden group`}
@@ -461,8 +440,7 @@ export default function QuestionPage() {
               animate={{ opacity: 1, y: 0 }}
               onClick={handleSubmit}
               disabled={Object.keys(selectedAnswers).length < questions.length}
-              whileHover={Object.keys(selectedAnswers).length >= questions.length ? { scale: 1.02 } : {}}
-              whileTap={Object.keys(selectedAnswers).length >= questions.length ? { scale: 0.98 } : {}}
+              
               className={`w-full py-4 rounded-2xl font-bold text-lg shadow-xl transition-all ${
                 Object.keys(selectedAnswers).length >= questions.length
                   ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-2xl'
@@ -517,12 +495,6 @@ export default function QuestionPage() {
                       <span className={`font-bold text-xl ${isCorrect() ? 'text-green-800' : 'text-red-800'}`}>
                         {isCorrect() ? '+150 XP' : '+0 XP'}
                       </span>
-                    </div>
-                  </div>
-                  <div className="px-6 py-3 rounded-2xl bg-blue-100 border-2 border-blue-300">
-                    <div className="flex items-center gap-2">
-                      <Timer className="w-6 h-6 text-blue-600" />
-                      <span className="font-bold text-xl text-blue-800">{formatTime(timeElapsed)}</span>
                     </div>
                   </div>
                 </div>
@@ -584,12 +556,6 @@ export default function QuestionPage() {
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800">{info.name}</h1>
                 <p className="text-sm text-gray-500">Question #{questionId.slice(0, 8)}</p>
               </div>
-            </div>
-
-            {/* Timer */}
-            <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 shadow-md border-2 border-gray-100">
-              <Timer className="w-5 h-5 text-blue-500" />
-              <span className="font-bold text-gray-800">{formatTime(timeElapsed)}</span>
             </div>
           </div>
         </motion.div>
@@ -763,8 +729,7 @@ export default function QuestionPage() {
                   transition={{ delay: index * 0.1 }}
                   onClick={() => !isSubmitted && setSelectedAnswer(choice.option)}
                   disabled={isSubmitted}
-                  whileHover={!isSubmitted ? { scale: 1.02, x: 4 } : {}}
-                  whileTap={!isSubmitted ? { scale: 0.98 } : {}}
+                  
                   className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 ${borderColor} ${bgColor} transition-all ${
                     isSubmitted ? 'cursor-default' : 'cursor-pointer'
                   } relative overflow-hidden group`}
@@ -826,8 +791,7 @@ export default function QuestionPage() {
             animate={{ opacity: 1, y: 0 }}
             onClick={handleSubmit}
             disabled={question.text_with_gaps ? Object.keys(selectedGapAnswers).length < Object.keys(question.gap_choices || {}).length : !selectedAnswer}
-            whileHover={(question.text_with_gaps ? Object.keys(selectedGapAnswers).length >= Object.keys(question.gap_choices || {}).length : selectedAnswer) ? { scale: 1.02 } : {}}
-            whileTap={(question.text_with_gaps ? Object.keys(selectedGapAnswers).length >= Object.keys(question.gap_choices || {}).length : selectedAnswer) ? { scale: 0.98 } : {}}
+            
             className={`w-full py-4 rounded-2xl font-bold text-lg shadow-xl transition-all ${
               (question.text_with_gaps ? Object.keys(selectedGapAnswers).length >= Object.keys(question.gap_choices || {}).length : selectedAnswer)
                 ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-2xl'
@@ -901,16 +865,12 @@ export default function QuestionPage() {
               {/* Actions */}
               <div className="mt-6 flex gap-3">
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   onClick={() => router.push(`/train/${category}`)}
                   className="flex-1 py-3 bg-white border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Retour aux questions
                 </motion.button>
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   onClick={handleNextQuestion}
                   className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
                 >
