@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Clock, AlertTriangle, Volume2 } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Question } from '@/types/question';
 
@@ -17,6 +17,93 @@ const TOEIC_CONFIG = {
   'text_completion': { start: 140, count: 5, category: 'text_completion', points: 5 }, // 5 pts par trou, 4 trous = 20pts par question
   'reading_comprehension': { start: 145, count: 13, category: 'reading_comprehension', points: 5 }, // 3 questions par texte
 };
+
+const PROGRESSION_SECTIONS = [
+  {
+    id: 'audio_with_images',
+    start: 1,
+    count: 20,
+    label: 'Audio + Images (1-20)',
+    icon: '🎧',
+    theme: {
+      wrapper: 'bg-purple-50 border border-purple-200',
+      header: 'text-purple-700',
+      pending: 'border border-purple-300 text-purple-600',
+    },
+  },
+  {
+    id: 'qa',
+    start: 21,
+    count: 30,
+    label: 'Q&A (21-50)',
+    icon: '❓',
+    theme: {
+      wrapper: 'bg-blue-50 border border-blue-200',
+      header: 'text-blue-700',
+      pending: 'border border-blue-300 text-blue-600',
+    },
+  },
+  {
+    id: 'short_conversation',
+    start: 51,
+    count: 30,
+    label: 'Conversations (51-80)',
+    icon: '💬',
+    theme: {
+      wrapper: 'bg-green-50 border border-green-200',
+      header: 'text-green-700',
+      pending: 'border border-green-300 text-green-600',
+    },
+  },
+  {
+    id: 'short_talks',
+    start: 81,
+    count: 19,
+    label: 'Exposés (81-99)',
+    icon: '📻',
+    theme: {
+      wrapper: 'bg-yellow-50 border border-yellow-200',
+      header: 'text-yellow-700',
+      pending: 'border border-yellow-300 text-yellow-700',
+    },
+  },
+  {
+    id: 'incomplete_sentences',
+    start: 100,
+    count: 40,
+    label: 'Phrases (100-139)',
+    icon: '✍️',
+    theme: {
+      wrapper: 'bg-amber-50 border border-amber-200',
+      header: 'text-amber-700',
+      pending: 'border border-amber-300 text-amber-700',
+    },
+  },
+  {
+    id: 'text_completion',
+    start: 140,
+    count: 5,
+    label: 'Textes (140-144)',
+    icon: '📝',
+    theme: {
+      wrapper: 'bg-indigo-50 border border-indigo-200',
+      header: 'text-indigo-700',
+      pending: 'border border-indigo-300 text-indigo-600',
+    },
+  },
+  {
+    id: 'reading_comprehension',
+    start: 145,
+    count: 13,
+    label: 'Lecture (145-157)',
+    icon: '📖',
+    theme: {
+      wrapper: 'bg-pink-50 border border-pink-200',
+      header: 'text-pink-700',
+      pending: 'border border-pink-300 text-pink-600',
+    },
+  },
+];
 
 const TOTAL_TIME = 120 * 60; // 2 heures en secondes
 
@@ -33,6 +120,7 @@ export default function ToeicBlancTestPage() {
   const [hasStarted, setHasStarted] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioHasPlayed, setAudioHasPlayed] = useState(false);
+  const [questionProgress, setQuestionProgress] = useState(0);
   
   // Résultats
   const [results, setResults] = useState<{
@@ -44,6 +132,21 @@ export default function ToeicBlancTestPage() {
   
   // Détection de changement de page
   const [tabChangeDetected, setTabChangeDetected] = useState(false);
+  const [mobileProgressOpen, setMobileProgressOpen] = useState(false);
+  const [showQuitModal, setShowQuitModal] = useState(false);
+
+  const totalQuestions = allQuestions.length;
+  const answeredCount = results.length;
+  const answeredQuestionSet = useMemo(() => new Set(results.map((r) => r.questionNumber)), [results]);
+
+  useEffect(() => {
+    if (!totalQuestions) {
+      setQuestionProgress(0);
+      return;
+    }
+
+    setQuestionProgress(((currentQuestionIndex + 1) / totalQuestions) * 100);
+  }, [currentQuestionIndex, totalQuestions]);
 
   // Charger toutes les questions du test
   useEffect(() => {
@@ -277,288 +380,191 @@ export default function ToeicBlancTestPage() {
     );
   }
 
-  const progress = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
+  const ProgressPanel = ({ variant }: { variant: 'desktop' | 'mobile' }) => {
+    const tileBaseClasses =
+      'aspect-square rounded-xl font-bold flex items-center justify-center text-[0.6rem] sm:text-[0.7rem] xl:text-[0.8rem] 2xl:text-sm min-w-[2.25rem] min-h-[2.25rem] transition-all duration-200';
+    const answeredTileClasses = 'bg-gradient-to-br from-[#5F4B8B] to-[#A4508B] text-white shadow-md border-transparent';
+
+    return (
+      <div className={`space-y-6 ${variant === 'desktop' ? 'flex-1' : ''}`}>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
+          <span className="text-2xl">🎯</span>
+        </div>
+        <div>
+          <h1 className="font-bold text-gray-800">TOEIC BLANC</h1>
+          <p className="text-sm text-gray-600">Test complet</p>
+        </div>
+      </div>
+
+      {/* Timer */}
+      <div
+        className={`p-4 rounded-xl ${
+          timeRemaining < 600
+            ? 'bg-red-100 border-2 border-red-300'
+            : 'bg-blue-100 border-2 border-blue-300'
+        }`}
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <Clock
+            className={`w-5 h-5 ${timeRemaining < 600 ? 'text-red-600' : 'text-blue-600'}`}
+          />
+          <span className="text-sm font-medium text-gray-700">Temps restant</span>
+        </div>
+        <div
+          className={`text-2xl font-bold ${timeRemaining < 600 ? 'text-red-800' : 'text-blue-800'}`}
+        >
+          {formatTime(timeRemaining)}
+        </div>
+      </div>
+
+      {/* Progress Summary */}
+      <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-gray-700">Progression</span>
+          <span className="text-sm font-bold text-blue-600">
+            {answeredCount} / {totalQuestions}
+          </span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-3">
+          <motion.div
+            animate={{ width: `${questionProgress}%` }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+          />
+        </div>
+        <div className="mt-2 text-xs text-gray-600 text-center">
+          {questionProgress.toFixed(0)}% complété
+        </div>
+      </div>
+
+      {/* Visual Question Grid */}
+      <div className="space-y-4">
+        <h3 className="font-bold text-gray-800 text-sm">Grille de progression</h3>
+        {PROGRESSION_SECTIONS.map((section) => (
+          <div key={section.id} className={`rounded-2xl p-3 ${section.theme.wrapper}`}>
+            <div className={`text-xs font-bold mb-2 flex items-center gap-1 ${section.theme.header}`}>
+              <span>{section.icon}</span> {section.label}
+            </div>
+            <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5 xl:gap-2">
+              {Array.from({ length: section.count }).map((_, i) => {
+                const questionNum = section.start + i;
+                const isAnswered = answeredQuestionSet.has(questionNum);
+
+                return (
+                  <div
+                    key={questionNum}
+                    className={`${tileBaseClasses} ${
+                      isAnswered
+                        ? answeredTileClasses
+                        : `bg-white ${section.theme.pending}`
+                    }`}
+                  >
+                    {questionNum}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Alert si changement d'onglet */}
+      <AnimatePresence>
+        {tabChangeDetected && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-red-100 border-2 border-red-300 rounded-xl p-3"
+          >
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-red-800 font-semibold">
+                Changement de page détecté ! Question comptée comme incorrecte.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      <div className="h-screen flex flex-col lg:flex-row">
-        {/* Left Sidebar - Progress & Visual Grid */}
-        <div className="lg:w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto flex flex-col">
-          <div className="space-y-6 flex-1">
-            {/* Header */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
-                <span className="text-2xl">🎯</span>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 lg:h-screen lg:overflow-hidden">
+      <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen">
+        {/* Mobile Progress Summary */}
+        <div className="lg:hidden w-full">
+          <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-white/70 px-4 py-3 shadow-sm">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <h1 className="font-bold text-gray-800">TOEIC BLANC</h1>
-                <p className="text-sm text-gray-600">
-                  Test complet
+                <p className="text-xs uppercase tracking-wide text-gray-500">Progression</p>
+                <p className="text-lg font-bold text-gray-900">
+                  {results.length} / {allQuestions.length}
                 </p>
               </div>
-            </div>
-
-            {/* Timer */}
-            <div className={`p-4 rounded-xl ${
-              timeRemaining < 600 ? 'bg-red-100 border-2 border-red-300' : 'bg-blue-100 border-2 border-blue-300'
-            }`}>
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className={`w-5 h-5 ${timeRemaining < 600 ? 'text-red-600' : 'text-blue-600'}`} />
-                <span className="text-sm font-medium text-gray-700">Temps restant</span>
-              </div>
-              <div className={`text-2xl font-bold ${timeRemaining < 600 ? 'text-red-800' : 'text-blue-800'}`}>
-                {formatTime(timeRemaining)}
-              </div>
-            </div>
-
-            {/* Progress Summary */}
-            <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Progression</span>
-                <span className="text-sm font-bold text-blue-600">
-                  {results.length} / {allQuestions.length}
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                />
-              </div>
-              <div className="mt-2 text-xs text-gray-600 text-center">
-                {progress.toFixed(0)}% complété
-              </div>
-            </div>
-
-            {/* Visual Question Grid */}
-            <div className="space-y-4">
-              <h3 className="font-bold text-gray-800 text-sm">Grille de progression</h3>
-              
-              {/* Audio with Images (1-20) */}
-              <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                <div className="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1">
-                  <span>🎧</span> Audio + Images (1-20)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 20 }).map((_, i) => {
-                    const questionNum = i + 1;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-purple-300 text-purple-600'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Q&A (21-50) */}
-              <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                <div className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-1">
-                  <span>❓</span> Q&A (21-50)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 30 }).map((_, i) => {
-                    const questionNum = i + 21;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-blue-300 text-blue-600'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Short Conversation (51-80) */}
-              <div className="bg-green-50 rounded-lg p-3 border border-green-200">
-                <div className="text-xs font-bold text-green-700 mb-2 flex items-center gap-1">
-                  <span>💬</span> Conversations (51-80)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 30 }).map((_, i) => {
-                    const questionNum = i + 51;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-green-300 text-green-600'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Short Talks (81-99) */}
-              <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
-                <div className="text-xs font-bold text-yellow-700 mb-2 flex items-center gap-1">
-                  <span>📻</span> Exposés (81-99)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 19 }).map((_, i) => {
-                    const questionNum = i + 81;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-yellow-300 text-yellow-700'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Incomplete Sentences (100-139) */}
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
-                <div className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1">
-                  <span>✍️</span> Phrases (100-139)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 40 }).map((_, i) => {
-                    const questionNum = i + 100;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-amber-300 text-amber-700'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Text Completion (140-144) */}
-              <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-200">
-                <div className="text-xs font-bold text-indigo-700 mb-2 flex items-center gap-1">
-                  <span>📝</span> Textes (140-144)
-                </div>
-                <div className="grid grid-cols-5 gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => {
-                    const questionNum = i + 140;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-indigo-300 text-indigo-600'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Reading Comprehension (145-157) */}
-              <div className="bg-pink-50 rounded-lg p-3 border border-pink-200">
-                <div className="text-xs font-bold text-pink-700 mb-2 flex items-center gap-1">
-                  <span>📖</span> Lecture (145-157)
-                </div>
-                <div className="grid grid-cols-10 gap-1">
-                  {Array.from({ length: 13 }).map((_, i) => {
-                    const questionNum = i + 145;
-                    const isAnswered = results.some(r => r.questionNumber === questionNum);
-                    const isCorrect = results.find(r => r.questionNumber === questionNum)?.isCorrect;
-                    return (
-                      <div
-                        key={questionNum}
-                        className={`aspect-square rounded text-[8px] font-bold flex items-center justify-center ${
-                          isAnswered
-                            ? isCorrect
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-400 text-white'
-                            : 'bg-white border border-pink-300 text-pink-600'
-                        }`}
-                      >
-                        {questionNum}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Alert si changement d'onglet */}
-            <AnimatePresence>
-              {tabChangeDetected && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="bg-red-100 border-2 border-red-300 rounded-xl p-3"
+              <div className="flex flex-col items-end gap-2">
+                <span
+                  className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                    timeRemaining < 600
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-blue-100 text-blue-700'
+                  }`}
                 >
-                  <div className="flex items-start gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-red-800 font-semibold">
-                      Changement de page détecté ! Question comptée comme incorrecte.
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {formatTime(timeRemaining)}
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowQuitModal(true)}
+                    className="px-3 py-1 text-xs font-semibold rounded-full border border-red-200 text-red-600 bg-white shadow-sm"
+                  >
+                    Quitter
+                  </button>
+                  <button
+                    onClick={() => setMobileProgressOpen((prev) => !prev)}
+                    className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-sm"
+                  >
+                    {mobileProgressOpen ? 'Masquer' : 'Grille'}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-3 h-2 bg-gray-200/80 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                style={{ width: `${questionProgress}%` }}
+              />
+            </div>
           </div>
 
-          {/* Exit Button - Bottom Left */}
+          <AnimatePresence>
+            {mobileProgressOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="px-4"
+              >
+                <div className="mt-4 mb-4 bg-white rounded-3xl border border-gray-100 shadow-xl p-4">
+                  <ProgressPanel variant="mobile" />
+                  <button
+                    onClick={() => setShowQuitModal(true)}
+                    className="mt-4 w-full px-4 py-3 bg-white hover:bg-red-50 border-2 border-gray-200 hover:border-red-300 rounded-xl font-semibold text-gray-700 hover:text-red-600 transition-all shadow-lg"
+                  >
+                    ← Quitter le test
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        {/* Desktop Sidebar - Progress & Visual Grid */}
+        <div className="hidden lg:flex lg:w-96 xl:w-[420px] 2xl:w-[460px] bg-white border-r border-gray-200 p-6 overflow-y-auto flex-col">
+          <ProgressPanel variant="desktop" />
           <button
-            onClick={() => {
-              if (confirm('Êtes-vous sûr de vouloir quitter le test ? Votre progression sera perdue.')) {
-                router.push('/');
-              }
-            }}
+            onClick={() => setShowQuitModal(true)}
             className="mt-4 w-full px-4 py-3 bg-white hover:bg-red-50 border-2 border-gray-200 hover:border-red-300 rounded-xl font-semibold text-gray-700 hover:text-red-600 transition-all shadow-lg"
           >
             ← Quitter le test
@@ -566,14 +572,14 @@ export default function ToeicBlancTestPage() {
         </div>
 
         {/* Right Side - Question Content */}
-        <div className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-3xl mx-auto">
+        <div className="flex-1 w-full px-4 py-4 pb-16 lg:p-8 lg:h-screen lg:overflow-hidden">
+          <div className="max-w-3xl mx-auto pt-4 lg:pt-2 h-full flex flex-col gap-6">
             {/* Question Card */}
             <motion.div
               key={currentQuestionIndex}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100 mb-6"
+              className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100"
             >
               {/* Audio Player */}
               {currentQuestion.audio_url && (
@@ -737,6 +743,63 @@ export default function ToeicBlancTestPage() {
           </div>
         </div>
       </div>
+
+      {/* Quit confirmation modal */}
+      <AnimatePresence>
+        {showQuitModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-orange-100 p-6"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-2xl">
+                  ⚠️
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Quitter le test ?</h3>
+                  <p className="text-sm text-gray-600">
+                    Votre progression actuelle sera perdue et le chronomètre s'arrêtera.
+                  </p>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-2xl p-4 mb-6">
+                <p className="text-sm text-gray-700">
+                  Question en cours : <span className="font-semibold text-gray-900">#{getCurrentQuestionNumber()}</span>
+                </p>
+                <p className="text-sm text-gray-700">
+                  Temps restant :{' '}
+                  <span className="font-semibold text-gray-900">{formatTime(timeRemaining)}</span>
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  onClick={() => setShowQuitModal(false)}
+                  className="flex-1 py-3 rounded-xl border-2 border-gray-200 font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Continuer le test
+                </button>
+                <button
+                  onClick={() => {
+                    setShowQuitModal(false);
+                    router.push('/');
+                  }}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                >
+                  Quitter maintenant
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
