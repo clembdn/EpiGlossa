@@ -196,7 +196,7 @@ export default function ToeicBlancPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             onClick={() => setShowConfirm(true)}
-            className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all"
+            className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-transform duration-200 hover:-translate-y-1"
           >
             Commencer le TEPITECH
           </motion.button>
@@ -221,7 +221,7 @@ export default function ToeicBlancPage() {
               </button>
               <button
                 onClick={handleStartTest}
-                className="flex-1 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
+                className="flex-1 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Oui, commencer !
               </button>
