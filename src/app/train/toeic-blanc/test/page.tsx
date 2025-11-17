@@ -427,11 +427,10 @@ export default function ToeicBlancTestPage() {
             {answeredCount} / {totalQuestions}
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3">
-          <motion.div
-            animate={{ width: `${questionProgress}%` }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-[width] duration-500 ease-out"
+            style={{ width: `${questionProgress}%` }}
           />
         </div>
         <div className="mt-2 text-xs text-gray-600 text-center">
