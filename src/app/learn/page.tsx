@@ -29,7 +29,7 @@ const categories: Category[] = [
   {
     id: 'vocabulaire',
     name: 'Vocabulaire',
-    description: 'Mots essentiels pour réussir le TOEIC',
+    description: 'Mots essentiels pour réussir le Tepitech',
     icon: BookText,
     color: 'from-purple-400 to-pink-400',
     gradient: 'bg-gradient-to-br from-purple-50 to-pink-50',
@@ -41,7 +41,7 @@ const categories: Category[] = [
   {
     id: 'grammaire',
     name: 'Grammaire',
-    description: 'Règles grammaticales clés du TOEIC',
+  description: 'Règles grammaticales clés du Tepitech',
     icon: Lightbulb,
     color: 'from-yellow-400 to-orange-400',
     gradient: 'bg-gradient-to-br from-yellow-50 to-orange-50',
@@ -53,7 +53,7 @@ const categories: Category[] = [
   {
     id: 'conjugaison',
     name: 'Conjugaison',
-    description: 'Temps et verbes pour le TOEIC',
+  description: 'Temps et verbes pour le Tepitech',
     icon: Languages,
     color: 'from-blue-400 to-cyan-400',
     gradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
@@ -117,7 +117,7 @@ export default function LearnPage() {
             🎓
           </motion.div>
           <h1 className="text-3xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Cours spécialisés TOEIC
+            Cours spécialisés Tepitech
           </h1>
           <p className="text-gray-600 text-base md:text-lg font-medium">
             Choisis une catégorie pour commencer ton apprentissage

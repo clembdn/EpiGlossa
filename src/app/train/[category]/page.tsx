@@ -6,7 +6,8 @@ import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question, ReadingPassage } from '@/types/question';
+import type { Question, ReadingPassage, QuestionCategory } from '@/types/question';
+import { getMockQuestions } from '@/lib/mockQuestions';
 
 // Fonction pour mélanger un tableau
 function shuffleArray<T>(array: T[]): T[] {
@@ -85,6 +86,8 @@ export default function TrainCategoryPage() {
         setLoading(true);
         setError(null);
         
+        const typedCategory = category as QuestionCategory;
+
         if (category === 'reading_comprehension') {
           // For READING COMPREHENSION: group by passage_id
           const { data, error: fetchError } = await supabase
@@ -94,10 +97,11 @@ export default function TrainCategoryPage() {
             .order('passage_id', { ascending: false });
 
           if (fetchError) throw fetchError;
+          const source = data && data.length > 0 ? data : getMockQuestions('reading_comprehension');
           
           // Group by passage_id and keep all 3 questions together
           const passageMap = new Map<string, ReadingPassage>();
-          (data || []).forEach((q) => {
+          (source || []).forEach((q) => {
             if (q.passage_id) {
               if (!passageMap.has(q.passage_id)) {
                 passageMap.set(q.passage_id, {
@@ -131,9 +135,9 @@ export default function TrainCategoryPage() {
             .eq('category', category);
 
           if (fetchError) throw fetchError;
-          
+          const source = data && data.length > 0 ? data : getMockQuestions(typedCategory);
           // Mélanger l'ordre des questions
-          const shuffledQuestions = shuffleArray(data || []);
+          const shuffledQuestions = shuffleArray(source || []);
           setQuestions(shuffledQuestions);
           
           // Sauvegarder l'ordre des question IDs dans sessionStorage
@@ -388,7 +392,7 @@ export default function TrainCategoryPage() {
                               {displayTitle}
                             </h3>
                             <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
-                              TOEIC
+                              TEPITECH
                             </span>
                           </div>
 

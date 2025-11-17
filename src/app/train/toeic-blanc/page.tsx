@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft, Clock, Trophy, Target, AlertTriangle, Volume2, BookOpen } from 'lucide-react';
 import { useState } from 'react';
 
-const TOEIC_STRUCTURE = [
+const TEPITECH_STRUCTURE = [
   {
     section: 'Compréhension Orale',
     categories: [
@@ -29,7 +29,7 @@ const TOEIC_STRUCTURE = [
   },
 ];
 
-export default function ToeicBlancPage() {
+export default function TepitechBlancPage() {
   const router = useRouter();
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -72,10 +72,10 @@ export default function ToeicBlancPage() {
               
               <div className="flex-1 min-w-0">
                 <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-2">
-                  TOEIC BLANC
+                  TEPITECH BLANC
                 </h1>
                 <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-4">
-                  Test complet en conditions réelles - 157 questions en 2 heures
+                  Test complet Tepitech en conditions réelles - 157 questions en 2 heures
                 </p>
 
                 <div className="grid grid-cols-3 gap-3 md:gap-4">
@@ -145,7 +145,7 @@ export default function ToeicBlancPage() {
 
         {/* Test Structure */}
         <div className="space-y-4 mb-8">
-          {TOEIC_STRUCTURE.map((section, sectionIndex) => (
+          {TEPITECH_STRUCTURE.map((section, sectionIndex) => (
             <motion.div
               key={section.section}
               initial={{ opacity: 0, y: 20 }}
@@ -198,7 +198,7 @@ export default function ToeicBlancPage() {
             onClick={() => setShowConfirm(true)}
             className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-transform duration-200 hover:-translate-y-1"
           >
-            Commencer le TEPITECH
+            Commencer le TEPITECH BLANC
           </motion.button>
         ) : (
           <motion.div

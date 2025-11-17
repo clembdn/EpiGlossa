@@ -5,10 +5,15 @@ import { useRouter } from 'next/navigation';
 import { Clock, AlertTriangle, Volume2 } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question } from '@/types/question';
+import type { Question, QuestionCategory } from '@/types/question';
+import { getMockQuestions } from '@/lib/mockQuestions';
 
-// Structure du test TOEIC
-const TOEIC_CONFIG = {
+const TEPITECH_CONFIG: Record<QuestionCategory, {
+  start: number;
+  count: number;
+  category: QuestionCategory;
+  points: number;
+}> = {
   'audio_with_images': { start: 1, count: 20, category: 'audio_with_images', points: 5 },
   'qa': { start: 21, count: 30, category: 'qa', points: 5 },
   'short_conversation': { start: 51, count: 30, category: 'short_conversation', points: 5 },
@@ -155,8 +160,8 @@ export default function ToeicBlancTestPage() {
         setLoading(true);
         const allTestQuestions: Question[] = [];
 
-        // Charger chaque catégorie
-        for (const [, config] of Object.entries(TOEIC_CONFIG)) {
+        for (const [categoryKey, config] of Object.entries(TEPITECH_CONFIG)) {
+          const typedCategory = categoryKey as QuestionCategory;
           const { data, error } = await supabase
             .from('questions')
             .select('*')
@@ -164,10 +169,12 @@ export default function ToeicBlancTestPage() {
             .limit(config.count);
 
           if (error) throw error;
-          
-          if (data) {
-            allTestQuestions.push(...data.slice(0, config.count));
-          }
+
+          const questions = (data && data.length > 0)
+            ? data.slice(0, config.count)
+            : getMockQuestions(typedCategory, config.count);
+
+          allTestQuestions.push(...questions);
         }
 
         setAllQuestions(allTestQuestions);
@@ -342,7 +349,7 @@ export default function ToeicBlancTestPage() {
 
   const finishTest = () => {
     // Sauvegarder les résultats dans sessionStorage
-    sessionStorage.setItem('toeic_blanc_results', JSON.stringify(results));
+  sessionStorage.setItem('tepitech_blanc_results', JSON.stringify(results));
     router.push('/train/toeic-blanc/results');
   };
 
@@ -393,7 +400,7 @@ export default function ToeicBlancTestPage() {
           <span className="text-2xl">🎯</span>
         </div>
         <div>
-          <h1 className="font-bold text-gray-800">TOEIC BLANC</h1>
+          <h1 className="font-bold text-gray-800">TEPITECH BLANC</h1>
           <p className="text-sm text-gray-600">Test complet</p>
         </div>
       </div>

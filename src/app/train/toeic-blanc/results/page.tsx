@@ -31,7 +31,7 @@ const CATEGORY_INFO: Record<string, { name: string; emoji: string; maxPoints: nu
   'reading_comprehension': { name: 'READING COMPREHENSION', emoji: '📚', maxPoints: 195 },
 };
 
-export default function ToeicBlancResultsPage() {
+export default function TepitechBlancResultsPage() {
   const router = useRouter();
   const [results, setResults] = useState<Result[]>([]);
   const [categoryScores, setCategoryScores] = useState<CategoryScore[]>([]);
@@ -40,7 +40,7 @@ export default function ToeicBlancResultsPage() {
 
   useEffect(() => {
     // Charger les résultats depuis sessionStorage
-    const savedResults = sessionStorage.getItem('toeic_blanc_results');
+  const savedResults = sessionStorage.getItem('tepitech_blanc_results');
     if (!savedResults) {
       router.push('/train/toeic-blanc');
       return;
@@ -84,7 +84,7 @@ export default function ToeicBlancResultsPage() {
     setLoading(false);
   }, [router]);
 
-  const getTOEICLevel = (score: number) => {
+  const getTepitechLevel = (score: number) => {
     if (score >= 900) return { level: 'Expert', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' };
     if (score >= 785) return { level: 'Avancé', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' };
     if (score >= 605) return { level: 'Intermédiaire', color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' };
@@ -121,7 +121,7 @@ export default function ToeicBlancResultsPage() {
     );
   }
 
-  const level = getTOEICLevel(totalScore);
+  const level = getTepitechLevel(totalScore);
   const percentage = (totalScore / 990) * 100;
 
   return (
@@ -317,13 +317,13 @@ export default function ToeicBlancResultsPage() {
           </button>
           <button
             onClick={() => {
-              sessionStorage.removeItem('toeic_blanc_results');
+              sessionStorage.removeItem('tepitech_blanc_results');
               router.push('/train/toeic-blanc');
             }}
             className="flex-1 flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
           >
             <RotateCcw className="w-5 h-5" />
-            Refaire un TOEIC BLANC
+            Refaire un TEPITECH BLANC
           </button>
         </motion.div>
       </div>

@@ -137,7 +137,7 @@ export default function TrainPage() {
                         </span>
                       </div>
                       <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                        TOEIC BLANC
+                        TEPITECH BLANC
                       </h2>
                       <p className="text-white/90 text-sm md:text-base font-medium">
                         Test complet en conditions réelles • 157 questions • 990 points

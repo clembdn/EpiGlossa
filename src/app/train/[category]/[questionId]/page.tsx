@@ -5,7 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy, Volume2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question, Choice } from '@/types/question';
+import type { Question, Choice, QuestionCategory } from '@/types/question';
+import { findMockQuestion, getMockReadingPassage } from '@/lib/mockQuestions';
 
 const categoryInfo: Record<string, {
   name: string;
@@ -77,6 +78,7 @@ export default function QuestionPage() {
   const category = params.category as string;
   const questionId = params.questionId as string;
   const info = categoryInfo[category];
+  const typedCategory = category as QuestionCategory;
 
   const [question, setQuestion] = useState<Question | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]); // For READING COMPREHENSION
@@ -100,8 +102,10 @@ export default function QuestionPage() {
             .eq('passage_id', questionId)
             .order('question_number', { ascending: true });
 
-          if (error) throw error;
-          const questionsData = data || [];
+          if (error) {
+            console.warn('Supabase reading comprehension fetch error:', error.message);
+          }
+          const questionsData = data && data.length > 0 ? data : getMockReadingPassage(questionId);
           
           // Mélanger les choix pour chaque question en gardant A, B, C, D
           const questionsWithShuffledChoices = questionsData.map(q => ({
@@ -118,22 +122,27 @@ export default function QuestionPage() {
             .eq('id', questionId)
             .single();
 
-          if (error) throw error;
-          
+          if (error) {
+            console.warn('Supabase question fetch error:', error.message);
+          }
+
           // Mélanger les choix de réponses en gardant A, B, C, D
           let questionWithShuffledChoices = data;
-          if (data?.choices) {
+          if (!questionWithShuffledChoices) {
+            questionWithShuffledChoices = findMockQuestion(typedCategory, questionId) || null;
+          }
+
+          if (questionWithShuffledChoices?.choices) {
             questionWithShuffledChoices = {
-              ...data,
-              choices: shuffleChoicesKeepingLabels(data.choices)
+              ...questionWithShuffledChoices,
+              choices: shuffleChoicesKeepingLabels(questionWithShuffledChoices.choices)
             };
           }
           
-          // Mélanger les choix pour les gap_choices (text completion)
-          if (data?.gap_choices) {
+          if (questionWithShuffledChoices?.gap_choices) {
             const shuffledGapChoices: Record<string, Choice[]> = {};
-            Object.keys(data.gap_choices).forEach(gapNumber => {
-              shuffledGapChoices[gapNumber] = shuffleChoicesKeepingLabels(data.gap_choices[gapNumber]);
+            Object.keys(questionWithShuffledChoices.gap_choices).forEach(gapNumber => {
+              shuffledGapChoices[gapNumber] = shuffleChoicesKeepingLabels(questionWithShuffledChoices!.gap_choices![gapNumber]);
             });
             questionWithShuffledChoices = {
               ...questionWithShuffledChoices,
@@ -155,26 +164,21 @@ export default function QuestionPage() {
   }, [questionId, category]);
 
   const handleSubmit = () => {
-    // For READING COMPREHENSION: check if all 3 questions are answered
     if (category === 'reading_comprehension') {
       const totalQuestions = questions.length;
       const answeredQuestions = Object.keys(selectedAnswers).length;
       if (answeredQuestions < totalQuestions) return;
     }
-    // For TEXT COMPLETION: check if all gaps are filled
     else if (question?.text_with_gaps && question?.gap_choices) {
       const totalGaps = Object.keys(question.gap_choices).length;
       const filledGaps = Object.keys(selectedGapAnswers).length;
       if (filledGaps < totalGaps) return;
     } else {
-      // For standard questions
       if (!selectedAnswer) return;
     }
     setIsSubmitted(true);
     setShowExplanation(true);
   };
-
-  // Removed unused time tracking utilities to reduce lint warnings
 
   const getCorrectAnswer = () => {
     return question?.choices.find(choice => choice.is_correct);

@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 const trainCategories = [
   { 
-    name: 'TOEIC BLANC', 
+    name: 'TEPITECH BLANC', 
     href: '/train/toeic-blanc',
     icon: Volume2,
     emoji: '🎯',
@@ -80,7 +80,7 @@ const learnCategories = [
     icon: BookText,
     emoji: '📚',
     color: 'from-purple-400 to-pink-400',
-    description: 'Mots essentiels TOEIC'
+    description: 'Mots essentiels pour réussir le Tepitech'
   },
   { 
     name: 'Grammaire', 
@@ -88,7 +88,7 @@ const learnCategories = [
     icon: CheckSquare,
     emoji: '💡',
     color: 'from-yellow-400 to-orange-400',
-    description: 'Règles grammaticales'
+    description: 'Règles grammaticales clés du Tepitech'
   },
   { 
     name: 'Conjugaison', 
@@ -96,7 +96,7 @@ const learnCategories = [
     icon: FileText,
     emoji: '✏️',
     color: 'from-blue-400 to-cyan-400',
-    description: 'Temps et verbes'
+    description: 'Temps et verbes pour le Tepitech'
   },
   { 
     name: 'Compréhension', 
@@ -104,7 +104,7 @@ const learnCategories = [
     icon: MessageSquare,
     emoji: '📖',
     color: 'from-green-400 to-emerald-400',
-    description: 'Lecture et analyse'
+    description: 'Lecture et analyse façon Tepitech'
   },
 ];
 
@@ -257,7 +257,7 @@ export default function Navbar() {
               <div className="p-4 space-y-2">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800">
-                    {activeDropdown === 'learn' ? 'Cours TOEIC' : 'Catégories d\'entraînement'}
+                    {activeDropdown === 'learn' ? 'Cours Tepitech' : 'Catégories d\'entraînement'}
                   </h3>
                   <button
                     onClick={() => {
@@ -394,7 +394,7 @@ export default function Navbar() {
                               </h3>
                               <p className="text-sm text-gray-500">
                                 {name === 'Apprendre' 
-                                  ? 'Cours et mini-exercices spécialisés pour le TOEIC'
+                                  ? 'Cours et mini-exercices spécialisés pour Tepitech'
                                   : 'Sélectionne le type d\'exercice que tu souhaites pratiquer'
                                 }
                               </p>
