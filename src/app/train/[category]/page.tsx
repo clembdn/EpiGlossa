@@ -297,7 +297,7 @@ export default function TrainCategoryPage() {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Rechercher une question ou une réponse..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-[10px] border-0 outline-none bg-white text-gray-900 placeholder-gray-700"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-[10px] border-0 outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 focus:border-transparent bg-white text-gray-900 placeholder-gray-700"
                   />
                 </div>
               </div>
@@ -369,52 +369,54 @@ export default function TrainCategoryPage() {
                   : question.question_text || 'Question audio';
 
               return (
-                <Link key={question.id} href={questionUrl}>
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                        {index + 1}
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-4 mb-2">
-                          <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
-                            {displayTitle}
-                          </h3>
-                          <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
-                            TOEIC
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-4 text-sm text-gray-600">
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            <span>3 min</span>
-                          </div>
-                        <div className="flex items-center gap-1">
-                          <Trophy className="w-4 h-4 text-yellow-500" />
-                          <span className="font-bold text-yellow-600">+50 XP</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Target className="w-4 h-4 text-blue-500" />
-                          <span>{question.choices?.length || 0} choix</span>
-                        </div>
-                      </div>
-                    </div>
-
+                <div key={question.id}>
+                  <Link href={questionUrl} className="block">
                     <motion.div
-                      className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
                     >
-                      <Play className="w-5 h-5 fill-current" />
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </Link>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                          {index + 1}
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-4 mb-2">
+                            <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                              {displayTitle}
+                            </h3>
+                            <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
+                              TOEIC
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              <span>3 min</span>
+                            </div>
+                          <div className="flex items-center gap-1">
+                            <Trophy className="w-4 h-4 text-yellow-500" />
+                            <span className="font-bold text-yellow-600">+50 XP</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Target className="w-4 h-4 text-blue-500" />
+                            <span>{question.choices?.length || 0} choix</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <motion.div
+                        className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
+                      >
+                        <Play className="w-5 h-5 fill-current" />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </Link>
+                </div>
               );
             })}
           </div>
