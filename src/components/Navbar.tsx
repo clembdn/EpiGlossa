@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BookOpen, Dumbbell, User, ChevronDown, Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText, Languages } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 const trainCategories = [
   { 
@@ -140,6 +142,46 @@ export default function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'learn' | 'train' | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    let mounted = true
+    const getUser = async () => {
+      try {
+        const { data } = await supabase.auth.getUser()
+        if (!mounted) return
+        setUser(data?.user ?? null)
+      } catch (err) {
+        console.error('Error getting user', err)
+      }
+    }
+
+    getUser()
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      mounted = false
+      try {
+        listener?.subscription?.unsubscribe()
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, [])
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut()
+      setUser(null)
+      router.push('/auth/login')
+    } catch (err) {
+      console.error('Error signing out', err)
+    }
+  }
 
   const handleMobileDropdown = (type: 'learn' | 'train') => {
     setActiveDropdown(type);
@@ -242,6 +284,14 @@ export default function Navbar() {
                 </Link>
               );
             })}
+          </div>
+          {/* Mobile auth actions */}
+          <div className="px-2 py-2 flex justify-center">
+            {user ? (
+              <button onClick={handleSignOut} className="px-3 py-2 bg-red-500 text-white rounded-md w-full max-w-xs">Se déconnecter</button>
+            ) : (
+              <Link href="/auth/login" className="px-3 py-2 bg-blue-500 text-white rounded-md w-full max-w-xs text-center">Se connecter</Link>
+            )}
           </div>
         </div>
 
@@ -488,6 +538,17 @@ export default function Navbar() {
                 <p className="text-lg font-bold text-orange-700">0 jours</p>
               </div>
             </motion.div>
+            {/* Auth area: show login or logout */}
+            <div className="ml-4">
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-gray-600">{user.email}</p>
+                  <button onClick={handleSignOut} className="px-3 py-2 bg-red-500 text-white rounded-md">Se déconnecter</button>
+                </div>
+              ) : (
+                <Link href="/auth/login" className="px-3 py-2 bg-blue-500 text-white rounded-md">Se connecter</Link>
+              )}
+            </div>
           </div>
         </div>
       </nav>
