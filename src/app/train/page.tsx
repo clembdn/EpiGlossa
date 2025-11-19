@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText, Trophy, Target } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const trainCategories = [
   { 
@@ -13,7 +15,7 @@ const trainCategories = [
     color: 'from-purple-500 to-fuchsia-400',
     description: 'Écoute des audios tout en regardant des images pour améliorer ta compréhension orale',
     difficulty: 'Compréhension Orale',
-    exercises: 45
+    category: 'audio_with_images'
   },
   { 
     name: 'Questions & Réponses', 
@@ -23,7 +25,7 @@ const trainCategories = [
     color: 'from-sky-500 to-blue-400',
     description: 'Réponds à des questions variées pour tester ta compréhension',
     difficulty: 'Compréhension Orale',
-    exercises: 38
+    category: 'qa'
   },
   { 
     name: 'Conversations Courtes', 
@@ -33,7 +35,7 @@ const trainCategories = [
     color: 'from-emerald-500 to-green-400',
     description: 'Écoute et comprends des dialogues du quotidien',
     difficulty: 'Compréhension Orale',
-    exercises: 52
+    category: 'short_conversation'
   },
   { 
     name: 'Exposés Courts', 
@@ -43,7 +45,7 @@ const trainCategories = [
     color: 'from-orange-500 to-amber-400',
     description: 'Analyse des présentations et discours courts',
     difficulty: 'Compréhension Orale',
-    exercises: 31
+    category: 'short_talks'
   },
   { 
     name: 'Phrases Incomplètes', 
@@ -53,7 +55,7 @@ const trainCategories = [
     color: 'from-yellow-400 to-lime-300',
     description: 'Complète les phrases avec le mot ou expression correcte',
     difficulty: 'Compréhension Écrite',
-    exercises: 67
+    category: 'incomplete_sentences'
   },
   { 
     name: 'Complétion de Texte', 
@@ -63,7 +65,7 @@ const trainCategories = [
     color: 'from-indigo-500 to-indigo-400',
     description: 'Remplis les blancs dans des textes suivis',
     difficulty: 'Compréhension Écrite',
-    exercises: 29
+    category: 'text_completion'
   },
   { 
     name: 'Compréhension Écrite', 
@@ -73,11 +75,55 @@ const trainCategories = [
     color: 'from-rose-500 to-pink-400',
     description: 'Lis des textes et réponds aux questions de compréhension',
     difficulty: 'Compréhension Écrite',
-    exercises: 41
+    category: 'reading_comprehension'
   },
 ];
 
 export default function TrainPage() {
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const counts: Record<string, number> = {};
+        
+        for (const cat of trainCategories) {
+          if (cat.category === 'reading_comprehension') {
+            // For reading_comprehension, count unique passage_ids
+            const { data, error } = await supabase
+              .from('questions')
+              .select('passage_id')
+              .eq('category', cat.category);
+            
+            if (!error && data) {
+              const uniquePassages = new Set(data.map(q => q.passage_id));
+              counts[cat.category] = uniquePassages.size;
+            }
+          } else {
+            // For other categories, count questions
+            const { count, error } = await supabase
+              .from('questions')
+              .select('*', { count: 'exact', head: true })
+              .eq('category', cat.category);
+            
+            if (!error && count !== null) {
+              counts[cat.category] = count;
+            }
+          }
+        }
+        
+        setCategoryCounts(counts);
+      } catch (error) {
+        console.error('Error fetching counts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-12">
@@ -255,7 +301,14 @@ export default function TrainPage() {
                 <div className="relative z-10 flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1.5 text-gray-600 transition-colors group-hover:text-white/90">
                     <Target className="w-4 h-4 text-gray-600 group-hover:text-white" />
-                    <span className="font-semibold">{category.exercises} exercices</span>
+                    <span className="font-semibold">
+                      {loading 
+                        ? '...' 
+                        : category.category === 'reading_comprehension'
+                          ? `${categoryCounts[category.category] || 0} passages`
+                          : `${categoryCounts[category.category] || 0} exercices`
+                      }
+                    </span>
                   </div>
                 </div>
 

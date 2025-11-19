@@ -2,11 +2,11 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Clock, AlertTriangle, Volume2 } from 'lucide-react';
+import { Clock, AlertTriangle } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Question, QuestionCategory } from '@/types/question';
-import { getMockQuestions } from '@/lib/mockQuestions';
+import AudioPlayer from '@/components/ui/audio-player';
 
 const TEPITECH_CONFIG: Record<QuestionCategory, {
   start: number;
@@ -112,9 +112,16 @@ const PROGRESSION_SECTIONS = [
 
 const TOTAL_TIME = 120 * 60; // 2 heures en secondes
 
+type ResultEntry = {
+  questionNumber: number;
+  isCorrect: boolean;
+  points: number;
+  category: string;
+};
+
 export default function ToeicBlancTestPage() {
   const router = useRouter();
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [loading, setLoading] = useState(true);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -128,12 +135,7 @@ export default function ToeicBlancTestPage() {
   const [questionProgress, setQuestionProgress] = useState(0);
   
   // Résultats
-  const [results, setResults] = useState<{
-    questionNumber: number;
-    isCorrect: boolean;
-    points: number;
-    category: string;
-  }[]>([]);
+  const [results, setResults] = useState<ResultEntry[]>([]);
   
   // Détection de changement de page
   const [tabChangeDetected, setTabChangeDetected] = useState(false);
@@ -143,6 +145,24 @@ export default function ToeicBlancTestPage() {
   const totalQuestions = allQuestions.length;
   const answeredCount = results.length;
   const answeredQuestionSet = useMemo(() => new Set(results.map((r) => r.questionNumber)), [results]);
+
+  const recordResult = useCallback((entry: ResultEntry) => {
+    let snapshot: ResultEntry[] = [];
+    let inserted = false;
+
+    setResults((prev) => {
+      if (prev.some((r) => r.questionNumber === entry.questionNumber)) {
+        snapshot = prev;
+        return prev;
+      }
+      inserted = true;
+      const updated = [...prev, entry];
+      snapshot = updated;
+      return updated;
+    });
+
+    return { nextResults: snapshot, inserted };
+  }, []);
 
   useEffect(() => {
     if (!totalQuestions) {
@@ -160,8 +180,7 @@ export default function ToeicBlancTestPage() {
         setLoading(true);
         const allTestQuestions: Question[] = [];
 
-        for (const [categoryKey, config] of Object.entries(TEPITECH_CONFIG)) {
-          const typedCategory = categoryKey as QuestionCategory;
+        for (const config of Object.values(TEPITECH_CONFIG)) {
           const { data, error } = await supabase
             .from('questions')
             .select('*')
@@ -170,11 +189,8 @@ export default function ToeicBlancTestPage() {
 
           if (error) throw error;
 
-          const questions = (data && data.length > 0)
-            ? data.slice(0, config.count)
-            : getMockQuestions(typedCategory, config.count);
-
-          allTestQuestions.push(...questions);
+          const questions = data ?? [];
+          allTestQuestions.push(...questions.slice(0, config.count));
         }
 
         setAllQuestions(allTestQuestions);
@@ -190,6 +206,12 @@ export default function ToeicBlancTestPage() {
 
     loadQuestions();
   }, []);
+
+  const finishTest = useCallback((finalResults?: ResultEntry[]) => {
+    const payload = finalResults ?? results;
+    sessionStorage.setItem('tepitech_blanc_results', JSON.stringify(payload));
+    router.push('/train/toeic-blanc/results');
+  }, [results, router]);
 
   // Timer
   useEffect(() => {
@@ -207,7 +229,7 @@ export default function ToeicBlancTestPage() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [hasStarted, timeRemaining]);
+  }, [finishTest, hasStarted, timeRemaining]);
 
   // Démarrer le test automatiquement
   useEffect(() => {
@@ -216,20 +238,6 @@ export default function ToeicBlancTestPage() {
     }
   }, [loading, allQuestions]);
 
-  // Détection de changement d'onglet/page
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden && hasStarted && currentQuestion) {
-        // L'utilisateur a quitté la page
-        setTabChangeDetected(true);
-        // Passer automatiquement à la question suivante avec 0 point
-        handleTabChangeViolation();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [hasStarted, currentQuestion, currentQuestionIndex]);
 
   // Lecture automatique de l'audio
   useEffect(() => {
@@ -237,7 +245,6 @@ export default function ToeicBlancTestPage() {
       // Attendre un peu avant de lire l'audio
       const timeout = setTimeout(() => {
         if (audioRef.current) {
-          setIsAudioPlaying(true);
           audioRef.current.play().catch(err => console.error('Audio play error:', err));
         }
       }, 500);
@@ -251,25 +258,8 @@ export default function ToeicBlancTestPage() {
     setAudioHasPlayed(true);
   };
 
-  const handleTabChangeViolation = useCallback(() => {
-    // Enregistrer 0 point pour cette question
-    const questionNum = getCurrentQuestionNumber();
-    const category = currentQuestion?.category || '';
-    
-    setResults(prev => [...prev, {
-      questionNumber: questionNum,
-      isCorrect: false,
-      points: 0,
-      category,
-    }]);
 
-    // Passer à la question suivante
-    moveToNextQuestion();
-  }, [currentQuestion, currentQuestionIndex]);
-
-  const getCurrentQuestionNumber = () => {
-    return currentQuestionIndex + 1;
-  };
+  const getCurrentQuestionNumber = useCallback(() => currentQuestionIndex + 1, [currentQuestionIndex]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -322,17 +312,21 @@ export default function ToeicBlancTestPage() {
     const questionNum = getCurrentQuestionNumber();
     const category = currentQuestion?.category || '';
 
-    setResults(prev => [...prev, {
+    const entry: ResultEntry = {
       questionNumber: questionNum,
       isCorrect,
       points,
       category,
-    }]);
+    };
 
-    moveToNextQuestion();
+    const { nextResults, inserted } = recordResult(entry);
+    if (inserted) {
+      moveToNextQuestion(nextResults);
+    }
   };
 
-  const moveToNextQuestion = () => {
+
+  const moveToNextQuestion = useCallback((latestResults?: ResultEntry[]) => {
     if (currentQuestionIndex < allQuestions.length - 1) {
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
@@ -342,16 +336,52 @@ export default function ToeicBlancTestPage() {
       setAudioHasPlayed(false);
       setTabChangeDetected(false);
     } else {
-      // Fin du test
-      finishTest();
+      finishTest(latestResults ?? results);
     }
-  };
+  }, [allQuestions, currentQuestionIndex, finishTest, results]);
 
-  const finishTest = () => {
-    // Sauvegarder les résultats dans sessionStorage
-  sessionStorage.setItem('tepitech_blanc_results', JSON.stringify(results));
-    router.push('/train/toeic-blanc/results');
-  };
+  const handleTabChangeViolation = useCallback(() => {
+    if (!hasStarted || !currentQuestion || tabChangeDetected) return;
+
+    setTabChangeDetected(true);
+
+    const entry: ResultEntry = {
+      questionNumber: getCurrentQuestionNumber(),
+      isCorrect: false,
+      points: 0,
+      category: currentQuestion.category || '',
+    };
+
+    const { nextResults, inserted } = recordResult(entry);
+    if (inserted) {
+      moveToNextQuestion(nextResults);
+    }
+  }, [currentQuestion, getCurrentQuestionNumber, hasStarted, moveToNextQuestion, recordResult, tabChangeDetected]);
+
+  // Détection de changement d'onglet/page
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!hasStarted || tabChangeDetected) return;
+      if (document.hidden) {
+        handleTabChangeViolation();
+      }
+    };
+
+    const handleWindowBlur = () => {
+      if (!hasStarted || tabChangeDetected) return;
+      if (!document.hidden) {
+        handleTabChangeViolation();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+    };
+  }, [handleTabChangeViolation, hasStarted, tabChangeDetected]);
 
   const canSubmit = () => {
     if (currentQuestion?.text_with_gaps && currentQuestion?.gap_choices) {
@@ -589,21 +619,28 @@ export default function ToeicBlancTestPage() {
             >
               {/* Audio Player */}
               {currentQuestion.audio_url && (
-                <div className="mb-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Volume2 className="w-6 h-6 text-purple-600" />
-                    <h3 className="font-bold text-gray-800">
-                      {isAudioPlaying ? '🔊 Lecture en cours...' : audioHasPlayed ? '✓ Audio lu' : '⏳ Audio va démarrer...'}
-                    </h3>
-                  </div>
-                  <audio
+                <div className="mb-6">
+                  <AudioPlayer
                     ref={audioRef}
                     src={currentQuestion.audio_url}
+                    locked
+                    label="Consigne audio"
+                    description="L'écoute démarre automatiquement et ne peut pas être relancée."
+                    status={
+                      isAudioPlaying
+                        ? '🔊 Lecture en cours...'
+                        : audioHasPlayed
+                        ? '✓ Lecture terminée'
+                        : '⏳ Lecture automatique imminente'
+                    }
                     onEnded={handleAudioEnded}
-                    className="hidden"
+                    onPlay={() => setIsAudioPlaying(true)}
+                    onPause={() => setIsAudioPlaying(false)}
                   />
-                  <p className="text-sm text-gray-600">
-                    {audioHasPlayed ? 'L\'audio a été lu une fois.' : 'L\'audio va se lire automatiquement.'}
+                  <p className="mt-3 text-sm text-gray-600">
+                    {audioHasPlayed
+                      ? 'L\'audio a été diffusé une seule fois.'
+                      : 'L\'audio va se lancer automatiquement.'}
                   </p>
                 </div>
               )}
@@ -614,7 +651,7 @@ export default function ToeicBlancTestPage() {
                   <img
                     src={currentQuestion.image_url}
                     alt="Question illustration"
-                    className="w-full rounded-2xl shadow-lg"
+                    className="w-full max-h-64 md:max-h-72 object-contain mx-auto"
                   />
                 </div>
               )}

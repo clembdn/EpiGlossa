@@ -2,11 +2,11 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy, Volume2 } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question, Choice, QuestionCategory } from '@/types/question';
-import { findMockQuestion, getMockReadingPassage } from '@/lib/mockQuestions';
+import type { Question, Choice } from '@/types/question';
+import AudioPlayer from '@/components/ui/audio-player';
 
 const categoryInfo: Record<string, {
   name: string;
@@ -78,8 +78,6 @@ export default function QuestionPage() {
   const category = params.category as string;
   const questionId = params.questionId as string;
   const info = categoryInfo[category];
-  const typedCategory = category as QuestionCategory;
-
   const [question, setQuestion] = useState<Question | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]); // For READING COMPREHENSION
   const [loading, setLoading] = useState(true);
@@ -105,7 +103,11 @@ export default function QuestionPage() {
           if (error) {
             console.warn('Supabase reading comprehension fetch error:', error.message);
           }
-          const questionsData = data && data.length > 0 ? data : getMockReadingPassage(questionId);
+          const questionsData = data ?? [];
+          if (questionsData.length === 0) {
+            setQuestions([]);
+            return;
+          }
           
           // Mélanger les choix pour chaque question en gardant A, B, C, D
           const questionsWithShuffledChoices = questionsData.map(q => ({
@@ -128,9 +130,6 @@ export default function QuestionPage() {
 
           // Mélanger les choix de réponses en gardant A, B, C, D
           let questionWithShuffledChoices = data;
-          if (!questionWithShuffledChoices) {
-            questionWithShuffledChoices = findMockQuestion(typedCategory, questionId) || null;
-          }
 
           if (questionWithShuffledChoices?.choices) {
             questionWithShuffledChoices = {
@@ -306,7 +305,7 @@ export default function QuestionPage() {
               <img
                 src={passageImage}
                 alt="Reading passage"
-                className="w-full rounded-2xl shadow-lg"
+                className="w-full max-h-64 md:max-h-72 object-contain mx-auto"
               />
             </motion.div>
           )}
@@ -575,15 +574,13 @@ export default function QuestionPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100"
+              className="mb-6"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <Volume2 className="w-6 h-6 text-purple-600" />
-                <h3 className="font-bold text-gray-800">Écoute l&apos;audio</h3>
-              </div>
-              <audio controls className="w-full" src={question.audio_url}>
-                Votre navigateur ne supporte pas l&apos;élément audio.
-              </audio>
+              <AudioPlayer
+                src={question.audio_url}
+                label="Écoute l'audio"
+                description="Clique sur lecture pour démarrer l'écoute."
+              />
             </motion.div>
           )}
 
@@ -594,11 +591,11 @@ export default function QuestionPage() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
-              <img
-                src={question.image_url}
-                alt="Question illustration"
-                className="w-full rounded-2xl shadow-lg"
-              />
+                <img
+                  src={question.image_url}
+                  alt="Question illustration"
+                  className="w-full max-h-64 md:max-h-72 object-contain mx-auto rounded-2xl"
+                />
             </motion.div>
           )}
 
@@ -850,7 +847,7 @@ export default function QuestionPage() {
               </div>
 
               {/* Explanation */}
-              {showExplanation && question.explanation && (
+              {showExplanation && question.explanation && category !== 'audio_with_images' && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}

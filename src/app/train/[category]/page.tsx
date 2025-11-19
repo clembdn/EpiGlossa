@@ -6,8 +6,7 @@ import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { Question, ReadingPassage, QuestionCategory } from '@/types/question';
-import { getMockQuestions } from '@/lib/mockQuestions';
+import type { Question, ReadingPassage } from '@/types/question';
 
 // Fonction pour mélanger un tableau
 function shuffleArray<T>(array: T[]): T[] {
@@ -86,8 +85,6 @@ export default function TrainCategoryPage() {
         setLoading(true);
         setError(null);
         
-        const typedCategory = category as QuestionCategory;
-
         if (category === 'reading_comprehension') {
           // For READING COMPREHENSION: group by passage_id
           const { data, error: fetchError } = await supabase
@@ -97,11 +94,16 @@ export default function TrainCategoryPage() {
             .order('passage_id', { ascending: false });
 
           if (fetchError) throw fetchError;
-          const source = data && data.length > 0 ? data : getMockQuestions('reading_comprehension');
+          const source = data ?? [];
+          if (source.length === 0) {
+            setQuestions([]);
+            sessionStorage.removeItem(`question_order_${category}`);
+            return;
+          }
           
           // Group by passage_id and keep all 3 questions together
           const passageMap = new Map<string, ReadingPassage>();
-          (source || []).forEach((q) => {
+          source.forEach((q) => {
             if (q.passage_id) {
               if (!passageMap.has(q.passage_id)) {
                 passageMap.set(q.passage_id, {
@@ -135,9 +137,15 @@ export default function TrainCategoryPage() {
             .eq('category', category);
 
           if (fetchError) throw fetchError;
-          const source = data && data.length > 0 ? data : getMockQuestions(typedCategory);
+          const source = data ?? [];
+          if (source.length === 0) {
+            setQuestions([]);
+            sessionStorage.removeItem(`question_order_${category}`);
+            return;
+          }
+
           // Mélanger l'ordre des questions
-          const shuffledQuestions = shuffleArray(source || []);
+          const shuffledQuestions = shuffleArray(source);
           setQuestions(shuffledQuestions);
           
           // Sauvegarder l'ordre des question IDs dans sessionStorage
@@ -341,13 +349,11 @@ export default function TrainCategoryPage() {
                               ).join(' • ')}
                             </p>
                             {passage.image_url && (
-                              <div className="mt-3">
-                                <img 
-                                  src={passage.image_url} 
-                                  alt="Passage" 
-                                  className="w-full h-32 object-cover rounded-xl"
-                                />
-                              </div>
+                              <img 
+                                src={passage.image_url} 
+                                alt="Passage" 
+                                className="w-full h-32 object-cover rounded-xl"
+                              />
                             )}
                           </div>
                           <div className="flex flex-col items-end gap-2">

@@ -74,7 +74,17 @@ export default function ImportJsonPage() {
       }
 
       setPreview(questions);
-      setMessage(`✅ ${questions.length} question(s) valide(s) prête(s) à être importée(s)`);
+      
+      // Count unique passages for reading_comprehension
+      const isReadingComp = questions.length > 0 && questions.every((q: JsonQuestion) => q.category === 'reading_comprehension');
+      let displayCount = questions.length;
+      if (isReadingComp) {
+        const uniquePassages = new Set(questions.map((q: JsonQuestion) => q.passage_id));
+        displayCount = uniquePassages.size;
+      }
+      
+      const unit = isReadingComp ? 'passage(s)' : 'question(s)';
+      setMessage(`✅ ${displayCount} ${unit} valide(s) prêt(es) à être importé(es)`);
     } catch (error: unknown) {
       console.error('Validation error:', error);
       setMessage(`❌ ${error instanceof Error ? error.message : 'Une erreur est survenue'}`);
@@ -98,27 +108,88 @@ export default function ImportJsonPage() {
     setMessage('💾 Import en cours...');
 
     try {
-      const questionsToInsert = preview.map((q) => ({
-        category: q.category,
-        question_text: q.question_text || null,
-        audio_url: q.audio_url || null,
-        image_url: q.image_url || null,
-        choices: q.choices || null,
-        gap_choices: q.gap_choices || null,
-        explanation: q.explanation,
-        passage_id: q.passage_id || null,
-        question_number: q.question_number || null,
-        text_with_gaps: q.text_with_gaps || null,
-      }));
+      // Normalize question_number for reading_comprehension to be 1-based per passage
+      const isReadingComp = preview.every((q) => q.category === 'reading_comprehension');
+      let questionsToInsert: Array<{
+        category: string;
+        question_text: string | null;
+        audio_url: string | null;
+        image_url: string | null;
+        choices: Array<{ option: string; text: string; is_correct: boolean }> | null;
+        gap_choices: Record<string, Array<{ option: string; text: string; is_correct: boolean }>> | null;
+        explanation: string;
+        passage_id: string | null;
+        question_number: number | null;
+        text_with_gaps: string | null;
+      }>;
+      
+      // Helper to convert text passage_id to UUID (deterministic)
+      const textToUuid = (text: string): string => {
+        // Simple hash to UUID v5-like format (namespace-based)
+        let hash = 0;
+        for (let i = 0; i < text.length; i++) {
+          hash = ((hash << 5) - hash) + text.charCodeAt(i);
+          hash = hash & hash;
+        }
+        const hex = Math.abs(hash).toString(16).padStart(8, '0');
+        return `${hex.slice(0, 8)}-${hex.slice(0, 4)}-4${hex.slice(0, 3)}-8${hex.slice(0, 3)}-${hex.padEnd(12, '0').slice(0, 12)}`;
+      };
+      
+      if (isReadingComp) {
+        const grouped = new Map<string, JsonQuestion[]>();
+        preview.forEach((q) => {
+          const pid = q.passage_id || 'unknown';
+          if (!grouped.has(pid)) grouped.set(pid, []);
+          grouped.get(pid)!.push(q);
+        });
+        
+        questionsToInsert = [];
+        for (const [passageId, questions] of grouped.entries()) {
+          questions
+            .sort((a, b) => (a.question_number || 0) - (b.question_number || 0))
+            .forEach((q, idx) => {
+              questionsToInsert.push({
+                category: q.category,
+                question_text: q.question_text || null,
+                audio_url: q.audio_url || null,
+                image_url: q.image_url || null,
+                choices: q.choices || null,
+                gap_choices: q.gap_choices || null,
+                explanation: q.explanation,
+                passage_id: textToUuid(passageId), // Convert text ID to UUID
+                question_number: idx + 1, // Normalize to 1, 2, 3 per passage
+                text_with_gaps: q.text_with_gaps || null,
+              });
+            });
+        }
+      } else {
+        questionsToInsert = preview.map((q) => ({
+          category: q.category,
+          question_text: q.question_text || null,
+          audio_url: q.audio_url || null,
+          image_url: q.image_url || null,
+          choices: q.choices || null,
+          gap_choices: q.gap_choices || null,
+          explanation: q.explanation,
+          passage_id: q.passage_id || null,
+          question_number: q.question_number || null,
+          text_with_gaps: q.text_with_gaps || null,
+        }));
+      }
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('questions')
         .insert(questionsToInsert)
         .select();
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+        console.error('Supabase error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        throw new Error(error.message || 'Erreur Supabase inconnue');
       }
 
       setMessage(`✅ ${preview.length} question(s) importée(s) avec succès!`);
@@ -250,33 +321,72 @@ export default function ImportJsonPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
-                  📋 Aperçu ({preview.length} question{preview.length > 1 ? 's' : ''})
-                </h3>
-                <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {preview.map((q, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200"
-                    >
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <span className="text-sm font-bold text-purple-600">
-                          {getCategoryLabel(q.category)}
-                        </span>
-                        <span className="text-xs text-gray-500">#{index + 1}</span>
+                {(() => {
+                  // Group reading comprehension by passage
+                  const isReadingComp = preview.every((q) => q.category === 'reading_comprehension');
+                  let displayItems: Array<{ key: string; label: string; questions: JsonQuestion[] }> = [];
+                  
+                  if (isReadingComp) {
+                    const grouped = new Map<string, JsonQuestion[]>();
+                    preview.forEach((q) => {
+                      const pid = q.passage_id || 'unknown';
+                      if (!grouped.has(pid)) grouped.set(pid, []);
+                      grouped.get(pid)!.push(q);
+                    });
+                    displayItems = Array.from(grouped.entries()).map(([pid, qs], idx) => ({
+                      key: pid,
+                      label: `Passage ${idx + 1} (${qs.length} questions)`,
+                      questions: qs,
+                    }));
+                  } else {
+                    displayItems = preview.map((q, idx) => ({
+                      key: `q-${idx}`,
+                      label: `Question #${idx + 1}`,
+                      questions: [q],
+                    }));
+                  }
+
+                  const totalLabel = isReadingComp
+                    ? `${displayItems.length} passage${displayItems.length > 1 ? 's' : ''}`
+                    : `${preview.length} question${preview.length > 1 ? 's' : ''}`;
+
+                  return (
+                    <>
+                      <h3 className="text-xl font-bold text-gray-800 mb-4">
+                        📋 Aperçu ({totalLabel})
+                      </h3>
+                      <div className="space-y-3 max-h-96 overflow-y-auto">
+                        {displayItems.map((item, index) => {
+                          const firstQ = item.questions[0];
+                          return (
+                            <div
+                              key={item.key}
+                              className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200"
+                            >
+                              <div className="flex items-start justify-between gap-3 mb-2">
+                                <span className="text-sm font-bold text-purple-600">
+                                  {getCategoryLabel(firstQ.category)}
+                                </span>
+                                <span className="text-xs text-gray-500">{item.label}</span>
+                              </div>
+                              {item.questions.map((q, qIdx) => (
+                                <p key={qIdx} className="text-gray-800 font-medium mb-1 line-clamp-1 text-sm">
+                                  {qIdx > 0 && '• '}{q.question_text || q.text_with_gaps || 'Question audio'}
+                                </p>
+                              ))}
+                              <div className="flex items-center gap-2 text-xs text-gray-600 mt-2">
+                                {firstQ.choices && <span>✓ {firstQ.choices.length} choix</span>}
+                                {firstQ.gap_choices && <span>✓ {Object.keys(firstQ.gap_choices).length} trous</span>}
+                                {firstQ.audio_url && <span>• 🎵 Audio</span>}
+                                {firstQ.image_url && <span>• 🖼️ Image</span>}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                      <p className="text-gray-800 font-medium mb-2 line-clamp-2">
-                        {q.question_text || q.text_with_gaps || 'Question audio'}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        {q.choices && <span>✓ {q.choices.length} choix</span>}
-                        {q.gap_choices && <span>✓ {Object.keys(q.gap_choices).length} trous</span>}
-                        {q.audio_url && <span>• 🎵 Audio</span>}
-                        {q.image_url && <span>• 🖼️ Image</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    </>
+                  );
+                })()}
               </motion.div>
             )}
 
@@ -295,7 +405,15 @@ export default function ImportJsonPage() {
                 ) : (
                   <>
                     <CheckCircle2 className="w-6 h-6" />
-                    Importer {preview.length} question{preview.length > 1 ? 's' : ''}
+                    {(() => {
+                      const isReadingComp = preview.every((q) => q.category === 'reading_comprehension');
+                      if (isReadingComp) {
+                        const uniquePassages = new Set(preview.map((q) => q.passage_id));
+                        const count = uniquePassages.size;
+                        return `Importer ${count} passage${count > 1 ? 's' : ''} (${preview.length} questions)`;
+                      }
+                      return `Importer ${preview.length} question${preview.length > 1 ? 's' : ''}`;
+                    })()}
                   </>
                 )}
               </button>

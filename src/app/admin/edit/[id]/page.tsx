@@ -28,6 +28,8 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   // Form state
   const [category, setCategory] = useState<QuestionCategory>('audio_with_images');
   const [questionText, setQuestionText] = useState('');
+  const [textWithGaps, setTextWithGaps] = useState('');
+  const [gapChoices, setGapChoices] = useState<Record<string, Choice[]>>({});
   const [audioUrl, setAudioUrl] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [choices, setChoices] = useState<Choice[]>([
@@ -58,9 +60,16 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
       if (data) {
         setCategory(data.category);
         setQuestionText(data.question_text || '');
+        setTextWithGaps(data.text_with_gaps || '');
+        setGapChoices(data.gap_choices || {});
         setAudioUrl(data.audio_url || '');
         setImageUrl(data.image_url || '');
-        setChoices(data.choices);
+        setChoices(data.choices || [
+          { option: 'A', text: '', is_correct: false },
+          { option: 'B', text: '', is_correct: false },
+          { option: 'C', text: '', is_correct: false },
+          { option: 'D', text: '', is_correct: false },
+        ]);
         setExplanation(data.explanation || '');
       }
     } catch (error) {
@@ -138,6 +147,22 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     setChoices(newChoices);
   };
 
+  const handleGapChoiceChange = (gapNumber: string, index: number, field: 'text' | 'is_correct', value: string | boolean) => {
+    const newGapChoices = { ...gapChoices };
+    if (!newGapChoices[gapNumber]) return;
+    
+    const updatedChoices = [...newGapChoices[gapNumber]];
+    if (field === 'is_correct') {
+      // Reset all to false for this gap, then set the selected one to true
+      updatedChoices.forEach((c) => (c.is_correct = false));
+      updatedChoices[index].is_correct = value as boolean;
+    } else {
+      updatedChoices[index].text = value as string;
+    }
+    newGapChoices[gapNumber] = updatedChoices;
+    setGapChoices(newGapChoices);
+  };
+
   const deleteAudio = async () => {
     if (!audioUrl) return;
     
@@ -175,16 +200,54 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
       return false;
     }
 
-    const hasCorrectAnswer = choices.some((c) => c.is_correct);
-    if (!hasCorrectAnswer) {
-      setMessage('❌ Veuillez sélectionner la bonne réponse');
-      return false;
-    }
+    // For text_completion, validate gap_choices
+    if (category === 'text_completion') {
+      if (!textWithGaps.trim()) {
+        setMessage('❌ Veuillez ajouter le texte avec les trous ({{1}}, {{2}}, etc.)');
+        return false;
+      }
 
-    const allChoicesFilled = choices.every((c) => c.text.trim() !== '');
-    if (!allChoicesFilled) {
-      setMessage('❌ Veuillez remplir toutes les réponses');
-      return false;
+      const gapNumbers = Object.keys(gapChoices);
+      if (gapNumbers.length === 0) {
+        setMessage('❌ Veuillez ajouter au moins un trou avec des choix');
+        return false;
+      }
+
+      for (const gapNum of gapNumbers) {
+        const gapChs = gapChoices[gapNum];
+        if (!gapChs || gapChs.length === 0) {
+          setMessage(`❌ Le trou {{${gapNum}}} n'a pas de choix`);
+          return false;
+        }
+        const hasCorrect = gapChs.some(c => c.is_correct);
+        if (!hasCorrect) {
+          setMessage(`❌ Veuillez sélectionner la bonne réponse pour le trou {{${gapNum}}}`);
+          return false;
+        }
+        const allFilled = gapChs.every(c => c.text.trim() !== '');
+        if (!allFilled) {
+          setMessage(`❌ Veuillez remplir tous les choix pour le trou {{${gapNum}}}`);
+          return false;
+        }
+      }
+    } else {
+      // For standard questions, validate choices
+      if (!choices || choices.length === 0) {
+        setMessage('❌ Veuillez ajouter des réponses');
+        return false;
+      }
+
+      const hasCorrectAnswer = choices.some((c) => c.is_correct);
+      if (!hasCorrectAnswer) {
+        setMessage('❌ Veuillez sélectionner la bonne réponse');
+        return false;
+      }
+
+      const allChoicesFilled = choices.every((c) => c.text.trim() !== '');
+      if (!allChoicesFilled) {
+        setMessage('❌ Veuillez remplir toutes les réponses');
+        return false;
+      }
     }
 
     if (!explanation.trim()) {
@@ -204,15 +267,27 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
       setSaving(true);
       setMessage('💾 Sauvegarde en cours...');
 
-      const questionData = {
-        category,
-        question_text: questionText || null,
-        audio_url: audioUrl || null,
-        image_url: imageUrl || null,
-        choices: JSON.parse(JSON.stringify(choices)),
-        gap_choices: null, // NULL pour questions standards
-        explanation,
-      };
+      const questionData = category === 'text_completion' 
+        ? {
+            category,
+            question_text: null,
+            text_with_gaps: textWithGaps,
+            audio_url: audioUrl || null,
+            image_url: imageUrl || null,
+            choices: null,
+            gap_choices: JSON.parse(JSON.stringify(gapChoices)),
+            explanation,
+          }
+        : {
+            category,
+            question_text: questionText || null,
+            text_with_gaps: null,
+            audio_url: audioUrl || null,
+            image_url: imageUrl || null,
+            choices: JSON.parse(JSON.stringify(choices)),
+            gap_choices: null,
+            explanation,
+          };
 
       const { error } = await supabase
         .from('questions')
@@ -302,7 +377,8 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                 </select>
               </div>
 
-              {/* Question Text */}
+              {/* Question Text (for standard questions) */}
+              {category !== 'text_completion' && (
               <div>
                 <label className="block text-gray-700 font-bold mb-2">
                   Texte de la question (optionnel)
@@ -315,6 +391,27 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                   placeholder="Entrez le texte de la question..."
                 />
               </div>
+              )}
+
+              {/* Text with Gaps (for text_completion) */}
+              {category === 'text_completion' && (
+              <div>
+                <label className="block text-gray-700 font-bold mb-2">
+                  Texte avec trous * (utilisez {`{{1}}`}, {`{{2}}`}, etc.)
+                </label>
+                <textarea
+                  value={textWithGaps}
+                  onChange={(e) => setTextWithGaps(e.target.value)}
+                  className="w-full px-4 py-3 outline-none border-2 border-gray-300 rounded-xl focus:border-purple-400 transition-colors resize-none text-gray-900 placeholder:text-gray-400"
+                  rows={4}
+                  placeholder="Ex: She {{1}} to the meeting yesterday because she {{2}} sick."
+                  required
+                />
+                <p className="text-sm text-gray-500 mt-1">
+                  💡 Utilisez {`{{1}}`}, {`{{2}}`}, {`{{3}}`}, etc. pour indiquer les trous à remplir
+                </p>
+              </div>
+              )}
 
               {/* Audio Upload */}
               <div>
@@ -422,7 +519,8 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                 )}
               </div>
 
-              {/* Choices */}
+              {/* Standard Choices (not for text_completion) */}
+              {category !== 'text_completion' && choices && choices.length > 0 && (
               <div>
                 <label className="block text-gray-700 font-bold mb-2">
                   Réponses * (sélectionnez la bonne réponse)
@@ -450,6 +548,45 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                   ))}
                 </div>
               </div>
+              )}
+
+              {/* Gap Choices (for text_completion) */}
+              {category === 'text_completion' && Object.keys(gapChoices).length > 0 && (
+              <div className="space-y-6">
+                <label className="block text-gray-700 font-bold mb-2">
+                  Choix pour chaque trou * (sélectionnez la bonne réponse)
+                </label>
+                {Object.keys(gapChoices).sort((a, b) => parseInt(a) - parseInt(b)).map((gapNumber) => (
+                  <div key={gapNumber} className="border-2 border-purple-200 rounded-xl p-4 bg-purple-50">
+                    <h3 className="font-bold text-purple-900 mb-3">
+                      Trou {`{{${gapNumber}}}`}
+                    </h3>
+                    <div className="space-y-3">
+                      {gapChoices[gapNumber].map((choice, index) => (
+                        <div key={choice.option} className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name={`gap-${gapNumber}-correct`}
+                            checked={choice.is_correct}
+                            onChange={() => handleGapChoiceChange(gapNumber, index, 'is_correct', true)}
+                            className="w-5 h-5 text-green-600"
+                          />
+                          <span className="font-bold text-gray-700 w-8">{choice.option}.</span>
+                          <input
+                            type="text"
+                            value={choice.text}
+                            onChange={(e) => handleGapChoiceChange(gapNumber, index, 'text', e.target.value)}
+                            className="flex-1 px-4 py-3 outline-none border-2 border-gray-300 rounded-xl focus:border-purple-400 transition-colors text-gray-900 placeholder:text-gray-400 bg-white"
+                            placeholder={`Choix ${choice.option} pour le trou ${gapNumber}`}
+                            required
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              )}
 
               {/* Explanation */}
               <div>
