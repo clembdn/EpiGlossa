@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import NavbarWrapper from '@/components/NavbarWrapper';
 import AuthGuard from '@/components/AuthGuard';
+import ConditionalLayout from '@/components/ConditionalLayout';
 
 export const metadata: Metadata = {
   title: "EpiGlossa - Apprends l'anglais en t'amusant",
@@ -22,8 +22,9 @@ export default function RootLayout({
       </head>
       <body className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen antialiased">
         <AuthGuard>
-          {children}
-          <NavbarWrapper />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
         </AuthGuard>
       </body>
     </html>

@@ -1,19 +1,22 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [checking, setChecking] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const check = async () => {
       // allow auth routes
-      const path = window.location.pathname
+      const path = pathname || window.location.pathname
       if (path.startsWith('/auth')) {
         setChecking(false)
+        setIsAuthenticated(false)
         return
       }
 
@@ -23,11 +26,14 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         if (!user) {
           // redirect to login
           router.replace('/auth/login')
+          setIsAuthenticated(false)
           return
         }
+        setIsAuthenticated(true)
       } catch (err) {
         // if any error, redirect to login
         router.replace('/auth/login')
+        setIsAuthenticated(false)
         return
       } finally {
         setChecking(false)
@@ -35,7 +41,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     }
 
     check()
-  }, [router])
+  }, [router, pathname])
 
   if (checking) {
     return (

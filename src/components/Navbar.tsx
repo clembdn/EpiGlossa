@@ -176,6 +176,10 @@ export default function Navbar() {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut()
+      // clear our cookie so middleware won't consider the user authenticated
+      if (typeof document !== 'undefined') {
+        document.cookie = 'epig_token=; path=/; max-age=0;'
+      }
       setUser(null)
       router.push('/auth/login')
     } catch (err) {
