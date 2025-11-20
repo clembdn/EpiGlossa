@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Dumbbell, User, ChevronDown, Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText, Languages } from 'lucide-react';
+import { BookOpen, Dumbbell, User, ChevronDown, Volume2, MessageSquare, Users, Radio, FileText, CheckSquare, BookText, Languages, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { useUserRole } from '@/hooks/useUserRole';
 
 const trainCategories = [
   { 
@@ -137,6 +138,15 @@ const navItems = [
   },
 ];
 
+const adminNavItem = {
+  name: 'Admin',
+  href: '/admin',
+  icon: Shield,
+  color: 'bg-gradient-to-br from-red-400 to-pink-400',
+  activeColor: 'text-red-600',
+  hasDropdown: false
+};
+
 export default function Navbar() {
   const pathname = usePathname();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -144,6 +154,7 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<'learn' | 'train' | null>(null);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const { isAdmin, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
     let mounted = true
@@ -288,6 +299,46 @@ export default function Navbar() {
                 </Link>
               );
             })}
+            {/* Admin nav item for mobile - only visible to admins */}
+            {!roleLoading && isAdmin && (
+              <Link href={adminNavItem.href} className="flex-1">
+                <motion.div
+                  className="relative flex flex-col items-center gap-1 py-2"
+                >
+                  <div className="relative">
+                    <AnimatePresence>
+                      {pathname.startsWith(adminNavItem.href) && (
+                        <motion.div
+                          layoutId="mobileActiveBackground"
+                          className={`absolute inset-0 ${adminNavItem.color} rounded-2xl -m-2`}
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                    <div className="relative z-10 p-2">
+                      <adminNavItem.icon
+                        size={24}
+                        className={`transition-all duration-200 ${
+                          pathname.startsWith(adminNavItem.href) ? 'text-white scale-110' : 'text-gray-400'
+                        }`}
+                        strokeWidth={pathname.startsWith(adminNavItem.href) ? 2.5 : 2}
+                      />
+                    </div>
+                  </div>
+                  <motion.span
+                    className={`text-[11px] font-bold transition-all duration-200 ${
+                      pathname.startsWith(adminNavItem.href) ? adminNavItem.activeColor : 'text-gray-400'
+                    }`}
+                    animate={{ scale: pathname.startsWith(adminNavItem.href) ? 1.05 : 1 }}
+                  >
+                    {adminNavItem.name}
+                  </motion.span>
+                </motion.div>
+              </Link>
+            )}
           </div>
           {/* Mobile auth actions */}
           <div className="px-2 py-2 flex justify-center">
@@ -530,6 +581,38 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+              
+              {/* Admin nav item for desktop - only visible to admins */}
+              {!roleLoading && isAdmin && (
+                <Link href={adminNavItem.href}>
+                  <motion.div
+                    className={`relative px-6 py-3 rounded-2xl font-semibold transition-all duration-200 ${
+                      pathname.startsWith(adminNavItem.href)
+                        ? 'bg-gradient-to-br from-red-500 to-pink-500 text-white shadow-lg'
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <adminNavItem.icon size={20} strokeWidth={2.5} />
+                      <span>{adminNavItem.name}</span>
+                    </div>
+
+                    {pathname.startsWith(adminNavItem.href) && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-2xl"
+                        initial={{ x: '-100%' }}
+                        animate={{ x: '100%' }}
+                        transition={{ 
+                          repeat: Infinity, 
+                          duration: 2, 
+                          ease: "linear",
+                          repeatDelay: 1
+                        }}
+                      />
+                    )}
+                  </motion.div>
+                </Link>
+              )}
             </div>
 
             {/* Streak indicator */}
