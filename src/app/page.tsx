@@ -2,12 +2,46 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { BookOpen, Dumbbell, Trophy, Star, Flame, TrendingUp } from 'lucide-react';
+import { BookOpen, Dumbbell, Trophy, Star, Flame, TrendingUp, AlertCircle, X } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const [showUnauthorizedError, setShowUnauthorizedError] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('error') === 'unauthorized') {
+      setShowUnauthorizedError(true);
+    }
+  }, [searchParams]);
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-12">
+        {/* Unauthorized error message */}
+        {showUnauthorizedError && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 bg-red-50 border-2 border-red-200 rounded-2xl p-4 flex items-start gap-3"
+          >
+            <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="font-bold text-red-700 mb-1">Accès refusé</h3>
+              <p className="text-sm text-red-600">
+                Vous devez être administrateur pour accéder à cette section. Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, contactez un administrateur.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowUnauthorizedError(false)}
+              className="text-red-400 hover:text-red-600 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
