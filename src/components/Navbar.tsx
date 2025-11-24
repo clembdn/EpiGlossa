@@ -340,14 +340,6 @@ export default function Navbar() {
               </Link>
             )}
           </div>
-          {/* Mobile auth actions */}
-          <div className="px-2 py-2 flex justify-center">
-            {user ? (
-              <button onClick={handleSignOut} className="px-3 py-2 bg-red-500 text-white rounded-md w-full max-w-xs">Se déconnecter</button>
-            ) : (
-              <Link href="/auth/login" className="px-3 py-2 bg-blue-500 text-white rounded-md w-full max-w-xs text-center">Se connecter</Link>
-            )}
-          </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
@@ -612,28 +604,6 @@ export default function Navbar() {
                     )}
                   </motion.div>
                 </Link>
-              )}
-            </div>
-
-            {/* Streak indicator */}
-            <motion.div
-              className="flex items-center gap-2 bg-gradient-to-br from-orange-100 to-orange-50 px-4 py-2 rounded-xl border-2 border-orange-200"
-            >
-              <span className="text-2xl">🔥</span>
-              <div className="text-left">
-                <p className="text-xs text-orange-600 font-medium">Série</p>
-                <p className="text-lg font-bold text-orange-700">0 jours</p>
-              </div>
-            </motion.div>
-            {/* Auth area: show login or logout */}
-            <div className="ml-4">
-              {user ? (
-                <div className="flex items-center gap-3">
-                  <p className="text-sm text-gray-600">{user.email}</p>
-                  <button onClick={handleSignOut} className="px-3 py-2 bg-red-500 text-white rounded-md">Se déconnecter</button>
-                </div>
-              ) : (
-                <Link href="/auth/login" className="px-3 py-2 bg-blue-500 text-white rounded-md">Se connecter</Link>
               )}
             </div>
           </div>
