@@ -1706,5 +1706,896 @@ export const vocabularyLessons: VocabularyLesson[] = [
         explanation: 'Ici "since" = cause (puisque). "Since" peut signifier "depuis" (temps) ou "puisque" (cause).'
       }
     ]
+  },
+  {
+    id: 12,
+    title: 'Noms d\'Affaires Essentiels',
+    description: 'Vocabulaire professionnel qui revient constamment',
+    theme: 'Vocabulaire Business',
+    xp: 60,
+    duration: 8,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'Comptroller',
+        french: 'Contrôleur financier',
+        phonetic: '/kənˈtroʊlər/',
+        category: 'Poste/Fonction',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'The comptroller reviewed the financial forecasts.',
+            french: 'Le contrôleur financier a examiné les prévisions financières.'
+          },
+          {
+            english: 'Our comptroller manages all accounting operations.',
+            french: 'Notre contrôleur financier gère toutes les opérations comptables.'
+          },
+          {
+            english: 'Report these figures to the comptroller.',
+            french: 'Rapportez ces chiffres au contrôleur financier.'
+          }
+        ],
+        tips: '🔥 TRÈS FRÉQUENT au TOEIC ! Attention à l\'orthographe : comptroller (pas "controller").'
+      },
+      {
+        english: 'Competitors',
+        french: 'Concurrents',
+        phonetic: '/kəmˈpetɪtərz/',
+        category: 'Business',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Our competitors are launching new products.',
+            french: 'Nos concurrents lancent de nouveaux produits.'
+          },
+          {
+            english: 'We need to stay ahead of our competitors.',
+            french: 'Nous devons garder une longueur d\'avance sur nos concurrents.'
+          },
+          {
+            english: 'The company outperformed its competitors.',
+            french: 'L\'entreprise a surpassé ses concurrents.'
+          }
+        ],
+        tips: '⚠️ Toujours au pluriel dans le contexte business ! Ne pas confondre avec "competition".'
+      },
+      {
+        english: 'Trade barriers',
+        french: 'Barrières commerciales',
+        phonetic: '/treɪd ˈbæriərz/',
+        category: 'Commerce international',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The government reduced trade barriers.',
+            french: 'Le gouvernement a réduit les barrières commerciales.'
+          },
+          {
+            english: 'Trade barriers affect import costs.',
+            french: 'Les barrières commerciales affectent les coûts d\'importation.'
+          },
+          {
+            english: 'We must comply with international trade barriers.',
+            french: 'Nous devons nous conformer aux barrières commerciales internationales.'
+          }
+        ],
+        tips: '📊 Expression fixe ! Toujours "trade barriers" ensemble, jamais "trading barriers".'
+      },
+      {
+        english: 'Audit controls',
+        french: 'Contrôles d\'audit',
+        phonetic: '/ˈɔːdɪt kənˈtroʊlz/',
+        category: 'Finance/Comptabilité',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The bank implemented strict audit controls.',
+            french: 'La banque a mis en place des contrôles d\'audit stricts.'
+          },
+          {
+            english: 'Audit controls ensure financial accuracy.',
+            french: 'Les contrôles d\'audit garantissent l\'exactitude financière.'
+          },
+          {
+            english: 'We conduct regular audit controls.',
+            french: 'Nous effectuons des contrôles d\'audit réguliers.'
+          }
+        ],
+        tips: '💼 Souvent au pluriel dans le contexte professionnel !'
+      },
+      {
+        english: 'Forecast',
+        french: 'Prévision',
+        phonetic: '/ˈfɔːrkæst/',
+        category: 'Business/Planification',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'The sales forecast looks promising.',
+            french: 'Les prévisions de ventes semblent prometteuses.'
+          },
+          {
+            english: 'We need to update our financial forecast.',
+            french: 'Nous devons mettre à jour nos prévisions financières.'
+          },
+          {
+            english: 'The weather forecast affected our delivery schedule.',
+            french: 'Les prévisions météorologiques ont affecté notre calendrier de livraison.'
+          }
+        ],
+        tips: '🎯 Peut être nom OU verbe ! "to forecast" (prévoir) / "a forecast" (une prévision).'
+      },
+      {
+        english: 'Workload',
+        french: 'Charge de travail',
+        phonetic: '/ˈwɜːrkloʊd/',
+        category: 'Travail',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'My workload has increased this month.',
+            french: 'Ma charge de travail a augmenté ce mois-ci.'
+          },
+          {
+            english: 'Can you handle this additional workload?',
+            french: 'Peux-tu gérer cette charge de travail supplémentaire ?'
+          },
+          {
+            english: 'We need to distribute the workload evenly.',
+            french: 'Nous devons répartir la charge de travail équitablement.'
+          }
+        ],
+        tips: '💪 Un seul mot ! Pas "work load" séparé.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'v12-ex1',
+        type: 'multiple-choice',
+        question: 'The _____ approved the annual budget.',
+        options: ['comptroller', 'controller', 'compte-roller', 'comptroler'],
+        correctAnswer: 'comptroller',
+        explanation: 'L\'orthographe correcte est "comptroller" (contrôleur financier).'
+      },
+      {
+        id: 'v12-ex2',
+        type: 'multiple-choice',
+        question: 'Our _____ are offering lower prices.',
+        options: ['competition', 'competitors', 'competitive', 'compete'],
+        correctAnswer: 'competitors',
+        explanation: '"Competitors" = concurrents (nom pluriel).'
+      },
+      {
+        id: 'v12-ex3',
+        type: 'multiple-choice',
+        question: 'The company reduced _____ barriers to expand globally.',
+        options: ['trade', 'trading', 'trader', 'traded'],
+        correctAnswer: 'trade',
+        explanation: 'Expression fixe : "trade barriers" (barrières commerciales).'
+      },
+      {
+        id: 'v12-ex4',
+        type: 'multiple-choice',
+        question: 'The sales _____ indicates strong growth.',
+        options: ['forecast', 'forecastle', 'for cast', 'forecasted'],
+        correctAnswer: 'forecast',
+        explanation: '"Forecast" (nom) = prévision. Un seul mot !'
+      },
+      {
+        id: 'v12-ex5',
+        type: 'multiple-choice',
+        question: 'The _____ is too heavy this week.',
+        options: ['work load', 'workload', 'work-load', 'working load'],
+        correctAnswer: 'workload',
+        explanation: '"Workload" s\'écrit en un seul mot = charge de travail.'
+      }
+    ]
+  },
+  {
+    id: 13,
+    title: 'Adverbes de Manière et Degré',
+    description: 'Mots essentiels pour nuancer vos phrases',
+    theme: 'Adverbes TOEIC',
+    xp: 65,
+    duration: 9,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'Approximately',
+        french: 'Approximativement / Environ',
+        phonetic: '/əˈprɑːksɪmətli/',
+        category: 'Adverbe de degré',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'The package will arrive approximately at 7:00 PM.',
+            french: 'Le colis arrivera environ à 19h.'
+          },
+          {
+            english: 'There were approximately 200 attendees.',
+            french: 'Il y avait environ 200 participants.'
+          },
+          {
+            english: 'The project will cost approximately $50,000.',
+            french: 'Le projet coûtera environ 50 000 $.'
+          }
+        ],
+        tips: '⏰ ULTRA FRÉQUENT avec les heures, quantités et coûts au TOEIC !'
+      },
+      {
+        english: 'Hardly',
+        french: 'À peine / Presque pas',
+        phonetic: '/ˈhɑːrdli/',
+        category: 'Adverbe négatif',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'There is hardly any food left.',
+            french: 'Il ne reste presque pas de nourriture.'
+          },
+          {
+            english: 'I can hardly hear you.',
+            french: 'Je t\'entends à peine.'
+          },
+          {
+            english: 'She hardly ever complains.',
+            french: 'Elle se plaint presque jamais.'
+          }
+        ],
+        tips: '⚠️ "Hardly" = négatif ! Ne PAS utiliser avec "not" (double négation).'
+      },
+      {
+        english: 'Consequently',
+        french: 'Par conséquent / En conséquence',
+        phonetic: '/ˈkɑːnsɪkwentli/',
+        category: 'Adverbe de conséquence',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Sales dropped; consequently, we reduced staff.',
+            french: 'Les ventes ont chuté ; par conséquent, nous avons réduit le personnel.'
+          },
+          {
+            english: 'The delay was costly. Consequently, we changed suppliers.',
+            french: 'Le retard était coûteux. En conséquence, nous avons changé de fournisseurs.'
+          },
+          {
+            english: 'He missed the deadline; consequently, he was reprimanded.',
+            french: 'Il a raté la date limite ; par conséquent, il a été réprimandé.'
+          }
+        ],
+        tips: '📌 Toujours suivi d\'une virgule ou point-virgule avant !'
+      },
+      {
+        english: 'Frequently',
+        french: 'Fréquemment / Souvent',
+        phonetic: '/ˈfriːkwəntli/',
+        category: 'Adverbe de fréquence',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We frequently update our policies.',
+            french: 'Nous mettons fréquemment à jour nos politiques.'
+          },
+          {
+            english: 'Customers frequently ask this question.',
+            french: 'Les clients posent fréquemment cette question.'
+          },
+          {
+            english: 'He travels frequently for business.',
+            french: 'Il voyage fréquemment pour affaires.'
+          }
+        ],
+        tips: '🔄 Synonymes : often, regularly, commonly.'
+      },
+      {
+        english: 'Daily',
+        french: 'Quotidiennement / Tous les jours',
+        phonetic: '/ˈdeɪli/',
+        category: 'Adverbe de fréquence',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We check emails daily.',
+            french: 'Nous vérifions les emails quotidiennement.'
+          },
+          {
+            english: 'The report is updated daily.',
+            french: 'Le rapport est mis à jour quotidiennement.'
+          },
+          {
+            english: 'She commutes daily to the office.',
+            french: 'Elle fait le trajet quotidiennement jusqu\'au bureau.'
+          }
+        ],
+        tips: '📅 Peut être adjectif OU adverbe ! "daily report" / "updated daily".'
+      },
+      {
+        english: 'Superior',
+        french: 'Supérieur',
+        phonetic: '/suːˈpɪriər/',
+        category: 'Adjectif de comparaison',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'This product is superior to the competition.',
+            french: 'Ce produit est supérieur à la concurrence.'
+          },
+          {
+            english: 'We offer superior customer service.',
+            french: 'Nous offrons un service client supérieur.'
+          },
+          {
+            english: 'The quality is superior to what we expected.',
+            french: 'La qualité est supérieure à ce que nous attendions.'
+          }
+        ],
+        tips: '⚠️ TOUJOURS suivi de "TO" jamais "than" ! Superior TO (not than).'
+      }
+    ],
+    exercises: [
+      {
+        id: 'v13-ex1',
+        type: 'multiple-choice',
+        question: 'The meeting will start _____ at 3 PM.',
+        options: ['approximate', 'approximately', 'approximation', 'approximated'],
+        correctAnswer: 'approximately',
+        explanation: '"Approximately" (adverbe) = environ, modifie l\'heure.'
+      },
+      {
+        id: 'v13-ex2',
+        type: 'multiple-choice',
+        question: 'There is _____ any time left.',
+        options: ['hardly', 'hard', 'hardness', 'harden'],
+        correctAnswer: 'hardly',
+        explanation: '"Hardly" = à peine, presque pas (adverbe négatif).'
+      },
+      {
+        id: 'v13-ex3',
+        type: 'multiple-choice',
+        question: 'The system failed; _____, we lost data.',
+        options: ['consequent', 'consequently', 'consequence', 'consequential'],
+        correctAnswer: 'consequently',
+        explanation: '"Consequently" (adverbe) = par conséquent, en conséquence.'
+      },
+      {
+        id: 'v13-ex4',
+        type: 'multiple-choice',
+        question: 'Our product is _____ to theirs.',
+        options: ['superior than', 'superior to', 'more superior', 'superior for'],
+        correctAnswer: 'superior to',
+        explanation: 'Expression fixe : "superior TO" (jamais "than") !'
+      },
+      {
+        id: 'v13-ex5',
+        type: 'multiple-choice',
+        question: 'We _____ review our procedures.',
+        options: ['frequent', 'frequency', 'frequently', 'frequented'],
+        correctAnswer: 'frequently',
+        explanation: '"Frequently" (adverbe) = fréquemment, souvent.'
+      }
+    ]
+  },
+  {
+    id: 14,
+    title: 'Verbes d\'Action Professionnels',
+    description: 'Verbes essentiels du monde du travail',
+    theme: 'Verbes Business',
+    xp: 70,
+    duration: 10,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'To implement',
+        french: 'Mettre en œuvre / Implémenter',
+        phonetic: '/ˈɪmplɪment/',
+        category: 'Verbe d\'action',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We will implement the new policy next month.',
+            french: 'Nous mettrons en œuvre la nouvelle politique le mois prochain.'
+          },
+          {
+            english: 'The company implemented cost-saving measures.',
+            french: 'L\'entreprise a mis en place des mesures d\'économie.'
+          },
+          {
+            english: 'They are implementing a new software system.',
+            french: 'Ils sont en train d\'implémenter un nouveau système logiciel.'
+          }
+        ],
+        tips: '🔥 TRÈS FRÉQUENT ! Souvent utilisé avec "policy", "system", "strategy".'
+      },
+      {
+        english: 'To oversee',
+        french: 'Superviser / Surveiller',
+        phonetic: '/ˌoʊvərˈsiː/',
+        category: 'Verbe de management',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'She oversees all marketing operations.',
+            french: 'Elle supervise toutes les opérations marketing.'
+          },
+          {
+            english: 'The manager will oversee the project.',
+            french: 'Le manager supervisera le projet.'
+          },
+          {
+            english: 'Who oversees the quality control department?',
+            french: 'Qui supervise le département contrôle qualité ?'
+          }
+        ],
+        tips: '👀 Verbe irrégulier : oversee / oversaw / overseen.'
+      },
+      {
+        english: 'To ensure',
+        french: 'Assurer / Garantir',
+        phonetic: '/ɪnˈʃʊr/',
+        category: 'Verbe d\'action',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We must ensure customer satisfaction.',
+            french: 'Nous devons assurer la satisfaction client.'
+          },
+          {
+            english: 'Please ensure all documents are signed.',
+            french: 'Veuillez vous assurer que tous les documents sont signés.'
+          },
+          {
+            english: 'The system ensures data security.',
+            french: 'Le système garantit la sécurité des données.'
+          }
+        ],
+        tips: '⚠️ Ne pas confondre avec "insure" (assurer = insurance).'
+      },
+      {
+        english: 'To procrastinate',
+        french: 'Remettre à plus tard / Procrastiner',
+        phonetic: '/proʊˈkræstɪneɪt/',
+        category: 'Verbe d\'action',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Don\'t procrastinate on important tasks.',
+            french: 'Ne remets pas à plus tard les tâches importantes.'
+          },
+          {
+            english: 'He procrastinated and missed the deadline.',
+            french: 'Il a procrastiné et a raté la date limite.'
+          },
+          {
+            english: 'Stop procrastinating and start working!',
+            french: 'Arrête de procrastiner et commence à travailler !'
+          }
+        ],
+        tips: '📝 Sens négatif ! Implique un retard volontaire.'
+      },
+      {
+        english: 'To comply (with)',
+        french: 'Se conformer à / Respecter',
+        phonetic: '/kəmˈplaɪ/',
+        category: 'Verbe juridique/business',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'All employees must comply with safety regulations.',
+            french: 'Tous les employés doivent se conformer aux règles de sécurité.'
+          },
+          {
+            english: 'The company complies with international standards.',
+            french: 'L\'entreprise se conforme aux normes internationales.'
+          },
+          {
+            english: 'Failure to comply may result in penalties.',
+            french: 'Le non-respect peut entraîner des pénalités.'
+          }
+        ],
+        tips: '⚠️ TOUJOURS avec "WITH" ! Comply WITH (jamais "to" ou "for").'
+      }
+    ],
+    exercises: [
+      {
+        id: 'v14-ex1',
+        type: 'multiple-choice',
+        question: 'We will _____ the new system next week.',
+        options: ['implement', 'implementation', 'implementing', 'implementer'],
+        correctAnswer: 'implement',
+        explanation: '"Implement" (verbe) = mettre en œuvre.'
+      },
+      {
+        id: 'v14-ex2',
+        type: 'multiple-choice',
+        question: 'The director _____ three departments.',
+        options: ['oversees', 'oversee', 'overseeing', 'oversight'],
+        correctAnswer: 'oversees',
+        explanation: '"Oversees" (3e personne) = supervise.'
+      },
+      {
+        id: 'v14-ex3',
+        type: 'multiple-choice',
+        question: 'We must _____ quality standards.',
+        options: ['ensure', 'insure', 'assure', 'unsure'],
+        correctAnswer: 'ensure',
+        explanation: '"Ensure" = garantir, s\'assurer que.'
+      },
+      {
+        id: 'v14-ex4',
+        type: 'multiple-choice',
+        question: 'All staff must _____ with company policies.',
+        options: ['comply', 'comply with', 'comply to', 'comply for'],
+        correctAnswer: 'comply with',
+        explanation: 'Expression fixe : "comply WITH" (se conformer à).'
+      },
+      {
+        id: 'v14-ex5',
+        type: 'multiple-choice',
+        question: 'Stop _____ and submit your report!',
+        options: ['procrastinate', 'procrastinating', 'procrastination', 'procrastinator'],
+        correctAnswer: 'procrastinating',
+        explanation: 'Après "stop", on utilise le gérondif (-ing).'
+      }
+    ]
+  },
+  {
+    id: 15,
+    title: 'Phrasal Verbs Essentiels',
+    description: 'Verbes à particules qui tombent souvent',
+    theme: 'Phrasal Verbs TOEIC',
+    xp: 75,
+    duration: 11,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'To count on',
+        french: 'Compter sur / Faire confiance à',
+        phonetic: '/kaʊnt ɑːn/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'You can count on me to finish the project.',
+            french: 'Tu peux compter sur moi pour finir le projet.'
+          },
+          {
+            english: 'We count on our team members.',
+            french: 'Nous comptons sur les membres de notre équipe.'
+          },
+          {
+            english: 'Can I count on your support?',
+            french: 'Puis-je compter sur votre soutien ?'
+          }
+        ],
+        tips: '🤝 Exprime la confiance et la fiabilité ! Très courant au TOEIC.'
+      },
+      {
+        english: 'To find out',
+        french: 'Découvrir / Se renseigner',
+        phonetic: '/faɪnd aʊt/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'I need to find out when the meeting starts.',
+            french: 'J\'ai besoin de découvrir quand la réunion commence.'
+          },
+          {
+            english: 'Let\'s find out more information.',
+            french: 'Découvrons plus d\'informations.'
+          },
+          {
+            english: 'How did you find out about this job?',
+            french: 'Comment as-tu découvert ce travail ?'
+          }
+        ],
+        tips: '🔍 Implique une recherche active d\'information.'
+      },
+      {
+        english: 'To break down',
+        french: 'Tomber en panne / Se décomposer',
+        phonetic: '/breɪk daʊn/',
+        category: 'Phrasal Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'My car broke down on the highway.',
+            french: 'Ma voiture est tombée en panne sur l\'autoroute.'
+          },
+          {
+            english: 'The machine broke down during production.',
+            french: 'La machine est tombée en panne pendant la production.'
+          },
+          {
+            english: 'The negotiations broke down.',
+            french: 'Les négociations ont échoué.'
+          }
+        ],
+        tips: '⚠️ Peut signifier "tomber en panne" (machine) ou "échouer" (négociations).'
+      },
+      {
+        english: 'To stop by',
+        french: 'Passer (rapidement) / Faire un saut',
+        phonetic: '/stɑːp baɪ/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Can you stop by my office later?',
+            french: 'Peux-tu passer à mon bureau plus tard ?'
+          },
+          {
+            english: 'I\'ll stop by the store on my way home.',
+            french: 'Je passerai au magasin en rentrant chez moi.'
+          },
+          {
+            english: 'Feel free to stop by anytime.',
+            french: 'N\'hésite pas à passer quand tu veux.'
+          }
+        ],
+        tips: '🚶 Visite courte et informelle ! Très courant dans les emails professionnels.'
+      },
+      {
+        english: 'To turn down',
+        french: 'Refuser / Rejeter',
+        phonetic: '/tɜːrn daʊn/',
+        category: 'Phrasal Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'She turned down the job offer.',
+            french: 'Elle a refusé l\'offre d\'emploi.'
+          },
+          {
+            english: 'They turned down our proposal.',
+            french: 'Ils ont rejeté notre proposition.'
+          },
+          {
+            english: 'I had to turn down the invitation.',
+            french: 'J\'ai dû refuser l\'invitation.'
+          }
+        ],
+        tips: '❌ Sens négatif = refuser quelque chose qu\'on vous propose.'
+      },
+      {
+        english: 'To look forward to',
+        french: 'Avoir hâte de / Attendre avec impatience',
+        phonetic: '/lʊk ˈfɔːrwərd tuː/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'I look forward to hearing from you.',
+            french: 'J\'ai hâte d\'avoir de vos nouvelles.'
+          },
+          {
+            english: 'We look forward to working with you.',
+            french: 'Nous avons hâte de travailler avec vous.'
+          },
+          {
+            english: 'She looks forward to the meeting.',
+            french: 'Elle attend la réunion avec impatience.'
+          }
+        ],
+        tips: '📧 ULTRA FRÉQUENT dans les emails professionnels ! Toujours suivi de -ING.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'v15-ex1',
+        type: 'multiple-choice',
+        question: 'You can _____ me to help you.',
+        options: ['count in', 'count on', 'count at', 'count with'],
+        correctAnswer: 'count on',
+        explanation: '"Count on" = compter sur (faire confiance).'
+      },
+      {
+        id: 'v15-ex2',
+        type: 'multiple-choice',
+        question: 'I need to _____ more about this project.',
+        options: ['find in', 'find up', 'find out', 'find on'],
+        correctAnswer: 'find out',
+        explanation: '"Find out" = découvrir, se renseigner.'
+      },
+      {
+        id: 'v15-ex3',
+        type: 'multiple-choice',
+        question: 'The printer _____ this morning.',
+        options: ['broke down', 'broke up', 'broke in', 'broke off'],
+        correctAnswer: 'broke down',
+        explanation: '"Broke down" = est tombé en panne.'
+      },
+      {
+        id: 'v15-ex4',
+        type: 'multiple-choice',
+        question: 'Please _____ my desk when you have time.',
+        options: ['stop at', 'stop by', 'stop in', 'stop on'],
+        correctAnswer: 'stop by',
+        explanation: '"Stop by" = passer rapidement (visite courte).'
+      },
+      {
+        id: 'v15-ex5',
+        type: 'multiple-choice',
+        question: 'We _____ hearing from you soon.',
+        options: ['look forward', 'look forward to', 'look forwards', 'looking forward'],
+        correctAnswer: 'look forward to',
+        explanation: 'Expression fixe : "look forward TO" (+ -ing).'
+      }
+    ]
+  },
+  {
+    id: 16,
+    title: 'Conjonctions et Connecteurs',
+    description: 'Mots de liaison essentiels pour la cohérence',
+    theme: 'Connecteurs Logiques',
+    xp: 65,
+    duration: 9,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'Unless',
+        french: 'À moins que / Sauf si',
+        phonetic: '/ənˈles/',
+        category: 'Conjonction conditionnelle',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We can\'t proceed unless you approve.',
+            french: 'Nous ne pouvons pas continuer à moins que vous n\'approuviez.'
+          },
+          {
+            english: 'Unless you finish today, we\'ll miss the deadline.',
+            french: 'À moins que tu ne finisses aujourd\'hui, nous raterons la date limite.'
+          },
+          {
+            english: 'Don\'t call me unless it\'s urgent.',
+            french: 'Ne m\'appelle pas sauf si c\'est urgent.'
+          }
+        ],
+        tips: '⚠️ "Unless" = condition NÉGATIVE obligatoire ! = "if... not".'
+      },
+      {
+        english: 'Whether... or not',
+        french: 'Que... ou non / Si... ou non',
+        phonetic: '/ˈweðər ... ɔːr nɑːt/',
+        category: 'Conjonction de choix',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'I don\'t know whether he\'ll come or not.',
+            french: 'Je ne sais pas s\'il viendra ou non.'
+          },
+          {
+            english: 'Whether you like it or not, we must finish.',
+            french: 'Que tu aimes ça ou non, nous devons finir.'
+          },
+          {
+            english: 'Call me whether you find it or not.',
+            french: 'Appelle-moi que tu le trouves ou non.'
+          }
+        ],
+        tips: '🔄 Présente DEUX options possibles ! Souvent utilisé dans les questions indirectes.'
+      },
+      {
+        english: 'Whereas',
+        french: 'Tandis que / Alors que',
+        phonetic: '/werˈæz/',
+        category: 'Conjonction de contraste',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Sales increased, whereas costs decreased.',
+            french: 'Les ventes ont augmenté, alors que les coûts ont diminué.'
+          },
+          {
+            english: 'He prefers emails, whereas she likes phone calls.',
+            french: 'Il préfère les emails, tandis qu\'elle aime les appels téléphoniques.'
+          },
+          {
+            english: 'Accounts payable increased, whereas receivables dropped.',
+            french: 'Les comptes créditeurs ont augmenté, alors que les débiteurs ont chuté.'
+          }
+        ],
+        tips: '⚖️ Montre un CONTRASTE fort entre deux situations opposées !'
+      },
+      {
+        english: 'Neither... nor',
+        french: 'Ni... ni',
+        phonetic: '/ˈnaɪðər ... nɔːr/',
+        category: 'Conjonction négative corrélative',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Neither the manager nor the staff were informed.',
+            french: 'Ni le manager ni le personnel n\'ont été informés.'
+          },
+          {
+            english: 'I have neither time nor money.',
+            french: 'Je n\'ai ni temps ni argent.'
+          },
+          {
+            english: 'The product is neither cheap nor expensive.',
+            french: 'Le produit n\'est ni bon marché ni cher.'
+          }
+        ],
+        tips: '❌❌ Double négation ! Toujours "neither... NOR" (pas "or").'
+      },
+      {
+        english: 'In accordance with',
+        french: 'Conformément à / En conformité avec',
+        phonetic: '/ɪn əˈkɔːrdəns wɪð/',
+        category: 'Expression de conformité',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Audits are conducted in accordance with standards.',
+            french: 'Les audits sont menés conformément aux normes.'
+          },
+          {
+            english: 'Please act in accordance with company policy.',
+            french: 'Veuillez agir conformément à la politique de l\'entreprise.'
+          },
+          {
+            english: 'In accordance with your request, here is the report.',
+            french: 'Conformément à votre demande, voici le rapport.'
+          }
+        ],
+        tips: '📋 Expression FIXE formelle ! Très courante dans les documents officiels.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'v16-ex1',
+        type: 'multiple-choice',
+        question: '_____ you submit it today, we\'ll be late.',
+        options: ['Unless', 'If', 'When', 'Because'],
+        correctAnswer: 'Unless',
+        explanation: '"Unless" = à moins que, sauf si (condition négative).'
+      },
+      {
+        id: 'v16-ex2',
+        type: 'multiple-choice',
+        question: 'I don\'t know _____ he will attend.',
+        options: ['whether or not', 'if or not', 'weather or not', 'wether or not'],
+        correctAnswer: 'whether or not',
+        explanation: '"Whether or not" = si... ou non (choix entre deux options).'
+      },
+      {
+        id: 'v16-ex3',
+        type: 'multiple-choice',
+        question: 'Sales rose, _____ profits fell.',
+        options: ['whereas', 'while', 'during', 'because'],
+        correctAnswer: 'whereas',
+        explanation: '"Whereas" = tandis que (contraste fort).'
+      },
+      {
+        id: 'v16-ex4',
+        type: 'multiple-choice',
+        question: '_____ the CEO _____ the board approved.',
+        options: ['Neither... nor', 'Either... or', 'Both... and', 'Not... but'],
+        correctAnswer: 'Neither... nor',
+        explanation: '"Neither... nor" = ni... ni (double négation).'
+      },
+      {
+        id: 'v16-ex5',
+        type: 'multiple-choice',
+        question: 'The audit was done _____ international standards.',
+        options: ['in accordance with', 'in accordance to', 'in accordance for', 'in accordance of'],
+        correctAnswer: 'in accordance with',
+        explanation: 'Expression fixe : "in accordance WITH" (conformément à).'
+      }
+    ]
   }
 ];
