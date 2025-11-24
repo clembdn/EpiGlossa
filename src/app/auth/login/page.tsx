@@ -21,9 +21,14 @@ export default function LoginPage() {
     const check = async () => {
       const { data } = await supabase.auth.getUser()
       setUser(data?.user ?? null)
+      
+      // Si l'utilisateur est déjà connecté, le rediriger automatiquement
+      if (data?.user) {
+        router.push('/')
+      }
     }
     check()
-  }, [])
+  }, [router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,9 +116,12 @@ export default function LoginPage() {
           <div className="text-6xl mb-4">👋</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Déjà connecté !</h2>
           <p className="text-gray-600 mb-6">{user.email}</p>
-          <Link href="/" className="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold">
-            Retour à l'accueil
-          </Link>
+          <button 
+            onClick={() => router.push('/')}
+            className="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:shadow-xl transition-all"
+          >
+            Retour à l&apos;accueil
+          </button>
         </motion.div>
       </div>
     )
