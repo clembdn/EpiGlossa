@@ -98,16 +98,11 @@ export default function QuestionPage() {
   // Hook de streak
   const { updateStreak } = useStreak();
 
-  // Hooks de cache conditionnels selon le type de question
-  const singleQuestionCache = category !== 'reading_comprehension' 
-    ? useSingleQuestionCache(questionId, category)
-    : { question: null, loading: false, fromCache: false };
-    
-  const readingPassageCache = category === 'reading_comprehension'
-    ? useReadingPassageCache(questionId)
-    : { questions: [], loading: false, fromCache: false };
+  // Hooks de cache - TOUJOURS appelés (jamais conditionnellement)
+  const singleQuestionCache = useSingleQuestionCache(questionId, category);
+  const readingPassageCache = useReadingPassageCache(questionId);
 
-  // Déterminer question(s) et état de chargement
+  // Déterminer question(s) et état de chargement selon le type
   const question = category === 'reading_comprehension' ? null : singleQuestionCache.question;
   const questions = category === 'reading_comprehension' ? readingPassageCache.questions : [];
   const loading = category === 'reading_comprehension' ? readingPassageCache.loading : singleQuestionCache.loading;
