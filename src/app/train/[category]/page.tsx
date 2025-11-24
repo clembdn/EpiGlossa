@@ -393,6 +393,15 @@ export default function TrainCategoryPage() {
                               <span>{question.choices?.length || 0} choix</span>
                             </div>
                           </div>
+                          
+                          {/* Display image thumbnail for audio_with_images category */}
+                          {category === 'audio_with_images' && question.image_url && (
+                            <img 
+                              src={question.image_url} 
+                              alt="Question" 
+                              className="w-full h-32 object-cover rounded-xl mt-3"
+                            />
+                          )}
                         </div>
 
                       <motion.div

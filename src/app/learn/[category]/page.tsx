@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Lock, CheckCircle2, Circle, Play, Trophy } from 'lucide-react';
 import Link from 'next/link';
+import { vocabularyLessons } from '@/data/vocabulary-lessons';
+import { lessonProgressService } from '@/lib/lesson-progress';
 
 interface Lesson {
   id: number;
@@ -21,14 +24,7 @@ const categoryData: Record<string, { name: string; emoji: string; color: string;
     name: 'Vocabulaire',
     emoji: '📚',
     color: 'from-purple-400 to-pink-400',
-    lessons: [
-      { id: 1, title: 'Les couleurs', description: 'Apprends les couleurs en anglais', xp: 50, duration: 5, locked: false, completed: true, status: 'completed' },
-      { id: 2, title: 'Les animaux', description: 'Découvre les noms d\'animaux', xp: 60, duration: 7, locked: false, completed: true, status: 'completed' },
-      { id: 3, title: 'Les fruits', description: 'Enrichis ton vocabulaire alimentaire', xp: 55, duration: 6, locked: false, completed: false, status: 'available' },
-      { id: 4, title: 'La famille', description: 'Les membres de la famille', xp: 70, duration: 8, locked: false, completed: false, status: 'available' },
-      { id: 5, title: 'La maison', description: 'Les pièces et les objets', xp: 65, duration: 7, locked: true, completed: false, status: 'locked' },
-      { id: 6, title: 'Les vêtements', description: 'Les habits et accessoires', xp: 60, duration: 6, locked: true, completed: false, status: 'locked' },
-    ]
+    lessons: vocabularyLessons
   },
   grammaire: {
     name: 'Grammaire',
@@ -78,6 +74,33 @@ export default function CategoryPage() {
   const router = useRouter();
   const category = params.category as string;
   const categoryInfo = categoryData[category];
+  
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [totalXP, setTotalXP] = useState(0);
+
+  useEffect(() => {
+    if (categoryInfo) {
+      // Mettre à jour les leçons avec la progression réelle
+      const updatedLessons = categoryInfo.lessons.map(lesson => {
+        const isCompleted = lessonProgressService.isLessonCompleted(category, lesson.id);
+        return {
+          ...lesson,
+          completed: isCompleted,
+          status: lesson.locked ? 'locked' : (isCompleted ? 'completed' : 'available') as 'locked' | 'available' | 'completed'
+        };
+      });
+      setLessons(updatedLessons);
+
+      // Calculer le XP total gagné
+      const xp = updatedLessons
+        .filter(l => l.completed)
+        .reduce((sum, l) => {
+          const progress = lessonProgressService.getLessonProgress(category, l.id);
+          return sum + (progress?.xpEarned || 0);
+        }, 0);
+      setTotalXP(xp);
+    }
+  }, [category, categoryInfo]);
 
   if (!categoryInfo) {
     return (
@@ -121,14 +144,14 @@ export default function CategoryPage() {
                   {categoryInfo.name}
                 </h1>
                 <p className="text-gray-500 text-sm mt-1">
-                  {categoryInfo.lessons.filter(l => l.completed).length}/{categoryInfo.lessons.length} leçons complétées
+                  {lessons.filter(l => l.completed).length}/{lessons.length} leçons complétées
                 </p>
               </div>
               <div className="text-right">
                 <div className="flex items-center gap-1 mb-1">
                   <Trophy className="w-5 h-5 text-yellow-500" />
                   <span className="font-bold text-gray-700">
-                    {categoryInfo.lessons.filter(l => l.completed).reduce((acc, l) => acc + l.xp, 0)} XP
+                    {totalXP} XP
                   </span>
                 </div>
                 <p className="text-xs text-gray-500">Total gagné</p>
@@ -141,7 +164,7 @@ export default function CategoryPage() {
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ 
-                    width: `${(categoryInfo.lessons.filter(l => l.completed).length / categoryInfo.lessons.length) * 100}%` 
+                    width: `${(lessons.filter(l => l.completed).length / lessons.length) * 100}%` 
                   }}
                   transition={{ duration: 1, delay: 0.3 }}
                   className={`h-full bg-gradient-to-r ${categoryInfo.color}`}
@@ -157,7 +180,7 @@ export default function CategoryPage() {
           <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-200 via-purple-200 to-pink-200 rounded-full" />
 
           <div className="space-y-6">
-            {categoryInfo.lessons.map((lesson, index) => (
+            {lessons.map((lesson, index) => (
               <motion.div
                 key={lesson.id}
                 initial={{ opacity: 0, x: -20 }}

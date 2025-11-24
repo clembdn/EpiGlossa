@@ -1,0 +1,1710 @@
+import { VocabularyLesson } from '@/types/lesson';
+
+export const vocabularyLessons: VocabularyLesson[] = [
+  {
+    id: 1,
+    title: 'Les 3 mots les plus fréquents',
+    description: 'Maîtrise les verbes qui tombent à TOUS les TOEIC',
+    theme: 'Vocabulaire essentiel',
+    xp: 50,
+    duration: 5,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'To pick up',
+        french: 'Récupérer / Passer prendre',
+        phonetic: '/pɪk ʌp/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Please pick up your tickets at the front desk.',
+            french: 'Veuillez récupérer vos billets à l\'accueil.'
+          },
+          {
+            english: 'I\'ll pick you up at the airport.',
+            french: 'Je viendrai te chercher à l\'aéroport.'
+          },
+          {
+            english: 'Can you pick up the documents from my office?',
+            french: 'Peux-tu récupérer les documents dans mon bureau ?'
+          }
+        ],
+        tips: '🔥 ULTRA FRÉQUENT au TOEIC ! Apparaît dans presque tous les tests. Ne confonds pas avec "to pick" seul.'
+      },
+      {
+        english: 'To attend',
+        french: 'Assister à / Participer à',
+        phonetic: '/əˈtend/',
+        category: 'Verbe d\'action',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'All employees must attend the meeting.',
+            french: 'Tous les employés doivent assister à la réunion.'
+          },
+          {
+            english: 'How many people will attend the conference?',
+            french: 'Combien de personnes vont participer à la conférence ?'
+          },
+          {
+            english: 'She attended the training session last week.',
+            french: 'Elle a assisté à la session de formation la semaine dernière.'
+          }
+        ],
+        tips: '⚠️ FAUX AMI ! "Attend" ne veut PAS dire "attendre" (= to wait) mais "assister à".'
+      },
+      {
+        english: 'Available',
+        french: 'Disponible',
+        phonetic: '/əˈveɪləbl/',
+        category: 'Adjectif',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Tickets are available at the box office.',
+            french: 'Les billets sont disponibles à la billetterie.'
+          },
+          {
+            english: 'Is Mr. Johnson available for a meeting?',
+            french: 'Est-ce que M. Johnson est disponible pour une réunion ?'
+          },
+          {
+            english: 'Free parking is available for visitors.',
+            french: 'Un parking gratuit est disponible pour les visiteurs.'
+          }
+        ],
+        tips: '💡 Très utilisé pour parler de disponibilité (personnes, billets, services). Souvent dans les annonces.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex1_1',
+        type: 'multiple-choice',
+        question: 'What does "to pick up" mean?',
+        options: [
+          'To choose something',
+          'To collect/get something',
+          'To pick flowers',
+          'To wake up'
+        ],
+        correctAnswer: 'To collect/get something',
+        explanation: '"To pick up" signifie récupérer ou aller chercher quelque chose ou quelqu\'un.'
+      },
+      {
+        id: 'ex1_2',
+        type: 'fill-blank',
+        question: 'Complete: "Please ___ your badge at the reception."',
+        correctAnswer: 'pick up',
+        explanation: 'On utilise "pick up" pour dire récupérer quelque chose à un endroit précis.'
+      },
+      {
+        id: 'ex1_3',
+        type: 'multiple-choice',
+        question: '"I will attend the conference" means:',
+        options: [
+          'J\'attendrai la conférence',
+          'J\'assisterai à la conférence',
+          'Je donnerai la conférence',
+          'J\'organiserai la conférence'
+        ],
+        correctAnswer: 'J\'assisterai à la conférence',
+        explanation: '"Attend" est un faux ami ! Il signifie "assister à" et non "attendre".'
+      },
+      {
+        id: 'ex1_4',
+        type: 'translation',
+        question: 'Translate: "Les billets sont disponibles en ligne."',
+        correctAnswer: 'Tickets are available online',
+        explanation: '"Available" = disponible. "Online" = en ligne.'
+      },
+      {
+        id: 'ex1_5',
+        type: 'matching',
+        question: 'Match the words with their French translation',
+        options: ['To pick up', 'To attend', 'Available'],
+        correctAnswer: ['Récupérer', 'Assister à', 'Disponible'],
+        explanation: 'Ces trois mots sont les plus fréquents au TOEIC !'
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: 'Le monde de l\'entreprise - Part 1',
+    description: 'Vocabulaire professionnel essentiel',
+    theme: 'Business & Travail',
+    xp: 60,
+    duration: 7,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'Joint venture',
+        french: 'Coentreprise / Partenariat commercial',
+        phonetic: '/dʒɔɪnt ˈventʃər/',
+        category: 'Business',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The two companies formed a joint venture to expand internationally.',
+            french: 'Les deux entreprises ont formé une coentreprise pour se développer à l\'international.'
+          },
+          {
+            english: 'This joint venture will create 500 new jobs.',
+            french: 'Cette coentreprise va créer 500 nouveaux emplois.'
+          }
+        ],
+        tips: '🤝 Souvent utilisé dans les contextes de partenariats entre entreprises.'
+      },
+      {
+        english: 'Market share',
+        french: 'Part de marché',
+        phonetic: '/ˈmɑːrkɪt ʃeər/',
+        category: 'Business',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Our market share increased by 15% this year.',
+            french: 'Notre part de marché a augmenté de 15% cette année.'
+          },
+          {
+            english: 'The company holds a 30% market share in Asia.',
+            french: 'L\'entreprise détient une part de marché de 30% en Asie.'
+          }
+        ],
+        tips: '📊 Très utilisé dans les rapports financiers et présentations business.'
+      },
+      {
+        english: 'To diversify',
+        french: 'Se diversifier',
+        phonetic: '/daɪˈvɜːrsɪfaɪ/',
+        category: 'Business Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The company plans to diversify into renewable energy.',
+            french: 'L\'entreprise prévoit de se diversifier dans les énergies renouvelables.'
+          },
+          {
+            english: 'We need to diversify our product range.',
+            french: 'Nous devons diversifier notre gamme de produits.'
+          }
+        ],
+        tips: '💡 Souvent suivi de "into" pour indiquer le nouveau secteur.'
+      },
+      {
+        english: 'Personnel office',
+        french: 'Bureau du personnel / RH',
+        phonetic: '/ˌpɜːrsəˈnel ˈɔːfɪs/',
+        category: 'Business',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Please submit your application to the personnel office.',
+            french: 'Veuillez soumettre votre candidature au bureau du personnel.'
+          },
+          {
+            english: 'The personnel office is located on the third floor.',
+            french: 'Le bureau du personnel se trouve au troisième étage.'
+          }
+        ],
+        tips: '🏢 Synonyme de "HR department" (département des Ressources Humaines).'
+      },
+      {
+        english: 'To retire / Retirement',
+        french: 'Prendre sa retraite / Retraite',
+        phonetic: '/rɪˈtaɪər/ /rɪˈtaɪərmənt/',
+        category: 'Work Life',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Mr. Smith will retire next month after 30 years of service.',
+            french: 'M. Smith prendra sa retraite le mois prochain après 30 ans de service.'
+          },
+          {
+            english: 'The retirement party will be held on Friday.',
+            french: 'La fête de départ à la retraite aura lieu vendredi.'
+          }
+        ],
+        tips: '👴 Très fréquent dans les annonces de départ et les hommages.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex2_1',
+        type: 'multiple-choice',
+        question: 'A "joint venture" is:',
+        options: [
+          'A company building',
+          'A business partnership',
+          'A job interview',
+          'A retirement plan'
+        ],
+        correctAnswer: 'A business partnership',
+        explanation: 'Une "joint venture" est un partenariat commercial entre deux entreprises.'
+      },
+      {
+        id: 'ex2_2',
+        type: 'fill-blank',
+        question: 'Complete: "Our ___ ___ has grown to 25%." (notre part de marché)',
+        correctAnswer: 'market share',
+        explanation: '"Market share" = part de marché.'
+      },
+      {
+        id: 'ex2_3',
+        type: 'multiple-choice',
+        question: 'Where would you submit your job application?',
+        options: [
+          'Market share office',
+          'Personnel office',
+          'Joint venture',
+          'Retirement office'
+        ],
+        correctAnswer: 'Personnel office',
+        explanation: 'Le "personnel office" (bureau du personnel) gère les candidatures et les employés.'
+      },
+      {
+        id: 'ex2_4',
+        type: 'translation',
+        question: 'Translate: "L\'entreprise veut se diversifier dans la technologie."',
+        correctAnswer: 'The company wants to diversify into technology',
+        explanation: '"To diversify into" = se diversifier dans un nouveau secteur.'
+      },
+      {
+        id: 'ex2_5',
+        type: 'multiple-choice',
+        question: 'Complete: "After 40 years, she decided to ___."',
+        options: [
+          'joint venture',
+          'market share',
+          'retire',
+          'diversify'
+        ],
+        correctAnswer: 'retire',
+        explanation: '"To retire" = prendre sa retraite.'
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: 'Événements et Réunions',
+    description: 'Vocabulaire des conférences et événements professionnels',
+    theme: 'Événements',
+    xp: 55,
+    duration: 6,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'To hold',
+        french: 'Tenir / Organiser (un événement)',
+        phonetic: '/həʊld/',
+        category: 'Event Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'The meeting will be held in Conference Room A.',
+            french: 'La réunion se tiendra dans la salle de conférence A.'
+          },
+          {
+            english: 'We are holding a party to celebrate our success.',
+            french: 'Nous organisons une fête pour célébrer notre succès.'
+          },
+          {
+            english: 'The annual conference is held in different cities each year.',
+            french: 'La conférence annuelle se tient dans différentes villes chaque année.'
+          }
+        ],
+        tips: '⚠️ Souvent au passif : "will be held" = se tiendra. TRÈS fréquent dans les annonces !'
+      },
+      {
+        english: 'Annual',
+        french: 'Annuel',
+        phonetic: '/ˈænjuəl/',
+        category: 'Adjective',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Don\'t miss our annual summer sale!',
+            french: 'Ne manquez pas notre solde d\'été annuel !'
+          },
+          {
+            english: 'The annual report shows impressive growth.',
+            french: 'Le rapport annuel montre une croissance impressionnante.'
+          }
+        ],
+        tips: '📅 Utilisé pour tout ce qui revient chaque année (réunion, rapport, événement).'
+      },
+      {
+        english: 'To honor',
+        french: 'Rendre hommage à / Honorer',
+        phonetic: '/ˈɒnər/',
+        category: 'Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Tonight, we honor our retiring CEO.',
+            french: 'Ce soir, nous rendons hommage à notre PDG qui part à la retraite.'
+          },
+          {
+            english: 'This award honors employees with outstanding performance.',
+            french: 'Ce prix honore les employés ayant une performance exceptionnelle.'
+          }
+        ],
+        tips: '🏆 Très utilisé lors de cérémonies et événements spéciaux.'
+      },
+      {
+        english: 'Retreat',
+        french: 'Séminaire (hors bureau)',
+        phonetic: '/rɪˈtriːt/',
+        category: 'Event',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'The company retreat will take place in the mountains.',
+            french: 'Le séminaire d\'entreprise aura lieu dans les montagnes.'
+          },
+          {
+            english: 'Team-building activities are planned for the retreat.',
+            french: 'Des activités de team-building sont prévues pour le séminaire.'
+          }
+        ],
+        tips: '🏔️ Un "retreat" est généralement organisé en dehors du bureau pour renforcer l\'équipe.'
+      },
+      {
+        english: 'Opening',
+        french: 'Inauguration / Vernissage',
+        phonetic: '/ˈəʊpənɪŋ/',
+        category: 'Event',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'The grand opening of our new store is next Friday.',
+            french: 'La grande inauguration de notre nouveau magasin est vendredi prochain.'
+          },
+          {
+            english: 'Everyone is invited to the gallery opening.',
+            french: 'Tout le monde est invité au vernissage de la galerie.'
+          }
+        ],
+        tips: '🎉 "Grand opening" = grande inauguration (très courant pour les nouveaux magasins).'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex3_1',
+        type: 'multiple-choice',
+        question: '"The meeting will be held on Monday" means:',
+        options: [
+          'La réunion sera retenue lundi',
+          'La réunion se tiendra lundi',
+          'La réunion sera portée lundi',
+          'La réunion sera tenue lundi'
+        ],
+        correctAnswer: 'La réunion se tiendra lundi',
+        explanation: '"Will be held" = se tiendra (passif de "to hold"). Expression TRÈS fréquente au TOEIC !'
+      },
+      {
+        id: 'ex3_2',
+        type: 'fill-blank',
+        question: 'Complete: "The ___ company picnic is in July." (chaque année)',
+        correctAnswer: 'annual',
+        explanation: '"Annual" = annuel, qui a lieu chaque année.'
+      },
+      {
+        id: 'ex3_3',
+        type: 'multiple-choice',
+        question: 'A company "retreat" is:',
+        options: [
+          'A retirement party',
+          'An office meeting',
+          'A team seminar outside the office',
+          'A product launch'
+        ],
+        correctAnswer: 'A team seminar outside the office',
+        explanation: 'Un "retreat" est un séminaire d\'entreprise, généralement organisé hors du bureau.'
+      },
+      {
+        id: 'ex3_4',
+        type: 'translation',
+        question: 'Translate: "Nous honorons nos meilleurs employés ce soir."',
+        correctAnswer: 'We honor our best employees tonight',
+        explanation: '"To honor" = rendre hommage à / honorer.'
+      },
+      {
+        id: 'ex3_5',
+        type: 'multiple-choice',
+        question: 'The "grand opening" of a store is:',
+        options: [
+          'The closing ceremony',
+          'The inauguration',
+          'The annual sale',
+          'The retirement party'
+        ],
+        correctAnswer: 'The inauguration',
+        explanation: '"Grand opening" = grande inauguration (d\'un magasin, d\'un bâtiment, etc.).'
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: 'Phrasal Verbs indispensables',
+    description: 'Les verbes à particule qui tombent tout le temps',
+    theme: 'Verbes d\'action',
+    xp: 70,
+    duration: 8,
+    locked: false,
+    completed: false,
+    status: 'available',
+    words: [
+      {
+        english: 'To look for',
+        french: 'Chercher / Rechercher',
+        phonetic: '/lʊk fɔːr/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'I\'m looking for the conference room.',
+            french: 'Je cherche la salle de conférence.'
+          },
+          {
+            english: 'We are looking for experienced developers.',
+            french: 'Nous recherchons des développeurs expérimentés.'
+          },
+          {
+            english: 'What are you looking for?',
+            french: 'Que cherchez-vous ?'
+          }
+        ],
+        tips: '🔍 ULTRA COURANT ! Ne pas confondre avec "to search" (fouiller). "Look for" = chercher.'
+      },
+      {
+        english: 'To hand over',
+        french: 'Remettre / Donner (de la main à la main)',
+        phonetic: '/hænd ˈəʊvər/',
+        category: 'Phrasal Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Please hand over your reports to the manager.',
+            french: 'Veuillez remettre vos rapports au manager.'
+          },
+          {
+            english: 'He handed over the keys to the new owner.',
+            french: 'Il a remis les clés au nouveau propriétaire.'
+          }
+        ],
+        tips: '🤝 Implique un transfert direct de quelque chose à quelqu\'un.'
+      },
+      {
+        english: 'To investigate',
+        french: 'Enquêter / Examiner',
+        phonetic: '/ɪnˈvestɪɡeɪt/',
+        category: 'Verb',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'We need to investigate the cause of the problem.',
+            french: 'Nous devons enquêter sur la cause du problème.'
+          },
+          {
+            english: 'The team is investigating several options.',
+            french: 'L\'équipe examine plusieurs options.'
+          }
+        ],
+        tips: '🔎 Utilisé pour parler d\'enquêtes ou d\'examens approfondis.'
+      },
+      {
+        english: 'To tow',
+        french: 'Remorquer (fourrière)',
+        phonetic: '/təʊ/',
+        category: 'Verb',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Your car will be towed if you park here.',
+            french: 'Votre voiture sera remorquée si vous vous garez ici.'
+          },
+          {
+            english: 'Illegally parked vehicles will be towed at the owner\'s expense.',
+            french: 'Les véhicules mal garés seront remorqués aux frais du propriétaire.'
+          }
+        ],
+        tips: '🚗 MOT-CLÉ dans les annonces de parking ! Souvent : "will be towed" = sera remorqué.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex4_1',
+        type: 'multiple-choice',
+        question: '"I\'m looking for the restroom" means:',
+        options: [
+          'Je regarde les toilettes',
+          'Je cherche les toilettes',
+          'Je nettoie les toilettes',
+          'Je répare les toilettes'
+        ],
+        correctAnswer: 'Je cherche les toilettes',
+        explanation: '"To look for" = chercher (quelque chose ou quelqu\'un).'
+      },
+      {
+        id: 'ex4_2',
+        type: 'fill-blank',
+        question: 'Complete: "Please ___ ___ the documents to HR." (remettre)',
+        correctAnswer: 'hand over',
+        explanation: '"To hand over" = remettre quelque chose directement à quelqu\'un.'
+      },
+      {
+        id: 'ex4_3',
+        type: 'multiple-choice',
+        question: 'If your car is illegally parked, it might be:',
+        options: [
+          'investigated',
+          'handed over',
+          'towed',
+          'looked for'
+        ],
+        correctAnswer: 'towed',
+        explanation: '"Towed" = remorqué. Très courant dans les annonces de parking au TOEIC !'
+      },
+      {
+        id: 'ex4_4',
+        type: 'translation',
+        question: 'Translate: "Nous devons enquêter sur ce problème."',
+        correctAnswer: 'We need to investigate this problem',
+        explanation: '"To investigate" = enquêter sur / examiner.'
+      },
+      {
+        id: 'ex4_5',
+        type: 'matching',
+        question: 'Match the phrasal verbs with their meanings',
+        options: ['To look for', 'To hand over', 'To tow', 'To investigate'],
+        correctAnswer: ['Chercher', 'Remettre', 'Remorquer', 'Enquêter'],
+        explanation: 'Ces verbes sont essentiels pour le TOEIC !'
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: 'Logistique et Gestion',
+    description: 'Vocabulaire de la gestion des stocks et des installations',
+    theme: 'Entreprise & Travail',
+    xp: 65,
+    duration: 7,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'Facilities Manager',
+        french: 'Responsable des services généraux',
+        phonetic: '/fəˈsɪlətiz ˈmænɪdʒər/',
+        category: 'Job Title',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Contact the facilities manager for building issues.',
+            french: 'Contactez le responsable des services généraux pour les problèmes de bâtiment.'
+          },
+          {
+            english: 'The facilities manager oversees maintenance and security.',
+            french: 'Le responsable des services généraux supervise la maintenance et la sécurité.'
+          }
+        ],
+        tips: '🏢 Personne qui gère le bâtiment (maintenance, sécurité, équipements).'
+      },
+      {
+        english: 'Inventory process',
+        french: 'Gestion des stocks / Inventaire',
+        phonetic: '/ˈɪnvəntri ˈprəʊses/',
+        category: 'Business Process',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The inventory process will begin next Monday.',
+            french: 'L\'inventaire commencera lundi prochain.'
+          },
+          {
+            english: 'We need to improve our inventory process.',
+            french: 'Nous devons améliorer notre gestion des stocks.'
+          }
+        ],
+        tips: '📦 Processus de comptage et de gestion des stocks.'
+      },
+      {
+        english: 'Logistics',
+        french: 'Logistique',
+        phonetic: '/ləˈdʒɪstɪks/',
+        category: 'Business',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Our logistics team handles all shipments.',
+            french: 'Notre équipe logistique gère toutes les expéditions.'
+          },
+          {
+            english: 'Logistics costs have increased this quarter.',
+            french: 'Les coûts logistiques ont augmenté ce trimestre.'
+          }
+        ],
+        tips: '🚚 Tout ce qui concerne le transport et la distribution des marchandises.'
+      },
+      {
+        english: 'To be short on staff',
+        french: 'Être en sous-effectif / Manquer de personnel',
+        phonetic: '/ʃɔːrt ɒn stɑːf/',
+        category: 'Expression',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'We\'re short on staff this week due to vacations.',
+            french: 'Nous manquons de personnel cette semaine à cause des vacances.'
+          },
+          {
+            english: 'The restaurant is short on staff tonight.',
+            french: 'Le restaurant est en sous-effectif ce soir.'
+          }
+        ],
+        tips: '👥 Expression courante pour dire qu\'il manque des employés.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex5_1',
+        type: 'multiple-choice',
+        question: 'Who should you contact for building maintenance issues?',
+        options: [
+          'The logistics manager',
+          'The facilities manager',
+          'The inventory manager',
+          'The personnel office'
+        ],
+        correctAnswer: 'The facilities manager',
+        explanation: 'Le "facilities manager" gère tout ce qui concerne le bâtiment.'
+      },
+      {
+        id: 'ex5_2',
+        type: 'fill-blank',
+        question: 'Complete: "The ___ handles all our shipments." (logistique)',
+        correctAnswer: 'logistics',
+        explanation: '"Logistics" = la logistique (transport et distribution).'
+      },
+      {
+        id: 'ex5_3',
+        type: 'translation',
+        question: 'Translate: "Nous manquons de personnel aujourd\'hui."',
+        correctAnswer: 'We are short on staff today',
+        explanation: '"To be short on staff" = manquer de personnel / être en sous-effectif.'
+      },
+      {
+        id: 'ex5_4',
+        type: 'multiple-choice',
+        question: 'The "inventory process" refers to:',
+        options: [
+          'Hiring new employees',
+          'Managing stock and supplies',
+          'Building maintenance',
+          'Staff training'
+        ],
+        correctAnswer: 'Managing stock and supplies',
+        explanation: '"Inventory process" = processus d\'inventaire / gestion des stocks.'
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: 'Arts, Médias et Communication',
+    description: 'Vocabulaire des expositions, médias et diffusions',
+    theme: 'Culture & Médias',
+    xp: 60,
+    duration: 6,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'Exhibit / Exhibition',
+        french: 'Exposition',
+        phonetic: '/ɪɡˈzɪbɪt/ /ˌeksɪˈbɪʃn/',
+        category: 'Arts',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The new exhibit opens this Saturday.',
+            french: 'La nouvelle exposition ouvre ce samedi.'
+          },
+          {
+            english: 'Don\'t miss our photography exhibition.',
+            french: 'Ne manquez pas notre exposition de photographie.'
+          }
+        ],
+        tips: '🎨 "Exhibit" (nom ou verbe) et "Exhibition" (nom seulement) sont interchangeables.'
+      },
+      {
+        english: 'Broadcast',
+        french: 'Émission / Diffusion',
+        phonetic: '/ˈbrɔːdkɑːst/',
+        category: 'Media',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'The interview will be broadcast live at 8 PM.',
+            french: 'L\'interview sera diffusée en direct à 20h.'
+          },
+          {
+            english: 'Listen to our daily news broadcast.',
+            french: 'Écoutez notre bulletin d\'informations quotidien.'
+          }
+        ],
+        tips: '📻 Utilisé pour la radio et la télévision. "Live broadcast" = diffusion en direct.'
+      },
+      {
+        english: 'Headlines',
+        french: 'Les gros titres (de l\'actualité)',
+        phonetic: '/ˈhedlaɪnz/',
+        category: 'Media',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Here are today\'s top headlines.',
+            french: 'Voici les gros titres du jour.'
+          },
+          {
+            english: 'The story made headlines around the world.',
+            french: 'L\'histoire a fait les gros titres dans le monde entier.'
+          }
+        ],
+        tips: '📰 Toujours au pluriel : "headlines" (les titres principaux des journaux/actualités).'
+      },
+      {
+        english: 'Stay tuned',
+        french: 'Restez à l\'écoute',
+        phonetic: '/steɪ tjuːnd/',
+        category: 'Expression',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'Stay tuned for more information.',
+            french: 'Restez à l\'écoute pour plus d\'informations.'
+          },
+          {
+            english: 'Stay tuned, we\'ll be right back after the break.',
+            french: 'Restez à l\'écoute, nous revenons tout de suite après la pause.'
+          }
+        ],
+        tips: '📻 Expression TRÈS courante à la radio et à la télévision.'
+      },
+      {
+        english: 'Permanent collection',
+        french: 'Collection permanente',
+        phonetic: '/ˈpɜːrmənənt kəˈlekʃn/',
+        category: 'Arts',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'The permanent collection features works from the 19th century.',
+            french: 'La collection permanente présente des œuvres du 19ème siècle.'
+          },
+          {
+            english: 'Access to the permanent collection is free.',
+            french: 'L\'accès à la collection permanente est gratuit.'
+          }
+        ],
+        tips: '🏛️ Par opposition à "temporary exhibition" (exposition temporaire).'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex6_1',
+        type: 'multiple-choice',
+        question: 'An "exhibit" is:',
+        options: [
+          'A television show',
+          'An art exhibition',
+          'A radio program',
+          'A newspaper'
+        ],
+        correctAnswer: 'An art exhibition',
+        explanation: '"Exhibit" ou "Exhibition" = une exposition (art, photos, musée, etc.).'
+      },
+      {
+        id: 'ex6_2',
+        type: 'fill-blank',
+        question: 'Complete: "The concert will be ___ live on TV." (diffusé)',
+        correctAnswer: 'broadcast',
+        explanation: '"Broadcast" = diffuser (à la radio ou à la télévision).'
+      },
+      {
+        id: 'ex6_3',
+        type: 'translation',
+        question: 'Translate: "Restez à l\'écoute pour les dernières nouvelles."',
+        correctAnswer: 'Stay tuned for the latest news',
+        explanation: '"Stay tuned" = restez à l\'écoute (expression radio/TV).'
+      },
+      {
+        id: 'ex6_4',
+        type: 'multiple-choice',
+        question: '"Headlines" refers to:',
+        options: [
+          'Radio stations',
+          'Museum guides',
+          'Main news stories',
+          'Art exhibitions'
+        ],
+        correctAnswer: 'Main news stories',
+        explanation: '"Headlines" = les gros titres de l\'actualité.'
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: 'Contrats et Business',
+    description: 'Vocabulaire des contrats et du monde professionnel',
+    theme: 'Business & Contrats',
+    xp: 70,
+    duration: 8,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'To draw up',
+        french: 'Rédiger (un contrat, un document)',
+        phonetic: '/drɔː ʌp/',
+        category: 'Phrasal Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Our legal department will draw up the new agreement by Friday.',
+            french: 'Notre département juridique rédigera le nouvel accord d\'ici vendredi.'
+          },
+          {
+            english: 'The lawyers are drawing up a contract for the partnership.',
+            french: 'Les avocats rédigent un contrat pour le partenariat.'
+          },
+          {
+            english: 'We need to draw up a detailed budget proposal.',
+            french: 'Nous devons rédiger une proposition budgétaire détaillée.'
+          }
+        ],
+        tips: '📝 Très utilisé dans le contexte juridique et des contrats professionnels.'
+      },
+      {
+        english: 'To commence',
+        french: 'Commencer (formel)',
+        phonetic: '/kəˈmens/',
+        category: 'Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The consultation period commences on March 1st.',
+            french: 'La période de consultation commence le 1er mars.'
+          },
+          {
+            english: 'The meeting will commence at 9 AM sharp.',
+            french: 'La réunion commencera à 9h précises.'
+          },
+          {
+            english: 'Work on the new project will commence next week.',
+            french: 'Le travail sur le nouveau projet commencera la semaine prochaine.'
+          }
+        ],
+        tips: '⚠️ Plus formel que "to start" ou "to begin". Très utilisé dans les documents officiels.'
+      },
+      {
+        english: 'Invoice',
+        french: 'Facture',
+        phonetic: '/ˈɪnvɔɪs/',
+        category: 'Noun',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Please submit your invoice no later than the 20th of the month.',
+            french: 'Veuillez soumettre votre facture au plus tard le 20 du mois.'
+          },
+          {
+            english: 'The invoice must include all itemized charges.',
+            french: 'La facture doit inclure tous les frais détaillés.'
+          },
+          {
+            english: 'We haven\'t received the invoice for last month\'s services.',
+            french: 'Nous n\'avons pas reçu la facture des services du mois dernier.'
+          }
+        ],
+        tips: '💰 TRÈS fréquent au TOEIC ! À ne pas confondre avec "bill" (note de restaurant, facture simple).'
+      },
+      {
+        english: 'To be in effect',
+        french: 'Être en vigueur',
+        phonetic: '/ɪn ɪˈfekt/',
+        category: 'Expression',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'This policy will remain in effect until next year.',
+            french: 'Cette politique restera en vigueur jusqu\'à l\'année prochaine.'
+          },
+          {
+            english: 'The new regulations are now in effect.',
+            french: 'Les nouveaux règlements sont maintenant en vigueur.'
+          },
+          {
+            english: 'The discount will be in effect from Monday to Friday.',
+            french: 'La réduction sera en vigueur du lundi au vendredi.'
+          }
+        ],
+        tips: '📋 Expression clé pour parler de règles, politiques ou lois actives.'
+      },
+      {
+        english: 'Parties',
+        french: 'Les parties (contractuelles)',
+        phonetic: '/ˈpɑːrtiz/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Both parties must sign the document.',
+            french: 'Les deux parties doivent signer le document.'
+          },
+          {
+            english: 'The agreement benefits all parties involved.',
+            french: 'L\'accord bénéficie à toutes les parties impliquées.'
+          },
+          {
+            english: 'If either party wishes to terminate the contract...',
+            french: 'Si l\'une ou l\'autre partie souhaite résilier le contrat...'
+          }
+        ],
+        tips: '⚠️ Dans un contexte légal, "parties" = les personnes/entités dans un contrat (pas les fêtes!).'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex7_1',
+        type: 'multiple-choice',
+        question: '"To draw up a contract" means:',
+        options: [
+          'To tear up a contract',
+          'To prepare/write a contract',
+          'To sign a contract',
+          'To cancel a contract'
+        ],
+        correctAnswer: 'To prepare/write a contract',
+        explanation: '"To draw up" signifie rédiger ou préparer un document officiel.'
+      },
+      {
+        id: 'ex7_2',
+        type: 'fill-blank',
+        question: 'Complete: "Please submit your ___ by the end of the month."',
+        correctAnswer: 'invoice',
+        explanation: '"Invoice" = facture. Très courant dans les contextes business du TOEIC.'
+      },
+      {
+        id: 'ex7_3',
+        type: 'multiple-choice',
+        question: 'Which word is more formal?',
+        options: [
+          'To start',
+          'To commence',
+          'To begin',
+          'To kick off'
+        ],
+        correctAnswer: 'To commence',
+        explanation: '"To commence" est le terme le plus formel pour dire "commencer".'
+      },
+      {
+        id: 'ex7_4',
+        type: 'translation',
+        question: 'Translate: "Cette politique est en vigueur depuis janvier."',
+        correctAnswer: 'This policy has been in effect since January',
+        explanation: '"To be in effect" = être en vigueur (pour des règles, lois, politiques).'
+      },
+      {
+        id: 'ex7_5',
+        type: 'multiple-choice',
+        question: 'In a legal context, "parties" refers to:',
+        options: [
+          'Celebrations',
+          'Political groups',
+          'People/entities in a contract',
+          'Company departments'
+        ],
+        correctAnswer: 'People/entities in a contract',
+        explanation: 'Dans un contexte juridique, "parties" désigne les personnes/entités impliquées dans un contrat.'
+      }
+    ]
+  },
+  {
+    id: 8,
+    title: 'Vente et Service Client',
+    description: 'Vocabulaire du retail et du service client',
+    theme: 'Sales & Retail',
+    xp: 65,
+    duration: 7,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'Misprint',
+        french: 'Coquille / Erreur d\'impression',
+        phonetic: '/ˈmɪsprɪnt/',
+        category: 'Noun',
+        frequency: 'useful',
+        examples: [
+          {
+            english: 'There was a misprint in the flyer; the price is wrong.',
+            french: 'Il y avait une coquille dans le prospectus ; le prix est incorrect.'
+          },
+          {
+            english: 'We apologize for the misprint in yesterday\'s advertisement.',
+            french: 'Nous nous excusons pour l\'erreur d\'impression dans la publicité d\'hier.'
+          },
+          {
+            english: 'The misprint caused confusion among customers.',
+            french: 'La coquille a causé de la confusion parmi les clients.'
+          }
+        ],
+        tips: '📰 Erreur typographique dans un document imprimé. Courant dans les contextes publicitaires.'
+      },
+      {
+        english: 'To apologize',
+        french: 'S\'excuser',
+        phonetic: '/əˈpɒlədʒaɪz/',
+        category: 'Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Please apologize to the customer for the delay.',
+            french: 'Veuillez vous excuser auprès du client pour le retard.'
+          },
+          {
+            english: 'We apologize for any inconvenience this may have caused.',
+            french: 'Nous nous excusons pour tout désagrément que cela aurait pu causer.'
+          },
+          {
+            english: 'The manager apologized personally to each affected customer.',
+            french: 'Le manager s\'est excusé personnellement auprès de chaque client concerné.'
+          }
+        ],
+        tips: '🔥 TRÈS fréquent dans le service client ! "Apologize TO someone FOR something".'
+      },
+      {
+        english: 'Outlet',
+        french: 'Point de vente / Magasin d\'usine',
+        phonetic: '/ˈaʊtlet/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'They plan to open a new retail outlet in the city center.',
+            french: 'Ils prévoient d\'ouvrir un nouveau point de vente au centre-ville.'
+          },
+          {
+            english: 'This outlet offers discounts of up to 50%.',
+            french: 'Ce magasin d\'usine offre des réductions jusqu\'à 50%.'
+          },
+          {
+            english: 'Our company operates 20 outlets nationwide.',
+            french: 'Notre entreprise exploite 20 points de vente dans tout le pays.'
+          }
+        ],
+        tips: '🏪 Un "outlet" peut être un magasin d\'usine ou simplement un point de vente.'
+      },
+      {
+        english: 'Franchise / Franchisee',
+        french: 'Franchise / Franchisé',
+        phonetic: '/ˈfræntʃaɪz/ /ˌfræntʃaɪˈziː/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'We are looking for potential franchisees to expand our network.',
+            french: 'Nous recherchons des franchisés potentiels pour étendre notre réseau.'
+          },
+          {
+            english: 'The franchise agreement includes training and support.',
+            french: 'Le contrat de franchise inclut la formation et le soutien.'
+          },
+          {
+            english: 'This restaurant is a franchise of a larger chain.',
+            french: 'Ce restaurant est une franchise d\'une plus grande chaîne.'
+          }
+        ],
+        tips: '🍔 Très courant dans le retail. "Franchisee" = la personne qui achète la franchise.'
+      },
+      {
+        english: 'Refund / Discount',
+        french: 'Remboursement / Réduction',
+        phonetic: '/ˈriːfʌnd/ /ˈdɪskaʊnt/',
+        category: 'Noun',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Customers can request a full refund within 30 days.',
+            french: 'Les clients peuvent demander un remboursement complet sous 30 jours.'
+          },
+          {
+            english: 'We\'re offering a 20% discount on all winter items.',
+            french: 'Nous offrons une réduction de 20% sur tous les articles d\'hiver.'
+          },
+          {
+            english: 'If you\'re not satisfied, you\'ll get a refund.',
+            french: 'Si vous n\'êtes pas satisfait, vous serez remboursé.'
+          }
+        ],
+        tips: '💰 ULTRA courant au TOEIC ! "Refund" = rembourser/remboursement, "Discount" = réduction.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex8_1',
+        type: 'multiple-choice',
+        question: 'A "misprint" is:',
+        options: [
+          'A mistake in pricing',
+          'A printing error',
+          'A missing product',
+          'A delayed shipment'
+        ],
+        correctAnswer: 'A printing error',
+        explanation: '"Misprint" = une erreur d\'impression ou coquille dans un document imprimé.'
+      },
+      {
+        id: 'ex8_2',
+        type: 'fill-blank',
+        question: 'Complete: "We ___ for the inconvenience caused." (s\'excuser)',
+        correctAnswer: 'apologize',
+        explanation: '"To apologize" = s\'excuser. Structure : apologize TO someone FOR something.'
+      },
+      {
+        id: 'ex8_3',
+        type: 'multiple-choice',
+        question: 'An "outlet" is:',
+        options: [
+          'An exit door',
+          'A power socket',
+          'A retail store',
+          'An online shop'
+        ],
+        correctAnswer: 'A retail store',
+        explanation: 'Dans un contexte business, "outlet" = point de vente ou magasin d\'usine.'
+      },
+      {
+        id: 'ex8_4',
+        type: 'translation',
+        question: 'Translate: "Nous offrons un remboursement complet."',
+        correctAnswer: 'We offer a full refund',
+        explanation: '"Refund" = remboursement. "Full refund" = remboursement complet.'
+      },
+      {
+        id: 'ex8_5',
+        type: 'multiple-choice',
+        question: 'A person who buys a franchise is called:',
+        options: [
+          'A franchisor',
+          'A franchisee',
+          'A franchise owner',
+          'A seller'
+        ],
+        correctAnswer: 'A franchisee',
+        explanation: '"Franchisee" = le franchisé (celui qui achète). "Franchisor" = le franchiseur (celui qui vend).'
+      }
+    ]
+  },
+  {
+    id: 9,
+    title: 'RH et Management',
+    description: 'Vocabulaire des ressources humaines',
+    theme: 'HR & Management',
+    xp: 60,
+    duration: 6,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'Layoffs',
+        french: 'Licenciements (économiques)',
+        phonetic: '/ˈleɪɒfs/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'Because of the economic crisis, the company announced substantial layoffs.',
+            french: 'En raison de la crise économique, l\'entreprise a annoncé des licenciements importants.'
+          },
+          {
+            english: 'The layoffs will affect 200 employees across three departments.',
+            french: 'Les licenciements affecteront 200 employés dans trois départements.'
+          },
+          {
+            english: 'We hope to avoid layoffs by reducing costs elsewhere.',
+            french: 'Nous espérons éviter les licenciements en réduisant les coûts ailleurs.'
+          }
+        ],
+        tips: '⚠️ "Layoffs" = licenciements économiques (pas pour faute). Toujours au pluriel dans ce sens.'
+      },
+      {
+        english: 'To foster',
+        french: 'Encourager / Favoriser',
+        phonetic: '/ˈfɒstər/',
+        category: 'Verb',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'We want to foster a sense of teamwork among employees.',
+            french: 'Nous voulons favoriser un esprit d\'équipe parmi les employés.'
+          },
+          {
+            english: 'The new policy will foster innovation and creativity.',
+            french: 'La nouvelle politique encouragera l\'innovation et la créativité.'
+          },
+          {
+            english: 'Good communication fosters trust in the workplace.',
+            french: 'Une bonne communication favorise la confiance au travail.'
+          }
+        ],
+        tips: '💡 "To foster" = encourager le développement de quelque chose de positif (culture, innovation, etc.).'
+      },
+      {
+        english: 'Feedback',
+        french: 'Retour / Commentaires',
+        phonetic: '/ˈfiːdbæk/',
+        category: 'Noun',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Could you provide some feedback on my proposal?',
+            french: 'Pourriez-vous me donner votre avis sur ma proposition ?'
+          },
+          {
+            english: 'We appreciate all customer feedback to improve our services.',
+            french: 'Nous apprécions tous les retours clients pour améliorer nos services.'
+          },
+          {
+            english: 'The manager gave positive feedback on the project.',
+            french: 'Le manager a donné un retour positif sur le projet.'
+          }
+        ],
+        tips: '🔥 ULTRA fréquent ! "Feedback" est indénombrable (pas de "s" : "some feedback", pas "feedbacks").'
+      },
+      {
+        english: 'Facility',
+        french: 'Installation / Établissement',
+        phonetic: '/fəˈsɪləti/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The new generator powers the entire manufacturing facility.',
+            french: 'Le nouveau générateur alimente toute l\'installation de fabrication.'
+          },
+          {
+            english: 'Our company operates three facilities in Asia.',
+            french: 'Notre entreprise exploite trois établissements en Asie.'
+          },
+          {
+            english: 'The training facility is equipped with the latest technology.',
+            french: 'Le centre de formation est équipé des dernières technologies.'
+          }
+        ],
+        tips: '🏭 "Facility" = le lieu physique (usine, centre, installation). Pluriel : "facilities".'
+      },
+      {
+        english: 'To take time off',
+        french: 'Prendre des congés',
+        phonetic: '/teɪk taɪm ɒf/',
+        category: 'Expression',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Why don\'t you take a few days off to relax?',
+            french: 'Pourquoi ne prends-tu pas quelques jours de congé pour te détendre ?'
+          },
+          {
+            english: 'I need to take time off for a family emergency.',
+            french: 'Je dois prendre des congés pour une urgence familiale.'
+          },
+          {
+            english: 'Employees are encouraged to take time off during the summer.',
+            french: 'Les employés sont encouragés à prendre des congés pendant l\'été.'
+          }
+        ],
+        tips: '🏖️ Expression courante pour parler de congés ou vacances. "Time off" = temps libre.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex9_1',
+        type: 'multiple-choice',
+        question: '"Layoffs" refers to:',
+        options: [
+          'Hiring new employees',
+          'Economic dismissals',
+          'Employee promotions',
+          'Training sessions'
+        ],
+        correctAnswer: 'Economic dismissals',
+        explanation: '"Layoffs" = licenciements économiques (pour raisons financières, pas pour faute).'
+      },
+      {
+        id: 'ex9_2',
+        type: 'fill-blank',
+        question: 'Complete: "We need your ___ on the new design." (retour/avis)',
+        correctAnswer: 'feedback',
+        explanation: '"Feedback" = retour, avis, commentaires. Mot indénombrable (pas de pluriel).'
+      },
+      {
+        id: 'ex9_3',
+        type: 'multiple-choice',
+        question: '"To foster teamwork" means:',
+        options: [
+          'To force teamwork',
+          'To encourage teamwork',
+          'To eliminate teamwork',
+          'To avoid teamwork'
+        ],
+        correctAnswer: 'To encourage teamwork',
+        explanation: '"To foster" = encourager, favoriser le développement de quelque chose.'
+      },
+      {
+        id: 'ex9_4',
+        type: 'translation',
+        question: 'Translate: "Je dois prendre quelques jours de congé."',
+        correctAnswer: 'I need to take a few days off',
+        explanation: '"To take time off" = prendre des congés. "Days off" = jours de congé.'
+      },
+      {
+        id: 'ex9_5',
+        type: 'multiple-choice',
+        question: 'A "facility" is:',
+        options: [
+          'An easy task',
+          'A physical building/location',
+          'A special ability',
+          'A discount'
+        ],
+        correctAnswer: 'A physical building/location',
+        explanation: '"Facility" = installation, établissement, usine (le lieu physique).'
+      }
+    ]
+  },
+  {
+    id: 10,
+    title: 'Voyage et Douanes',
+    description: 'Vocabulaire des voyages d\'affaires et formalités',
+    theme: 'Travel & Logistics',
+    xp: 55,
+    duration: 6,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'Customs',
+        french: 'La douane',
+        phonetic: '/ˈkʌstəmz/',
+        category: 'Noun',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'You must complete the customs declaration form before landing.',
+            french: 'Vous devez remplir le formulaire de déclaration en douane avant l\'atterrissage.'
+          },
+          {
+            english: 'All passengers must go through customs after arrival.',
+            french: 'Tous les passagers doivent passer par la douane après leur arrivée.'
+          },
+          {
+            english: 'The package is held up in customs.',
+            french: 'Le colis est bloqué à la douane.'
+          }
+        ],
+        tips: '✈️ Toujours avec un "s" : "customs" (la douane). "Customs officer" = douanier.'
+      },
+      {
+        english: 'To fill out',
+        french: 'Remplir (un formulaire)',
+        phonetic: '/fɪl aʊt/',
+        category: 'Phrasal Verb',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Passengers are required to fill out the white form.',
+            french: 'Les passagers doivent remplir le formulaire blanc.'
+          },
+          {
+            english: 'Please fill out this application form completely.',
+            french: 'Veuillez remplir ce formulaire de candidature complètement.'
+          },
+          {
+            english: 'Don\'t forget to fill out the survey before leaving.',
+            french: 'N\'oubliez pas de remplir le sondage avant de partir.'
+          }
+        ],
+        tips: '⚠️ Pour les formulaires, on dit "fill OUT" (pas "fill up"). "Fill up" = remplir un réservoir.'
+      },
+      {
+        english: 'Valid',
+        french: 'Valide / En cours de validité',
+        phonetic: '/ˈvælɪd/',
+        category: 'Adjective',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'You must have a valid passport to enter the country.',
+            french: 'Vous devez avoir un passeport valide pour entrer dans le pays.'
+          },
+          {
+            english: 'This ticket is valid for three months.',
+            french: 'Ce billet est valable trois mois.'
+          },
+          {
+            english: 'Please ensure your credit card is still valid.',
+            french: 'Veuillez vous assurer que votre carte bancaire est toujours valide.'
+          }
+        ],
+        tips: '📋 Très utilisé pour parler de documents, billets, cartes en cours de validité.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex10_1',
+        type: 'multiple-choice',
+        question: '"Customs" refers to:',
+        options: [
+          'Traditional practices',
+          'Border control for goods',
+          'Customer service',
+          'Customized products'
+        ],
+        correctAnswer: 'Border control for goods',
+        explanation: '"Customs" (toujours avec "s") = la douane, le contrôle des marchandises aux frontières.'
+      },
+      {
+        id: 'ex10_2',
+        type: 'fill-blank',
+        question: 'Complete: "Please ___ ___ this form in capital letters."',
+        correctAnswer: 'fill out',
+        explanation: '"To fill out" = remplir (un formulaire). On dit "fill out" pour les documents.'
+      },
+      {
+        id: 'ex10_3',
+        type: 'multiple-choice',
+        question: 'If your passport is "valid", it means:',
+        options: [
+          'It is expired',
+          'It is in good condition',
+          'It is current and usable',
+          'It is damaged'
+        ],
+        correctAnswer: 'It is current and usable',
+        explanation: '"Valid" = valide, en cours de validité (pas expiré).'
+      },
+      {
+        id: 'ex10_4',
+        type: 'translation',
+        question: 'Translate: "Tous les passagers doivent passer par la douane."',
+        correctAnswer: 'All passengers must go through customs',
+        explanation: '"Customs" = la douane. "To go through customs" = passer la douane.'
+      },
+      {
+        id: 'ex10_5',
+        type: 'multiple-choice',
+        question: 'Which is correct for forms?',
+        options: [
+          'Fill in',
+          'Fill out',
+          'Fill up',
+          'Both A and B'
+        ],
+        correctAnswer: 'Both A and B',
+        explanation: 'On peut dire "fill in" ou "fill out" pour les formulaires. "Fill up" = remplir un réservoir.'
+      }
+    ]
+  },
+  {
+    id: 11,
+    title: 'Connecteurs et Grammaire',
+    description: 'Mots de liaison essentiels pour le TOEIC',
+    theme: 'Grammar & Linking',
+    xp: 75,
+    duration: 9,
+    locked: true,
+    completed: false,
+    status: 'locked',
+    words: [
+      {
+        english: 'However',
+        french: 'Cependant / Toutefois',
+        phonetic: '/haʊˈevər/',
+        category: 'Connector',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'The product is great; however, it is quite expensive.',
+            french: 'Le produit est excellent ; cependant, il est assez cher.'
+          },
+          {
+            english: 'We wanted to hire more staff. However, the budget doesn\'t allow it.',
+            french: 'Nous voulions embaucher plus de personnel. Toutefois, le budget ne le permet pas.'
+          },
+          {
+            english: 'The report was late. However, the quality was excellent.',
+            french: 'Le rapport était en retard. Cependant, la qualité était excellente.'
+          }
+        ],
+        tips: '🔥 CRUCIAL pour Part 5 ! Marque le contraste. Souvent précédé d\'un point-virgule ou point.'
+      },
+      {
+        english: 'Rather than',
+        french: 'Plutôt que',
+        phonetic: '/ˈrɑːðər ðæn/',
+        category: 'Connector',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'The discount is 15% rather than 55%.',
+            french: 'La réduction est de 15% plutôt que 55%.'
+          },
+          {
+            english: 'We decided to email rather than call.',
+            french: 'Nous avons décidé d\'envoyer un email plutôt que d\'appeler.'
+          },
+          {
+            english: 'Choose quality rather than quantity.',
+            french: 'Choisissez la qualité plutôt que la quantité.'
+          }
+        ],
+        tips: '💡 Marque la préférence ou la correction. Suivi d\'un verbe de même forme (email/call).'
+      },
+      {
+        english: 'Because of',
+        french: 'À cause de / En raison de',
+        phonetic: '/bɪˈkɒz əv/',
+        category: 'Connector',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'Because of the rain, the event was canceled.',
+            french: 'En raison de la pluie, l\'événement a été annulé.'
+          },
+          {
+            english: 'We lost the contract because of their lower prices.',
+            french: 'Nous avons perdu le contrat à cause de leurs prix plus bas.'
+          },
+          {
+            english: 'Because of staff shortages, we\'re hiring.',
+            french: 'En raison du manque de personnel, nous recrutons.'
+          }
+        ],
+        tips: '⚠️ "Because of" + NOM. "Because" + PHRASE. Ex: Because of the rain ≠ Because it rained.'
+      },
+      {
+        english: 'Since',
+        french: 'Depuis / Puisque',
+        phonetic: '/sɪns/',
+        category: 'Connector',
+        frequency: 'essential',
+        examples: [
+          {
+            english: 'We have grown since 1997. (temps)',
+            french: 'Nous avons grandi depuis 1997.'
+          },
+          {
+            english: 'Since the departments collaborate, let\'s put them in the same room. (cause)',
+            french: 'Puisque les départements collaborent, mettons-les dans la même salle.'
+          },
+          {
+            english: 'I\'ve been working here since January.',
+            french: 'Je travaille ici depuis janvier.'
+          }
+        ],
+        tips: '🎯 DOUBLE SENS ! 1) Depuis (temps) avec present perfect. 2) Puisque (cause) = because.'
+      },
+      {
+        english: 'Capable of + ING',
+        french: 'Capable de',
+        phonetic: '/ˈkeɪpəbl əv/',
+        category: 'Expression',
+        frequency: 'important',
+        examples: [
+          {
+            english: 'This machine is capable of reducing costs by 30%.',
+            french: 'Cette machine est capable de réduire les coûts de 30%.'
+          },
+          {
+            english: 'Our team is capable of handling large projects.',
+            french: 'Notre équipe est capable de gérer de grands projets.'
+          },
+          {
+            english: 'She\'s capable of managing multiple tasks simultaneously.',
+            french: 'Elle est capable de gérer plusieurs tâches simultanément.'
+          }
+        ],
+        tips: '⚠️ PIÈGE FRÉQUENT ! Après "capable OF", toujours verbe+ING (jamais infinitif). OF = préposition.'
+      }
+    ],
+    exercises: [
+      {
+        id: 'ex11_1',
+        type: 'multiple-choice',
+        question: 'Choose the correct sentence:',
+        options: [
+          'However the price, we will buy it.',
+          'The price is high; however, we will buy it.',
+          'However, the price is high we will buy it.',
+          'The price however is high.'
+        ],
+        correctAnswer: 'The price is high; however, we will buy it.',
+        explanation: '"However" relie deux phrases contrastées. Souvent avec point-virgule avant et virgule après.'
+      },
+      {
+        id: 'ex11_2',
+        type: 'fill-blank',
+        question: 'Complete: "___ ___ the weather, the event is postponed."',
+        correctAnswer: 'Because of',
+        explanation: '"Because of" + NOM (the weather). "Because" serait suivi d\'une phrase complète.'
+      },
+      {
+        id: 'ex11_3',
+        type: 'multiple-choice',
+        question: 'Which is correct?',
+        options: [
+          'The machine is capable to reduce costs.',
+          'The machine is capable of reduce costs.',
+          'The machine is capable of reducing costs.',
+          'The machine capable reducing costs.'
+        ],
+        correctAnswer: 'The machine is capable of reducing costs.',
+        explanation: 'Après "capable OF" (préposition), on utilise toujours le verbe+ING.'
+      },
+      {
+        id: 'ex11_4',
+        type: 'translation',
+        question: 'Translate: "Nous travaillons ici depuis 2010."',
+        correctAnswer: 'We have been working here since 2010',
+        explanation: '"Since" (temps) + present perfect. "Since 2010" = depuis 2010.'
+      },
+      {
+        id: 'ex11_5',
+        type: 'multiple-choice',
+        question: 'In "since the departments collaborate...", "since" means:',
+        options: [
+          'From that time',
+          'Because/as',
+          'After',
+          'During'
+        ],
+        correctAnswer: 'Because/as',
+        explanation: 'Ici "since" = cause (puisque). "Since" peut signifier "depuis" (temps) ou "puisque" (cause).'
+      }
+    ]
+  }
+];

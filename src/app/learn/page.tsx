@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { 
@@ -11,6 +12,8 @@ import {
   Star,
   Clock
 } from 'lucide-react';
+import { lessonProgressService } from '@/lib/lesson-progress';
+import { vocabularyLessons } from '@/data/vocabulary-lessons';
 
 interface Category {
   id: string;
@@ -28,15 +31,15 @@ interface Category {
 const categories: Category[] = [
   {
     id: 'vocabulaire',
-    name: 'Vocabulaire',
-    description: 'Mots essentiels pour réussir le Tepitech',
+    name: 'Vocabulaire TOEIC',
+    description: 'Mots essentiels qui tombent à tous les TOEIC',
     icon: BookText,
     color: 'from-purple-400 to-pink-400',
     gradient: 'bg-gradient-to-br from-purple-50 to-pink-50',
     emoji: '📚',
-    progress: 35,
-    lessons: 24,
-    minutes: 15
+    progress: 0,
+    lessons: 11,
+    minutes: 8
   },
   {
     id: 'grammaire',
@@ -46,9 +49,9 @@ const categories: Category[] = [
     color: 'from-yellow-400 to-orange-400',
     gradient: 'bg-gradient-to-br from-yellow-50 to-orange-50',
     emoji: '💡',
-    progress: 20,
-    lessons: 18,
-    minutes: 20
+    progress: 0,
+    lessons: 0,
+    minutes: 0
   },
   {
     id: 'conjugaison',
@@ -58,9 +61,9 @@ const categories: Category[] = [
     color: 'from-blue-400 to-cyan-400',
     gradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
     emoji: '✏️',
-    progress: 45,
-    lessons: 30,
-    minutes: 12
+    progress: 0,
+    lessons: 0,
+    minutes: 0
   },
   {
     id: 'comprehension',
@@ -70,9 +73,9 @@ const categories: Category[] = [
     color: 'from-green-400 to-emerald-400',
     gradient: 'bg-gradient-to-br from-green-50 to-emerald-50',
     emoji: '📖',
-    progress: 60,
-    lessons: 20,
-    minutes: 25
+    progress: 0,
+    lessons: 0,
+    minutes: 0
   },
 ];
 
@@ -100,6 +103,23 @@ const itemVariants = {
 };
 
 export default function LearnPage() {
+  const [totalProgress, setTotalProgress] = useState(0);
+  const [totalXP, setTotalXP] = useState(0);
+  const [vocabulaireProgress, setVocabulaireProgress] = useState(0);
+
+  useEffect(() => {
+    // Calculer la progression du vocabulaire
+    const vocabProgress = lessonProgressService.getCategoryProgress('vocabulaire', vocabularyLessons.length);
+    setVocabulaireProgress(vocabProgress);
+
+    // Pour l'instant, seule la catégorie vocabulaire est disponible
+    setTotalProgress(vocabProgress);
+
+    // Calculer le XP total
+    const xp = lessonProgressService.getTotalXP();
+    setTotalXP(xp);
+  }, []);
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
@@ -120,7 +140,7 @@ export default function LearnPage() {
             Cours spécialisés Tepitech
           </h1>
           <p className="text-gray-600 text-base md:text-lg font-medium">
-            Choisis une catégorie pour commencer ton apprentissage
+            Maîtrise le vocabulaire TOEIC avec nos leçons interactives
           </p>
         </motion.div>
 
@@ -136,21 +156,21 @@ export default function LearnPage() {
                 <Star className="w-6 h-6 text-white" fill="white" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">Progression totale</h3>
+                <h3 className="font-bold text-gray-700">Progression totale</h3>
                 <p className="text-sm text-gray-500">Continue comme ça !</p>
               </div>
             </div>
             <div className="text-right">
               <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                35%
+                {totalProgress}%
               </p>
-              <p className="text-xs text-gray-500">130 leçons</p>
+              <p className="text-xs text-gray-500">{vocabularyLessons.length} leçons</p>
             </div>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: '35%' }}
+              animate={{ width: `${totalProgress}%` }}
               transition={{ duration: 1, delay: 0.3 }}
               className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full"
             />
@@ -164,7 +184,11 @@ export default function LearnPage() {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
         >
-          {categories.map((category) => (
+          {categories.map((category) => {
+            // Calculer la progression réelle pour chaque catégorie
+            const categoryProgress = category.id === 'vocabulaire' ? vocabulaireProgress : 0;
+            
+            return (
             <motion.div key={category.id} variants={itemVariants}>
               <Link href={`/learn/${category.id}`}>
                 <motion.div
@@ -173,7 +197,7 @@ export default function LearnPage() {
                   {/* Badge de progression */}
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-md">
                     <span className="text-sm font-bold text-gray-700">
-                      {category.progress}%
+                      {categoryProgress}%
                     </span>
                   </div>
 
@@ -212,7 +236,7 @@ export default function LearnPage() {
                   <div className="w-full bg-white/60 rounded-full h-2.5 overflow-hidden backdrop-blur-sm">
                     <motion.div
                       initial={{ width: 0 }}
-                      whileInView={{ width: `${category.progress}%` }}
+                      whileInView={{ width: `${categoryProgress}%` }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.8, delay: 0.2 }}
                       className={`h-full bg-gradient-to-r ${category.color} rounded-full`}
@@ -224,7 +248,8 @@ export default function LearnPage() {
                 </motion.div>
               </Link>
             </motion.div>
-          ))}
+          );
+          })}
         </motion.div>
       </div>
     </div>
