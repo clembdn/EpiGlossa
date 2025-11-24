@@ -4,9 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import type { Question, Choice } from '@/types/question';
 import AudioPlayer from '@/components/ui/audio-player';
+import { useCategoryProgress } from '@/hooks/useProgress';
+import { XPGainNotification } from '@/components/ProgressComponents';
+import { useSingleQuestionCache, useReadingPassageCache } from '@/hooks/useSingleQuestionCache';
+import { useStreak } from '@/hooks/useStreak';
 
 const categoryInfo: Record<string, {
   name: string;
@@ -78,133 +81,200 @@ export default function QuestionPage() {
   const category = params.category as string;
   const questionId = params.questionId as string;
   const info = categoryInfo[category];
-  const [question, setQuestion] = useState<Question | null>(null);
-  const [questions, setQuestions] = useState<Question[]>([]); // For READING COMPREHENSION
-  const [loading, setLoading] = useState(true);
+  
+  // États locaux
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({}); // For READING COMPREHENSION
   const [selectedGapAnswers, setSelectedGapAnswers] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
+  
+  // Système de progression XP
+  const { submitAnswer, refresh: refreshProgress, isQuestionCompleted } = useCategoryProgress(category);
+  const [showXPNotification, setShowXPNotification] = useState(false);
+  const [xpGained, setXpGained] = useState(0);
+  const [wasAlreadyCompleted, setWasAlreadyCompleted] = useState(false);
+
+  // Hook de streak
+  const { updateStreak } = useStreak();
+
+  // Hooks de cache conditionnels selon le type de question
+  const singleQuestionCache = category !== 'reading_comprehension' 
+    ? useSingleQuestionCache(questionId, category)
+    : { question: null, loading: false, fromCache: false };
+    
+  const readingPassageCache = category === 'reading_comprehension'
+    ? useReadingPassageCache(questionId)
+    : { questions: [], loading: false, fromCache: false };
+
+  // Déterminer question(s) et état de chargement
+  const question = category === 'reading_comprehension' ? null : singleQuestionCache.question;
+  const questions = category === 'reading_comprehension' ? readingPassageCache.questions : [];
+  const loading = category === 'reading_comprehension' ? readingPassageCache.loading : singleQuestionCache.loading;
+
+  // Mélanger les choix une seule fois au chargement
+  const [shuffledQuestion, setShuffledQuestion] = useState<Question | null>(null);
+  const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        setLoading(true);
-        
-        if (category === 'reading_comprehension') {
-          // Fetch all 3 questions for this passage
-          const { data, error } = await supabase
-            .from('questions')
-            .select('*')
-            .eq('passage_id', questionId)
-            .order('question_number', { ascending: true });
-
-          if (error) {
-            console.warn('Supabase reading comprehension fetch error:', error.message);
-          }
-          const questionsData = data ?? [];
-          if (questionsData.length === 0) {
-            setQuestions([]);
-            return;
-          }
-          
-          // Mélanger les choix pour chaque question en gardant A, B, C, D
-          const questionsWithShuffledChoices = questionsData.map(q => ({
-            ...q,
-            choices: shuffleChoicesKeepingLabels(q.choices)
-          }));
-          
-          setQuestions(questionsWithShuffledChoices);
-        } else {
-          // Fetch single question
-          const { data, error } = await supabase
-            .from('questions')
-            .select('*')
-            .eq('id', questionId)
-            .single();
-
-          if (error) {
-            console.warn('Supabase question fetch error:', error.message);
-          }
-
-          // Mélanger les choix de réponses en gardant A, B, C, D
-          let questionWithShuffledChoices = data;
-
-          if (questionWithShuffledChoices?.choices) {
-            questionWithShuffledChoices = {
-              ...questionWithShuffledChoices,
-              choices: shuffleChoicesKeepingLabels(questionWithShuffledChoices.choices)
-            };
-          }
-          
-          if (questionWithShuffledChoices?.gap_choices) {
-            const shuffledGapChoices: Record<string, Choice[]> = {};
-            Object.keys(questionWithShuffledChoices.gap_choices).forEach(gapNumber => {
-              shuffledGapChoices[gapNumber] = shuffleChoicesKeepingLabels(questionWithShuffledChoices!.gap_choices![gapNumber]);
-            });
-            questionWithShuffledChoices = {
-              ...questionWithShuffledChoices,
-              gap_choices: shuffledGapChoices
-            };
-          }
-          
-          setQuestion(questionWithShuffledChoices);
-          
-        }
-      } catch (err) {
-        console.error('Error fetching question:', err);
-      } finally {
-        setLoading(false);
+    if (category === 'reading_comprehension' && questions.length > 0) {
+      // Vérifier si on a déjà un ordre mélangé en cache
+      const cacheKey = `shuffled_passage_${questionId}`;
+      const cachedOrder = sessionStorage.getItem(cacheKey);
+      
+      let questionsWithShuffledChoices;
+      if (cachedOrder) {
+        // Utiliser l'ordre en cache
+        questionsWithShuffledChoices = JSON.parse(cachedOrder);
+      } else {
+        // Mélanger pour la première fois et sauvegarder
+        questionsWithShuffledChoices = questions.map(q => ({
+          ...q,
+          choices: shuffleChoicesKeepingLabels(q.choices)
+        }));
+        sessionStorage.setItem(cacheKey, JSON.stringify(questionsWithShuffledChoices));
       }
-    };
+      setShuffledQuestions(questionsWithShuffledChoices);
+    }
+  }, [questions, category, questionId]);
 
-    fetchQuestion();
-  }, [questionId, category]);
+  useEffect(() => {
+    if (question && category !== 'reading_comprehension') {
+      // Vérifier si on a déjà un ordre mélangé en cache
+      const cacheKey = `shuffled_question_${questionId}`;
+      const cachedOrder = sessionStorage.getItem(cacheKey);
+      
+      let questionWithShuffledChoices: Question;
+      if (cachedOrder) {
+        // Utiliser l'ordre en cache
+        questionWithShuffledChoices = JSON.parse(cachedOrder);
+      } else {
+        // Mélanger pour la première fois
+        questionWithShuffledChoices = { ...question };
 
-  const handleSubmit = () => {
+        if (questionWithShuffledChoices.choices) {
+          questionWithShuffledChoices = {
+            ...questionWithShuffledChoices,
+            choices: shuffleChoicesKeepingLabels(questionWithShuffledChoices.choices)
+          };
+        }
+        
+        if (questionWithShuffledChoices.gap_choices) {
+          const shuffledGapChoices: Record<string, Choice[]> = {};
+          Object.keys(questionWithShuffledChoices.gap_choices).forEach(gapNumber => {
+            shuffledGapChoices[gapNumber] = shuffleChoicesKeepingLabels(questionWithShuffledChoices.gap_choices![gapNumber]);
+          });
+          questionWithShuffledChoices = {
+            ...questionWithShuffledChoices,
+            gap_choices: shuffledGapChoices
+          };
+        }
+        
+        // Sauvegarder l'ordre mélangé en cache
+        sessionStorage.setItem(cacheKey, JSON.stringify(questionWithShuffledChoices));
+      }
+      
+      setShuffledQuestion(questionWithShuffledChoices);
+    }
+  }, [question, category, questionId]);
+
+  const handleSubmit = async () => {
+    const currentQuestions = category === 'reading_comprehension' ? shuffledQuestions : [];
+    const currentQuestion = category !== 'reading_comprehension' ? shuffledQuestion : null;
+    
     if (category === 'reading_comprehension') {
-      const totalQuestions = questions.length;
+      const totalQuestions = currentQuestions.length;
       const answeredQuestions = Object.keys(selectedAnswers).length;
       if (answeredQuestions < totalQuestions) return;
     }
-    else if (question?.text_with_gaps && question?.gap_choices) {
-      const totalGaps = Object.keys(question.gap_choices).length;
+    else if (currentQuestion?.text_with_gaps && currentQuestion?.gap_choices) {
+      const totalGaps = Object.keys(currentQuestion.gap_choices).length;
       const filledGaps = Object.keys(selectedGapAnswers).length;
       if (filledGaps < totalGaps) return;
     } else {
       if (!selectedAnswer) return;
     }
+    
+    // Vérifier si la question était déjà complétée AVANT de soumettre
+    if (category === 'reading_comprehension') {
+      const allCompleted = currentQuestions.every(q => isQuestionCompleted(q.id));
+      setWasAlreadyCompleted(allCompleted);
+    } else {
+      setWasAlreadyCompleted(isQuestionCompleted(questionId));
+    }
+    
     setIsSubmitted(true);
     setShowExplanation(true);
+    
+    // Sauvegarder la progression
+    let totalXpGained = 0;
+    
+    if (category === 'reading_comprehension') {
+      // Pour les passages de lecture, sauvegarder chaque question séparément
+      for (const q of currentQuestions) {
+        const selectedOption = selectedAnswers[q.id];
+        if (selectedOption) {
+          const correctChoice = q.choices.find(c => c.is_correct);
+          const isQuestionCorrect = selectedOption === correctChoice?.option;
+          const result = await submitAnswer(q.id, isQuestionCorrect);
+          if (result.success && result.xpGained) {
+            totalXpGained += result.xpGained;
+          }
+        }
+      }
+    } else {
+      // Pour les questions standard, sauvegarder une seule réponse
+      const correct = isCorrect();
+      const result = await submitAnswer(questionId, correct);
+      if (result.success && result.xpGained) {
+        totalXpGained = result.xpGained;
+      }
+    }
+    
+    // Afficher la notification XP si on a gagné des points
+    if (totalXpGained > 0) {
+      setXpGained(totalXpGained);
+      setShowXPNotification(true);
+      
+      // Mettre à jour le streak quand l'utilisateur répond correctement
+      await updateStreak();
+    }
+    
+    // Rafraîchir les stats
+    await refreshProgress();
   };
 
   const getCorrectAnswer = () => {
-    return question?.choices.find(choice => choice.is_correct);
+    return shuffledQuestion?.choices.find(choice => choice.is_correct);
   };
 
   const isCorrect = () => {
+    const currentQuestions = category === 'reading_comprehension' ? shuffledQuestions : [];
+    const currentQuestion = category !== 'reading_comprehension' ? shuffledQuestion : null;
+    
     // For READING COMPREHENSION: check all 3 answers
     if (category === 'reading_comprehension') {
-      return questions.every((q) => {
+      return currentQuestions.every((q) => {
         const selectedOption = selectedAnswers[q.id];
         if (!selectedOption) return false;
-        const correctChoice = q.choices.find(c => c.is_correct);
-        return selectedOption === correctChoice?.option;
+        // Trouver le choix sélectionné et vérifier s'il est correct
+        const selectedChoice = q.choices.find(c => c.option === selectedOption);
+        return selectedChoice?.is_correct === true;
       });
     }
     // For TEXT COMPLETION: check all gaps
-    if (question?.text_with_gaps && question?.gap_choices) {
+    if (currentQuestion?.text_with_gaps && currentQuestion?.gap_choices) {
       return Object.entries(selectedGapAnswers).every(([gapNumber, selectedOption]) => {
-        const gapChoices = question.gap_choices?.[gapNumber];
+        const gapChoices = currentQuestion.gap_choices?.[gapNumber];
         if (!gapChoices) return false;
         const selectedChoice = gapChoices.find(c => c.option === selectedOption);
         return selectedChoice?.is_correct === true;
       });
     }
-    // For standard questions
-    const correctAnswer = getCorrectAnswer();
-    return selectedAnswer === correctAnswer?.option;
+    // For standard questions - Vérifier directement si le choix sélectionné est correct
+    if (!selectedAnswer || !currentQuestion) return false;
+    const selectedChoice = currentQuestion.choices?.find(c => c.option === selectedAnswer);
+    return selectedChoice?.is_correct === true;
   };
 
   const handleNextQuestion = () => {
@@ -244,7 +314,7 @@ export default function QuestionPage() {
     );
   }
 
-  if (!question && questions.length === 0) {
+  if (!shuffledQuestion && shuffledQuestions.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-20 md:pt-24">
         <div className="text-center">
@@ -262,8 +332,8 @@ export default function QuestionPage() {
   }
 
   // For READING COMPREHENSION: render passage with 3 questions
-  if (category === 'reading_comprehension' && questions.length > 0) {
-    const passageImage = questions[0]?.image_url;
+  if (category === 'reading_comprehension' && shuffledQuestions.length > 0) {
+    const passageImage = shuffledQuestions[0]?.image_url;
     
     return (
       <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -484,22 +554,32 @@ export default function QuestionPage() {
                   </h3>
                   <p className="text-gray-600 text-lg">
                     {isCorrect()
-                      ? 'Tu as répondu correctement aux 3 questions !'
+                      ? (wasAlreadyCompleted 
+                          ? 'Tu maintiens ton score ! Excellent travail de révision !' 
+                          : 'Tu as répondu correctement aux 3 questions !')
                       : 'Continue à t\'entraîner, tu vas y arriver !'}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <div className={`px-6 py-3 rounded-2xl ${
-                    isCorrect() ? 'bg-green-100 border-2 border-green-300' : 'bg-red-100 border-2 border-red-300'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <Trophy className={`w-6 h-6 ${isCorrect() ? 'text-green-600' : 'text-red-600'}`} />
-                      <span className={`font-bold text-xl ${isCorrect() ? 'text-green-800' : 'text-red-800'}`}>
-                        {isCorrect() ? '+150 XP' : '+0 XP'}
-                      </span>
+                <div className="flex flex-col items-center gap-3 mb-6">
+                  {xpGained > 0 && (
+                    <div className={`px-6 py-3 rounded-2xl ${
+                      isCorrect() ? 'bg-green-100 border-2 border-green-300' : 'bg-red-100 border-2 border-red-300'
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        <Trophy className={`w-6 h-6 ${isCorrect() ? 'text-green-600' : 'text-red-600'}`} />
+                        <span className={`font-bold text-xl ${isCorrect() ? 'text-green-800' : 'text-red-800'}`}>
+                          +{xpGained} XP
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {wasAlreadyCompleted && isCorrect() && (
+                    <div className="flex items-center gap-2 bg-blue-100 px-5 py-2 rounded-xl border-2 border-blue-300">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                      <span className="text-sm font-semibold text-blue-700">Passage déjà maîtrisé ✨</span>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -516,7 +596,7 @@ export default function QuestionPage() {
     );
   }
 
-  if (!question || !info) {
+  if (!shuffledQuestion || !info) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-20 md:pt-24">
         <div className="text-center">
@@ -570,14 +650,14 @@ export default function QuestionPage() {
           className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100 mb-6"
         >
           {/* Audio Player (if audio question) */}
-          {question.audio_url && (
+          {shuffledQuestion.audio_url && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
               <AudioPlayer
-                src={question.audio_url}
+                src={shuffledQuestion.audio_url}
                 label="Écoute l'audio"
                 description="Clique sur lecture pour démarrer l'écoute."
               />
@@ -585,14 +665,14 @@ export default function QuestionPage() {
           )}
 
           {/* Image (if image question) */}
-          {question.image_url && (
+          {shuffledQuestion.image_url && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
                 <img
-                  src={question.image_url}
+                  src={shuffledQuestion.image_url}
                   alt="Question illustration"
                   className="w-full max-h-64 md:max-h-72 object-contain mx-auto rounded-2xl"
                 />
@@ -600,20 +680,20 @@ export default function QuestionPage() {
           )}
 
           {/* Question Text */}
-          {question.question_text && !question.text_with_gaps && (
+          {shuffledQuestion.question_text && !shuffledQuestion.text_with_gaps && (
             <div className="mb-8">
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-relaxed">
-                {question.question_text}
+                {shuffledQuestion.question_text}
               </h2>
             </div>
           )}
 
           {/* TEXT COMPLETION: Text with dropdown menus */}
-          {question.text_with_gaps && question.gap_choices && (
+          {shuffledQuestion.text_with_gaps && shuffledQuestion.gap_choices && (
             <div className="mb-8">
               <div className="prose prose-lg max-w-none">
                 {(() => {
-                  const text = question.text_with_gaps;
+                  const text = shuffledQuestion.text_with_gaps;
                   const parts: React.ReactNode[] = [];
                   let lastIndex = 0;
                   const regex = /\{\{(\d+)\}\}/g;
@@ -633,7 +713,7 @@ export default function QuestionPage() {
                     }
 
                     // Add dropdown menu for the gap
-                    const gapChoices = question.gap_choices?.[gapNumber] || [];
+                    const gapChoices = shuffledQuestion.gap_choices?.[gapNumber] || [];
                     const selectedOption = selectedGapAnswers[gapNumber];
                     const isGapSubmitted = isSubmitted;
                     
@@ -695,9 +775,9 @@ export default function QuestionPage() {
           )}
 
           {/* Standard Choices (for non-TEXT COMPLETION questions) */}
-          {question.choices && question.choices.length > 0 && (
+          {shuffledQuestion.choices && shuffledQuestion.choices.length > 0 && (
             <div className="space-y-3">
-            {question.choices.map((choice: Choice, index: number) => {
+            {shuffledQuestion.choices.map((choice: Choice, index: number) => {
               const isSelected = selectedAnswer === choice.option;
               const isCorrectChoice = choice.is_correct;
               const showResult = isSubmitted;
@@ -791,10 +871,10 @@ export default function QuestionPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={handleSubmit}
-            disabled={question.text_with_gaps ? Object.keys(selectedGapAnswers).length < Object.keys(question.gap_choices || {}).length : !selectedAnswer}
+            disabled={shuffledQuestion.text_with_gaps ? Object.keys(selectedGapAnswers).length < Object.keys(shuffledQuestion.gap_choices || {}).length : !selectedAnswer}
             
             className={`w-full py-4 rounded-2xl font-bold text-lg shadow-xl transition-all ${
-              (question.text_with_gaps ? Object.keys(selectedGapAnswers).length >= Object.keys(question.gap_choices || {}).length : selectedAnswer)
+              (shuffledQuestion.text_with_gaps ? Object.keys(selectedGapAnswers).length >= Object.keys(shuffledQuestion.gap_choices || {}).length : selectedAnswer)
                 ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-2xl'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
@@ -835,19 +915,33 @@ export default function QuestionPage() {
                   <p className={`text-sm font-medium ${
                     isCorrect() ? 'text-green-600' : 'text-red-600'
                   }`}>
-                    {isCorrect() ? 'Tu as trouvé la bonne réponse !' : 'Continue à t\'entraîner !'}
+                    {isCorrect() 
+                      ? (wasAlreadyCompleted 
+                          ? 'Tu maintiens ton score ! Bravo pour la révision !' 
+                          : 'Tu as trouvé la bonne réponse !')
+                      : 'Continue à t\'entraîner !'}
                   </p>
                 </div>
                 {isCorrect() && (
-                  <div className="flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-xl">
-                    <Trophy className="w-6 h-6 text-yellow-600" />
-                    <span className="font-bold text-yellow-700">+50 XP</span>
+                  <div className="flex flex-col gap-2">
+                    {xpGained > 0 && (
+                      <div className="flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-xl">
+                        <Trophy className="w-6 h-6 text-yellow-600" />
+                        <span className="font-bold text-yellow-700">+{xpGained} XP</span>
+                      </div>
+                    )}
+                    {wasAlreadyCompleted && (
+                      <div className="flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-xl">
+                        <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                        <span className="text-sm font-semibold text-blue-700">Déjà maîtrisée ✨</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
 
               {/* Explanation */}
-              {showExplanation && question.explanation && category !== 'audio_with_images' && (
+              {showExplanation && shuffledQuestion.explanation && category !== 'audio_with_images' && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
@@ -857,7 +951,7 @@ export default function QuestionPage() {
                     <Lightbulb className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-1" />
                     <div>
                       <h4 className="font-bold text-gray-800 mb-2">Explication</h4>
-                      <p className="text-gray-700 leading-relaxed">{question.explanation}</p>
+                      <p className="text-gray-700 leading-relaxed">{shuffledQuestion.explanation}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -882,6 +976,14 @@ export default function QuestionPage() {
           )}
         </AnimatePresence>
       </div>
+      
+      {/* Notification XP */}
+      {showXPNotification && (
+        <XPGainNotification 
+          xpGained={xpGained} 
+          onClose={() => setShowXPNotification(false)}
+        />
+      )}
     </div>
   );
 }

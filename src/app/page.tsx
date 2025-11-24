@@ -5,10 +5,14 @@ import Link from 'next/link';
 import { BookOpen, Dumbbell, Trophy, Star, Flame, TrendingUp, AlertCircle, X } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useGlobalProgress } from '@/hooks/useProgress';
+import { useStreak } from '@/hooks/useStreak';
 
 export default function Home() {
   const searchParams = useSearchParams();
   const [showUnauthorizedError, setShowUnauthorizedError] = useState(false);
+  const { stats, loading } = useGlobalProgress();
+  const { streak, longestStreak, loading: streakLoading } = useStreak();
 
   useEffect(() => {
     if (searchParams.get('error') === 'unauthorized') {
@@ -71,12 +75,15 @@ export default function Home() {
           </p>
 
           <motion.div
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-red-400 text-white px-6 py-4 rounded-2xl shadow-xl mb-8"
+            whileHover={{ scale: 1.05 }}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-red-400 text-white px-6 py-4 rounded-2xl shadow-xl mb-8 cursor-pointer"
           >
             <Flame className="w-8 h-8" fill="white" />
             <div className="text-left">
               <p className="text-sm font-medium opacity-90">Ta série actuelle</p>
-              <p className="text-3xl font-bold">0 jours</p>
+              <p className="text-3xl font-bold">
+                {streakLoading ? '...' : `${streak} jour${streak > 1 ? 's' : ''}`}
+              </p>
             </div>
           </motion.div>
         </motion.div>
@@ -91,7 +98,9 @@ export default function Home() {
             <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl mx-auto mb-2 flex items-center justify-center">
               <Trophy className="w-6 h-6 text-white" />
             </div>
-            <p className="text-2xl font-bold text-gray-800">0</p>
+            <p className="text-2xl font-bold text-gray-800">
+              {loading ? '...' : stats?.total_xp || 0}
+            </p>
             <p className="text-xs text-gray-500 font-medium">Points XP</p>
           </motion.div>
 
@@ -104,8 +113,10 @@ export default function Home() {
             <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-400 rounded-xl mx-auto mb-2 flex items-center justify-center">
               <Star className="w-6 h-6 text-white" fill="white" />
             </div>
-            <p className="text-2xl font-bold text-gray-800">0</p>
-            <p className="text-xs text-gray-500 font-medium">Leçons</p>
+            <p className="text-2xl font-bold text-gray-800">
+              {loading ? '...' : stats?.correct_count || 0}
+            </p>
+            <p className="text-xs text-gray-500 font-medium">Réussies</p>
           </motion.div>
 
           <motion.div
@@ -117,8 +128,10 @@ export default function Home() {
             <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-400 rounded-xl mx-auto mb-2 flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <p className="text-2xl font-bold text-gray-800">0%</p>
-            <p className="text-xs text-gray-500 font-medium">Progression</p>
+            <p className="text-2xl font-bold text-gray-800">
+              {loading ? '...' : Math.round(stats?.global_success_rate || 0)}%
+            </p>
+            <p className="text-xs text-gray-500 font-medium">Réussite</p>
           </motion.div>
         </div>
 

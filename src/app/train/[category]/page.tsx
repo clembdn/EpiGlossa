@@ -2,21 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
-import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, Search, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import type { Question, ReadingPassage } from '@/types/question';
-
-// Fonction pour mélanger un tableau
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
+import { useCategoryProgress } from '@/hooks/useProgress';
+import { CategoryProgressBar, QuestionStatusBadge } from '@/components/ProgressComponents';
+import { useQuestionsCache } from '@/hooks/useQuestionsCache';
 
 const categoryInfo: Record<string, {
   name: string;
@@ -74,98 +66,26 @@ export default function TrainCategoryPage() {
   const category = params.category as string;
   const info = categoryInfo[category];
   
-  const [questions, setQuestions] = useState<Question[] | ReadingPassage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-
+  
+  // Hook pour le cache des questions
+  const { questions, loading, error, fromCache, refresh } = useQuestionsCache(category);
+  
+  // Hook pour la progression
+  const { stats, completedQuestions, isQuestionCompleted, loading: progressLoading } = useCategoryProgress(category);
+  
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        if (category === 'reading_comprehension') {
-          // For READING COMPREHENSION: group by passage_id
-          const { data, error: fetchError } = await supabase
-            .from('questions')
-            .select('*')
-            .eq('category', category)
-            .order('passage_id', { ascending: false });
-
-          if (fetchError) throw fetchError;
-          const source = data ?? [];
-          if (source.length === 0) {
-            setQuestions([]);
-            sessionStorage.removeItem(`question_order_${category}`);
-            return;
-          }
-          
-          // Group by passage_id and keep all 3 questions together
-          const passageMap = new Map<string, ReadingPassage>();
-          source.forEach((q) => {
-            if (q.passage_id) {
-              if (!passageMap.has(q.passage_id)) {
-                passageMap.set(q.passage_id, {
-                  passage_id: q.passage_id,
-                  image_url: q.image_url,
-                  questions: [],
-                });
-              }
-              passageMap.get(q.passage_id)!.questions.push(q);
-            }
-          });
-          
-          // Convert to array and sort questions by question_number
-          const passages = Array.from(passageMap.values()).map(passage => ({
-            ...passage,
-            questions: passage.questions.sort((a, b) => (a.question_number || 0) - (b.question_number || 0)),
-          }));
-          
-          // Mélanger l'ordre des passages
-          const shuffledPassages = shuffleArray(passages);
-          setQuestions(shuffledPassages);
-          
-          // Sauvegarder l'ordre des passage_ids dans sessionStorage
-          const passageIds = shuffledPassages.map(p => p.passage_id);
-          sessionStorage.setItem(`question_order_${category}`, JSON.stringify(passageIds));
-        } else {
-          // For other categories: standard fetch
-          const { data, error: fetchError } = await supabase
-            .from('questions')
-            .select('*')
-            .eq('category', category);
-
-          if (fetchError) throw fetchError;
-          const source = data ?? [];
-          if (source.length === 0) {
-            setQuestions([]);
-            sessionStorage.removeItem(`question_order_${category}`);
-            return;
-          }
-
-          // Mélanger l'ordre des questions
-          const shuffledQuestions = shuffleArray(source);
-          setQuestions(shuffledQuestions);
-          
-          // Sauvegarder l'ordre des question IDs dans sessionStorage
-          const questionIds = shuffledQuestions.map(q => q.id);
-          sessionStorage.setItem(`question_order_${category}`, JSON.stringify(questionIds));
-        }
-      } catch (err) {
-        console.error('Error fetching questions:', err);
-        setError('Impossible de charger les questions');
-      } finally {
-        setLoading(false);
+    // Sauvegarder l'ordre des questions dans sessionStorage pour la navigation
+    if (questions.length > 0) {
+      if (category === 'reading_comprehension') {
+        const passageIds = (questions as ReadingPassage[]).map(p => p.passage_id);
+        sessionStorage.setItem(`question_order_${category}`, JSON.stringify(passageIds));
+      } else {
+        const questionIds = (questions as Question[]).map(q => q.id);
+        sessionStorage.setItem(`question_order_${category}`, JSON.stringify(questionIds));
       }
-    };
-
-    if (info) {
-      fetchQuestions();
-    } else {
-      setLoading(false);
     }
-  }, [category, info]);
+  }, [questions, category]);
 
   if (!info) {
     return (
@@ -184,7 +104,7 @@ export default function TrainCategoryPage() {
   }
 
   const totalXP = questions.length * 50;
-  const completedCount = 0;
+  const completedCount = stats?.correct_count || 0;
 
   // Filtrage des questions par texte de question ou de réponse
   const term = search.trim().toLowerCase();
@@ -274,6 +194,15 @@ export default function TrainCategoryPage() {
           </div>
         </motion.div>
 
+        {/* Barre de progression XP */}
+        {!loading && !progressLoading && questions.length > 0 && (
+          <CategoryProgressBar 
+            stats={stats} 
+            totalQuestions={questions.length} 
+            loading={progressLoading}
+          />
+        )}
+
         {loading && (
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
@@ -299,8 +228,32 @@ export default function TrainCategoryPage() {
 
         {!loading && !error && questions.length > 0 && (
           <>
-            {/* Barre de recherche */}
-            <div className="mb-4">
+            {/* Indicateur de cache et barre de recherche */}
+            <div className="mb-4 space-y-3">
+              {/* Indicateur si les données viennent du cache */}
+              {fromCache && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl px-4 py-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm text-blue-700 font-medium">
+                      📦 Chargées depuis le cache (instantané)
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => refresh()}
+                    className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Actualiser
+                  </button>
+                </motion.div>
+              )}
+              
+              {/* Barre de recherche */}
               <div className="group rounded-xl p-[2px] bg-gradient-to-r from-blue-300 to-purple-400 focus-within:from-blue-500 focus-within:to-purple-600 transition-colors">
                 <div className="relative">
                   <Search className="w-5 h-5 text-gray-600 absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-blue-600" />
@@ -320,6 +273,7 @@ export default function TrainCategoryPage() {
               // For READING COMPREHENSION: item is a passage with 3 questions
               if (category === 'reading_comprehension' && 'questions' in item) {
                 const passage = item as ReadingPassage;
+                const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
                 
                 return (
                   <motion.div
@@ -329,7 +283,12 @@ export default function TrainCategoryPage() {
                     transition={{ delay: index * 0.1 }}
                   >
                     <Link href={`/train/${category}/${passage.passage_id}`}>
-                      <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all cursor-pointer group">
+                      <div className={`bg-white rounded-2xl p-6 shadow-lg transition-all cursor-pointer group relative ${
+                        passageCompleted 
+                          ? 'border-4 border-green-500 hover:shadow-2xl' 
+                          : 'border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl'
+                      }`}>
+                        
                         <div className="flex items-start gap-4">
                           <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md`}>
                             <span className="text-3xl">{info.emoji}</span>
@@ -352,14 +311,20 @@ export default function TrainCategoryPage() {
                               <img 
                                 src={passage.image_url} 
                                 alt="Passage" 
-                                className="w-full h-32 object-cover rounded-xl"
+                                className="w-full h-32 object-cover rounded-xl mt-3"
                               />
                             )}
                           </div>
                           <div className="flex flex-col items-end gap-2">
-                            <div className="flex items-center gap-2 px-3 py-1 bg-yellow-50 rounded-full border border-yellow-200">
-                              <Trophy className="w-4 h-4 text-yellow-600" />
-                              <span className="text-sm font-bold text-yellow-600">150 XP</span>
+                            <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
+                              passageCompleted 
+                                ? 'bg-green-100 border-green-300 text-green-700' 
+                                : 'bg-yellow-50 border-yellow-200 text-yellow-600'
+                            }`}>
+                              <Trophy className={`w-4 h-4 ${passageCompleted ? 'text-green-600' : 'text-yellow-600'}`} />
+                              <span className="text-sm font-bold">
+                                {passageCompleted ? '✓ 150 XP' : '+150 XP'}
+                              </span>
                             </div>
                             <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                           </div>
@@ -377,6 +342,8 @@ export default function TrainCategoryPage() {
                 category === 'text_completion'
                   ? `Texte à compléter (4 trous)`
                   : question.question_text || 'Question audio';
+              
+              const isCompleted = isQuestionCompleted(question.id);
 
               return (
                 <div key={question.id}>
@@ -385,16 +352,20 @@ export default function TrainCategoryPage() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-200 group cursor-pointer relative overflow-hidden"
+                      className={`bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all group cursor-pointer relative overflow-hidden ${
+                        isCompleted 
+                          ? 'border-4 border-green-500' 
+                          : 'border-2 border-gray-100 hover:border-blue-200'
+                      }`}
                     >
-                      <div className="flex items-center gap-4">
+                                            <div className="flex items-center gap-4">
                         <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
                           {index + 1}
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-4 mb-2">
-                            <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                            <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 pr-10">
                               {displayTitle}
                             </h3>
                             <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
@@ -407,16 +378,22 @@ export default function TrainCategoryPage() {
                               <Clock className="w-4 h-4" />
                               <span>3 min</span>
                             </div>
-                          <div className="flex items-center gap-1">
-                            <Trophy className="w-4 h-4 text-yellow-500" />
-                            <span className="font-bold text-yellow-600">+50 XP</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Target className="w-4 h-4 text-blue-500" />
-                            <span>{question.choices?.length || 0} choix</span>
+                            <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg ${
+                              isCompleted 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-yellow-50 text-yellow-600'
+                            }`}>
+                              <Trophy className={`w-4 h-4 ${isCompleted ? 'text-green-600' : 'text-yellow-500'}`} />
+                              <span className="font-bold">
+                                {isCompleted ? '✓ 50 XP' : '+50 XP'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Target className="w-4 h-4 text-blue-500" />
+                              <span>{question.choices?.length || 0} choix</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
                       <motion.div
                         className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
