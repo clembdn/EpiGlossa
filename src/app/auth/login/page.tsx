@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -13,17 +13,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<'error' | 'success'>('error')
-  const [user, setUser] = useState<any>(null)
 
   const router = useRouter()
-
-  useEffect(() => {
-    const check = async () => {
-      const { data } = await supabase.auth.getUser()
-      setUser(data?.user ?? null)
-    }
-    check()
-  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -98,28 +89,6 @@ export default function LoginPage() {
       setMessage('Erreur lors de la demande')
       setMessageType('error')
     }
-  }
-
-  if (user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-3xl p-8 shadow-2xl max-w-md w-full text-center"
-        >
-          <div className="text-6xl mb-4">👋</div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Déjà connecté !</h2>
-          <p className="text-gray-600 mb-6">{user.email}</p>
-          <button 
-            onClick={() => router.push('/')}
-            className="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:shadow-xl transition-all"
-          >
-            Retour à l&apos;accueil
-          </button>
-        </motion.div>
-      </div>
-    )
   }
 
   return (
