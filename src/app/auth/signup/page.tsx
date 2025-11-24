@@ -141,7 +141,6 @@ export default function SignupPage() {
                 <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5" />
                   Créer mon compte
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </>

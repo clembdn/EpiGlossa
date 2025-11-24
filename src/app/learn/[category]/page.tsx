@@ -6,6 +6,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Lock, CheckCircle2, Circle, Play, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
+import { grammarLessons } from '@/data/grammar-lessons';
+import { conjugationLessons } from '@/data/conjugation-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
 
 interface Lesson {
@@ -30,18 +32,13 @@ const categoryData: Record<string, { name: string; emoji: string; color: string;
     name: 'Grammaire',
     emoji: '💡',
     color: 'from-yellow-400 to-orange-400',
-    lessons: [
-      { id: 1, title: 'Les articles', description: 'A, an, the', xp: 60, duration: 8, locked: false, completed: false, status: 'available' },
-      { id: 2, title: 'Les pronoms', description: 'I, you, he, she, it...', xp: 70, duration: 10, locked: true, completed: false, status: 'locked' },
-    ]
+    lessons: grammarLessons
   },
   conjugaison: {
     name: 'Conjugaison',
     emoji: '✏️',
     color: 'from-blue-400 to-cyan-400',
-    lessons: [
-      { id: 1, title: 'Le présent simple', description: 'Base de la conjugaison', xp: 80, duration: 12, locked: false, completed: false, status: 'available' },
-    ]
+    lessons: conjugationLessons
   },
   comprehension: {
     name: 'Compréhension',
@@ -49,22 +46,6 @@ const categoryData: Record<string, { name: string; emoji: string; color: string;
     color: 'from-green-400 to-emerald-400',
     lessons: [
       { id: 1, title: 'Textes courts', description: 'Lis et comprends', xp: 75, duration: 15, locked: false, completed: false, status: 'available' },
-    ]
-  },
-  expression: {
-    name: 'Expression',
-    emoji: '✍️',
-    color: 'from-indigo-400 to-purple-400',
-    lessons: [
-      { id: 1, title: 'Se présenter', description: 'Écris ta présentation', xp: 70, duration: 10, locked: false, completed: false, status: 'available' },
-    ]
-  },
-  prononciation: {
-    name: 'Prononciation',
-    emoji: '🗣️',
-    color: 'from-red-400 to-pink-400',
-    lessons: [
-      { id: 1, title: 'Les sons TH', description: 'Maîtrise les th', xp: 65, duration: 8, locked: false, completed: false, status: 'available' },
     ]
   },
 };

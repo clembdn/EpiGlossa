@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
+import { grammarLessons } from '@/data/grammar-lessons';
+import { conjugationLessons } from '@/data/conjugation-lessons';
 
 interface Category {
   id: string;
@@ -38,32 +40,32 @@ const categories: Category[] = [
     gradient: 'bg-gradient-to-br from-purple-50 to-pink-50',
     emoji: '📚',
     progress: 0,
-    lessons: 11,
+    lessons: vocabularyLessons.length,
     minutes: 8
   },
   {
     id: 'grammaire',
     name: 'Grammaire',
-  description: 'Règles grammaticales clés du Tepitech',
+    description: 'Règles grammaticales clés du TOEIC',
     icon: Lightbulb,
     color: 'from-yellow-400 to-orange-400',
     gradient: 'bg-gradient-to-br from-yellow-50 to-orange-50',
     emoji: '💡',
     progress: 0,
-    lessons: 0,
-    minutes: 0
+    lessons: grammarLessons.length,
+    minutes: 10
   },
   {
     id: 'conjugaison',
     name: 'Conjugaison',
-  description: 'Temps et verbes pour le Tepitech',
+    description: 'Temps et verbes pour le TOEIC',
     icon: Languages,
     color: 'from-blue-400 to-cyan-400',
     gradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
     emoji: '✏️',
     progress: 0,
-    lessons: 0,
-    minutes: 0
+    lessons: conjugationLessons.length,
+    minutes: 13
   },
   {
     id: 'comprehension',
@@ -106,14 +108,24 @@ export default function LearnPage() {
   const [totalProgress, setTotalProgress] = useState(0);
   const [totalXP, setTotalXP] = useState(0);
   const [vocabulaireProgress, setVocabulaireProgress] = useState(0);
+  const [grammaireProgress, setGrammaireProgress] = useState(0);
+  const [conjugaisonProgress, setConjugaisonProgress] = useState(0);
 
   useEffect(() => {
-    // Calculer la progression du vocabulaire
+    // Calculer la progression de chaque catégorie
     const vocabProgress = lessonProgressService.getCategoryProgress('vocabulaire', vocabularyLessons.length);
+    const gramProgress = lessonProgressService.getCategoryProgress('grammaire', grammarLessons.length);
+    const conjProgress = lessonProgressService.getCategoryProgress('conjugaison', conjugationLessons.length);
+    
     setVocabulaireProgress(vocabProgress);
+    setGrammaireProgress(gramProgress);
+    setConjugaisonProgress(conjProgress);
 
-    // Pour l'instant, seule la catégorie vocabulaire est disponible
-    setTotalProgress(vocabProgress);
+    // Calculer la progression totale
+    const totalLessons = vocabularyLessons.length + grammarLessons.length + conjugationLessons.length;
+    const totalCompleted = lessonProgressService.getAllProgress().filter(p => p.completed).length;
+    const overallProgress = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
+    setTotalProgress(overallProgress);
 
     // Calculer le XP total
     const xp = lessonProgressService.getTotalXP();
@@ -164,7 +176,7 @@ export default function LearnPage() {
               <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 {totalProgress}%
               </p>
-              <p className="text-xs text-gray-500">{vocabularyLessons.length} leçons</p>
+              <p className="text-xs text-gray-500">{vocabularyLessons.length + grammarLessons.length + conjugationLessons.length} leçons</p>
             </div>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
@@ -186,7 +198,14 @@ export default function LearnPage() {
         >
           {categories.map((category) => {
             // Calculer la progression réelle pour chaque catégorie
-            const categoryProgress = category.id === 'vocabulaire' ? vocabulaireProgress : 0;
+            let categoryProgress = 0;
+            if (category.id === 'vocabulaire') {
+              categoryProgress = vocabulaireProgress;
+            } else if (category.id === 'grammaire') {
+              categoryProgress = grammaireProgress;
+            } else if (category.id === 'conjugaison') {
+              categoryProgress = conjugaisonProgress;
+            }
             
             return (
             <motion.div key={category.id} variants={itemVariants}>

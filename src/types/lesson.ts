@@ -11,6 +11,28 @@ export interface VocabularyWord {
   frequency: 'essential' | 'important' | 'useful'; // Fréquence d'apparition au TOEIC
 }
 
+export interface GrammarRule {
+  title: string;
+  explanation: string;
+  examples: {
+    english: string;
+    french: string;
+    correct: boolean;
+  }[];
+  tips?: string;
+}
+
+export interface ConjugationRule {
+  title: string;
+  explanation: string;
+  examples: {
+    english: string;
+    french: string;
+    correct: boolean;
+  }[];
+  tips?: string;
+}
+
 export interface Exercise {
   id: string;
   type: 'multiple-choice' | 'matching' | 'fill-blank' | 'translation' | 'listening';
@@ -29,6 +51,35 @@ export interface VocabularyLesson {
   xp: number;
   duration: number;
   words: VocabularyWord[];
+  exercises: Exercise[];
+  locked: boolean;
+  completed: boolean;
+  status: 'locked' | 'available' | 'completed';
+}
+
+export interface GrammarLesson {
+  id: number;
+  title: string;
+  description: string;
+  theme: string;
+  xp: number;
+  duration: number;
+  rules: GrammarRule[];
+  exercises: Exercise[];
+  locked: boolean;
+  completed: boolean;
+  status: 'locked' | 'available' | 'completed';
+}
+
+export interface ConjugationLesson {
+  id: number;
+  title: string;
+  description: string;
+  theme: string;
+  xp: number;
+  duration: number;
+  tense: string;
+  rules: ConjugationRule[];
   exercises: Exercise[];
   locked: boolean;
   completed: boolean;
