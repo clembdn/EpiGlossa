@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Clock, AlertTriangle } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Question, QuestionCategory } from '@/types/question';
@@ -352,34 +352,28 @@ export default function ToeicBlancTestPage() {
       category: currentQuestion.category || '',
     };
 
-    const { nextResults, inserted } = recordResult(entry);
-    if (inserted) {
+    const { nextResults } = recordResult(entry);
+    
+    // Passer automatiquement à la question suivante après 500ms
+    setTimeout(() => {
       moveToNextQuestion(nextResults);
-    }
+    }, 500);
   }, [currentQuestion, getCurrentQuestionNumber, hasStarted, moveToNextQuestion, recordResult, tabChangeDetected]);
 
   // Détection de changement d'onglet/page
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!hasStarted || tabChangeDetected) return;
+      // Ne déclencher que si la page devient vraiment cachée (changement d'onglet)
       if (document.hidden) {
         handleTabChangeViolation();
       }
     };
 
-    const handleWindowBlur = () => {
-      if (!hasStarted || tabChangeDetected) return;
-      if (!document.hidden) {
-        handleTabChangeViolation();
-      }
-    };
-
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('blur', handleWindowBlur);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('blur', handleWindowBlur);
     };
   }, [handleTabChangeViolation, hasStarted, tabChangeDetected]);
 
@@ -505,32 +499,13 @@ export default function ToeicBlancTestPage() {
           </div>
         ))}
       </div>
-
-      {/* Alert si changement d'onglet */}
-      <AnimatePresence>
-        {tabChangeDetected && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="bg-red-100 border-2 border-red-300 rounded-xl p-3"
-          >
-            <div className="flex items-start gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-red-800 font-semibold">
-                Changement de page détecté ! Question comptée comme incorrecte.
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 lg:h-screen lg:overflow-hidden">
-      <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Mobile Progress Summary */}
         <div className="lg:hidden w-full">
           <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-white/70 px-4 py-3 shadow-sm">
@@ -608,8 +583,8 @@ export default function ToeicBlancTestPage() {
         </div>
 
         {/* Right Side - Question Content */}
-        <div className="flex-1 w-full px-4 py-4 pb-16 lg:p-8 lg:h-screen lg:overflow-hidden">
-          <div className="max-w-3xl mx-auto pt-4 lg:pt-2 h-full flex flex-col gap-6">
+        <div className="flex-1 w-full px-4 py-4 pb-16 lg:p-8">
+          <div className="max-w-3xl mx-auto pt-4 lg:pt-2 flex flex-col gap-6">
             {/* Question Card */}
             <motion.div
               key={currentQuestionIndex}
