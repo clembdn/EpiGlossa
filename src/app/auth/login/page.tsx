@@ -21,14 +21,9 @@ export default function LoginPage() {
     const check = async () => {
       const { data } = await supabase.auth.getUser()
       setUser(data?.user ?? null)
-      
-      // Si l'utilisateur est déjà connecté, le rediriger automatiquement
-      if (data?.user) {
-        router.push('/')
-      }
     }
     check()
-  }, [router])
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
