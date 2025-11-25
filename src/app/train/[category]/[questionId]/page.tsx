@@ -239,10 +239,6 @@ export default function QuestionPage() {
     await refreshProgress();
   };
 
-  const getCorrectAnswer = () => {
-    return shuffledQuestion?.choices.find(choice => choice.is_correct);
-  };
-
   const isCorrect = () => {
     const currentQuestions = category === 'reading_comprehension' ? shuffledQuestions : [];
     const currentQuestion = category !== 'reading_comprehension' ? shuffledQuestion : null;

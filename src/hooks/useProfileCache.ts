@@ -138,18 +138,18 @@ export function useProfileCache(userId: string | undefined) {
     ]);
 
     const statsMap = new Map(
-      (statsResult.data || []).map((stat: any) => [stat.category, stat])
+      (statsResult.data || []).map((stat: { category: string }) => [stat.category, stat])
     );
 
     const countsMap = new Map(
-      countsResults.map(({ category, count }: any) => [category, count])
+      countsResults.map(({ category, count }: { category: string; count: number }) => [category, count])
     );
 
     const scores: CategoryScore[] = Object.entries(categoryInfo).map(([category, info]) => {
-      const stats = statsMap.get(category);
+      const stats = statsMap.get(category) as { xp_earned?: number } | undefined;
       const totalCount = countsMap.get(category) || 0;
       const maxScore = (totalCount as number) * 50;
-      const currentScore = (stats as any)?.xp_earned || 0;
+      const currentScore = stats?.xp_earned || 0;
       const percentage = maxScore > 0 ? (currentScore / maxScore) * 100 : 0;
 
       return {
@@ -175,7 +175,7 @@ export function useProfileCache(userId: string | undefined) {
 
     if (error || !data) return [];
 
-    return data.map((test: any) => ({
+    return data.map((test: { id: string; total_score: number; created_at: string; listening_score: number; reading_score: number }) => ({
       id: test.id,
       score: test.total_score,
       date: test.created_at,

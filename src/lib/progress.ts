@@ -79,8 +79,9 @@ export async function saveUserAnswer(
     const xpGained = isCorrect ? 50 : 0
 
     return { success: true, xpGained }
-  } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Erreur inconnue' }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+    return { success: false, error: errorMessage }
   }
 }
 
@@ -109,8 +110,9 @@ export async function getUserProgressForCategory(
     }
 
     return { success: true, data: data as UserProgress[] }
-  } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Erreur inconnue' }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+    return { success: false, error: errorMessage }
   }
 }
 
@@ -153,8 +155,9 @@ export async function getCategoryStats(
     }
 
     return { success: true, stats: data as CategoryStats }
-  } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Erreur inconnue' }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+    return { success: false, error: errorMessage }
   }
 }
 
@@ -197,8 +200,9 @@ export async function getGlobalStats(): Promise<{
     }
 
     return { success: true, stats: data as GlobalStats }
-  } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Erreur inconnue' }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+    return { success: false, error: errorMessage }
   }
 }
 

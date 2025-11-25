@@ -34,6 +34,7 @@ export function useCategoryProgress(category: string) {
     if (category) {
       loadProgress()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category])
 
   const submitAnswer = async (questionId: string, isCorrect: boolean) => {

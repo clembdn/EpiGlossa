@@ -32,7 +32,7 @@ const readCache = (key: string): Question | null => {
     }
     
     return entry.data
-  } catch (error) {
+  } catch {
     return null
   }
 }
@@ -51,7 +51,8 @@ const writeCache = (key: string, data: Question): void => {
   }
 }
 
-export function useSingleQuestionCache(questionId: string, category: string) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function useSingleQuestionCache(questionId: string, _category: string) {
   const [question, setQuestion] = useState<Question | null>(null)
   const [loading, setLoading] = useState(true)
   const [fromCache, setFromCache] = useState(false)

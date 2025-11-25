@@ -12,7 +12,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [showUnauthorizedError, setShowUnauthorizedError] = useState(false);
   const { stats, loading } = useGlobalProgress();
-  const { streak, longestStreak, loading: streakLoading } = useStreak();
+  const { streak, loading: streakLoading } = useStreak();
 
   useEffect(() => {
     if (searchParams.get('error') === 'unauthorized') {

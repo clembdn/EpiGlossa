@@ -784,7 +784,7 @@ export default function ToeicBlancTestPage() {
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">Quitter le test ?</h3>
                   <p className="text-sm text-gray-600">
-                    Votre progression actuelle sera perdue et le chronomètre s'arrêtera.
+                    Votre progression actuelle sera perdue et le chronomètre s&apos;arrêtera.
                   </p>
                 </div>
               </div>

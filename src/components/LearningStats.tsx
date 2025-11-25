@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Zap, BookOpen, Target, TrendingUp, Award } from 'lucide-react';
+import { Zap, BookOpen, Target, TrendingUp, Award } from 'lucide-react';
+import Link from 'next/link';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
 
@@ -70,7 +71,7 @@ export default function LearningStats() {
           <Award className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Statistiques d'Apprentissage</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Statistiques d&apos;Apprentissage</h2>
           <p className="text-gray-500 text-sm">Ta progression dans les cours</p>
         </div>
       </div>
@@ -146,14 +147,14 @@ export default function LearningStats() {
             <div>
               <h3 className="font-bold text-blue-900 mb-2">Commence ton apprentissage !</h3>
               <p className="text-blue-700 text-sm mb-3">
-                Les leçons de vocabulaire TOEIC t'attendent. Commence par les 3 mots les plus fréquents !
+                Les leçons de vocabulaire TOEIC t&apos;attendent. Commence par les 3 mots les plus fréquents !
               </p>
-              <a
+              <Link
                 href="/learn"
                 className="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm"
               >
                 Découvrir les leçons
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>

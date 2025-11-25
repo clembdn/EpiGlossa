@@ -53,7 +53,8 @@ export async function setUserRole(userId: string, role: UserRole): Promise<{ suc
     }
 
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Unknown error' }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    return { success: false, error: errorMessage }
   }
 }

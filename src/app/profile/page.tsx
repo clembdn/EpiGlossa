@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  User, Mail, Calendar, Trophy, Target, TrendingUp, 
-  Edit2, Save, X, ChevronRight, Award, Zap, Star,
-  BarChart3, Clock, CheckCircle2, RefreshCw, Flame
+  User, Mail, Calendar, Trophy, Target, 
+  Edit2, Save, X, ChevronRight, Award, Star,
+  BarChart3, Clock, RefreshCw, Flame
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
@@ -19,39 +19,12 @@ interface UserProfile {
   created_at: string;
 }
 
-interface ToeicTest {
-  id: string;
-  score: number;
-  date: string;
-  listening_score: number;
-  reading_score: number;
-}
-
-interface CategoryScore {
-  category: string;
-  name: string;
-  emoji: string;
-  score: number;
-  maxScore: number;
-  percentage: number;
-}
-
-const categoryInfo: Record<string, { name: string; emoji: string; color: string }> = {
-  'audio_with_images': { name: 'Audio avec Images', emoji: '🎧', color: 'from-purple-500 to-fuchsia-400' },
-  'qa': { name: 'Questions & Réponses', emoji: '❓', color: 'from-sky-500 to-blue-400' },
-  'short_conversation': { name: 'Conversations Courtes', emoji: '💬', color: 'from-emerald-500 to-green-400' },
-  'short_talks': { name: 'Exposés Courts', emoji: '📻', color: 'from-orange-500 to-amber-400' },
-  'incomplete_sentences': { name: 'Phrases Incomplètes', emoji: '✍️', color: 'from-yellow-400 to-lime-300' },
-  'text_completion': { name: 'Complétion de Texte', emoji: '📝', color: 'from-indigo-500 to-indigo-400' },
-  'reading_comprehension': { name: 'Compréhension Écrite', emoji: '�', color: 'from-rose-500 to-pink-400' },
-};
-
 export default function ProfilePage() {
   const router = useRouter();
-  const { stats: globalStats, loading: statsLoading } = useGlobalProgress();
+  const { stats: globalStats } = useGlobalProgress();
   const { streak, longestStreak, loading: streakLoading } = useStreak();
   
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{id: string} | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -68,6 +41,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     loadUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadUserData = async () => {
@@ -428,13 +402,13 @@ export default function ProfilePage() {
                     Aucune progression enregistrée
                   </p>
                   <p className="text-sm text-gray-400 mb-6">
-                    Commence à t'entraîner pour voir ton graphe de compétences !
+                    Commence à t&apos;entraîner pour voir ton graphe de compétences !
                   </p>
                   <button
                     onClick={() => router.push('/train')}
                     className="px-6 py-3 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors font-medium"
                   >
-                    Commencer l'entraînement
+                    Commencer l&apos;entraînement
                   </button>
                 </div>
               ) : (
@@ -493,9 +467,6 @@ export default function ProfilePage() {
                   {/* Labels avec emoji */}
                   {radarPoints.map((point, index) => {
                     // Calculer l'angle pour positionner le texte dynamiquement
-                    const angle = (index / categoryScores.length) * 2 * Math.PI - Math.PI / 2;
-                    const isTop = point.labelY < 200;
-                    const isLeft = point.labelX < 200;
                     
                     return (
                       <g key={`label-${index}`}>
@@ -538,7 +509,7 @@ export default function ProfilePage() {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {categoryScores.map((cat, index) => (
+                    {categoryScores.map((cat) => (
                       <div
                         key={cat.category}
                         className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-5 border-2 border-gray-200 hover:border-purple-300 transition-all"

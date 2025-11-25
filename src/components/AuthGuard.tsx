@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase'
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [checking, setChecking] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
@@ -16,7 +15,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       const path = pathname || window.location.pathname
       if (path.startsWith('/auth')) {
         setChecking(false)
-        setIsAuthenticated(false)
         return
       }
 
@@ -26,14 +24,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         if (!user) {
           // redirect to login
           router.replace('/auth/login')
-          setIsAuthenticated(false)
           return
         }
-        setIsAuthenticated(true)
-      } catch (err) {
+      } catch {
         // if any error, redirect to login
         router.replace('/auth/login')
-        setIsAuthenticated(false)
         return
       } finally {
         setChecking(false)
@@ -46,7 +41,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   if (checking) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p>Vérification de l'authentification...</p>
+        <p>Vérification de l&apos;authentification...</p>
       </div>
     )
   }

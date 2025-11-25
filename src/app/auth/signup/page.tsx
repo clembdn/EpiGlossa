@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Mail, Lock, User, AlertCircle, ArrowRight, Sparkles } from 'lucide-react'
+import { Mail, Lock, User, AlertCircle, ArrowRight } from 'lucide-react'
 import { supabase } from '../../../lib/supabase'
 
 export default function SignupPage() {
@@ -71,7 +71,7 @@ export default function SignupPage() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-600 bg-clip-text text-transparent mb-2">
             Inscription
           </h1>
-          <p className="text-gray-600">Rejoins l'aventure EpiGlossa !</p>
+          <p className="text-gray-600">Rejoins l&apos;aventure EpiGlossa !</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-100">

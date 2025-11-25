@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import type { Question, ReadingPassage } from '@/types/question';
 import { useCategoryProgress } from '@/hooks/useProgress';
-import { CategoryProgressBar, QuestionStatusBadge } from '@/components/ProgressComponents';
+import { CategoryProgressBar } from '@/components/ProgressComponents';
 import { useQuestionsCache } from '@/hooks/useQuestionsCache';
 
 const categoryInfo: Record<string, {
@@ -72,7 +72,10 @@ export default function TrainCategoryPage() {
   const { questions, loading, error, fromCache, refresh } = useQuestionsCache(category);
   
   // Hook pour la progression
-  const { stats, completedQuestions, isQuestionCompleted, loading: progressLoading } = useCategoryProgress(category);
+  const { stats, isQuestionCompleted, loading: progressLoading } = useCategoryProgress(category);
+  
+  // Ignore error warning
+  void error;
   
   useEffect(() => {
     // Sauvegarder l'ordre des questions dans sessionStorage pour la navigation
@@ -108,18 +111,19 @@ export default function TrainCategoryPage() {
 
   // Filtrage des questions par texte de question ou de réponse
   const term = search.trim().toLowerCase();
-  const matchesQuestion = (q: any) => {
+  const matchesQuestion = (q: Question | ReadingPassage) => {
     if (!term) return true;
-    const text = (q.question_text || q.text_with_gaps || '').toLowerCase();
+    const questionWithText = q as { question_text?: string; text_with_gaps?: string; choices?: { text?: string }[]; gap_choices?: Record<string, { text?: string }[]> };
+    const text = (questionWithText.question_text || questionWithText.text_with_gaps || '').toLowerCase();
     if (text.includes(term)) return true;
     // choices (A-D)
-    if (Array.isArray(q.choices)) {
-      if (q.choices.some((c: any) => (c.text || '').toLowerCase().includes(term))) return true;
+    if (Array.isArray(questionWithText.choices)) {
+      if (questionWithText.choices.some((c) => (c.text || '').toLowerCase().includes(term))) return true;
     }
     // gap_choices for text_completion
-    if (q.gap_choices && typeof q.gap_choices === 'object') {
-      const all = Object.values(q.gap_choices as Record<string, any[]>).flat();
-      if (all.some((c: any) => (c.text || '').toLowerCase().includes(term))) return true;
+    if (questionWithText.gap_choices && typeof questionWithText.gap_choices === 'object') {
+      const all = Object.values(questionWithText.gap_choices).flat();
+      if (all.some((c) => (c.text || '').toLowerCase().includes(term))) return true;
     }
     return false;
   };
@@ -127,7 +131,7 @@ export default function TrainCategoryPage() {
   const filteredItems = ((): (Question | ReadingPassage)[] => {
     if (!term) return questions as (Question | ReadingPassage)[];
     if (category === 'reading_comprehension') {
-      return (questions as ReadingPassage[]).filter(p => p.questions.some(q => matchesQuestion(q)));
+      return (questions as ReadingPassage[]).filter(p => p.questions.some(q => matchesQuestion(q as unknown as Question)));
     }
     return (questions as Question[]).filter(q => matchesQuestion(q));
   })();

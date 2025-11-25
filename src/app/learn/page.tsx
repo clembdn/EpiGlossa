@@ -107,7 +107,7 @@ const itemVariants = {
 
 export default function LearnPage() {
   const [totalProgress, setTotalProgress] = useState(0);
-  const [totalXP, setTotalXP] = useState(0);
+  const [, setTotalXP] = useState(0);
   const [vocabulaireProgress, setVocabulaireProgress] = useState(0);
   const [grammaireProgress, setGrammaireProgress] = useState(0);
   const [conjugaisonProgress, setConjugaisonProgress] = useState(0);

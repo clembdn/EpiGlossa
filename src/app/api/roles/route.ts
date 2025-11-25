@@ -37,9 +37,10 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json({ role: roleData.role }, { status: 200 })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur serveur'
     console.error('Error in role API:', err)
-    return NextResponse.json({ error: err?.message ?? 'Erreur serveur' }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -94,8 +95,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, message: 'Rôle mis à jour' }, { status: 200 })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Erreur serveur'
     console.error('Error updating role:', err)
-    return NextResponse.json({ error: err?.message ?? 'Erreur serveur' }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

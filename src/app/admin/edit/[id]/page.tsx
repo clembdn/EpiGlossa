@@ -44,6 +44,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
 
   useEffect(() => {
     fetchQuestion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resolvedParams.id]);
 
   const fetchQuestion = async () => {

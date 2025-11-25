@@ -10,12 +10,10 @@ import {
   XCircle, 
   Trophy,
   Star,
-  Sparkles,
   BookOpen,
   Zap
 } from 'lucide-react';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
-import { VocabularyWord, Exercise } from '@/types/lesson';
 import { lessonProgressService } from '@/lib/lesson-progress';
 
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
@@ -284,7 +282,7 @@ export default function VocabularyLessonPage() {
               {/* Examples */}
               <div className="space-y-4 mb-8">
                 <h3 className="font-bold text-gray-700 flex items-center gap-2">
-                  Exemples d'utilisation :
+                  Exemples d&apos;utilisation :
                 </h3>
                 
                 {currentWord.examples.map((example, index) => (

@@ -177,7 +177,7 @@ export default function ImportJsonPage() {
         }));
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('questions')
         .insert(questionsToInsert)
         .select();
@@ -356,7 +356,7 @@ export default function ImportJsonPage() {
                         📋 Aperçu ({totalLabel})
                       </h3>
                       <div className="space-y-3 max-h-96 overflow-y-auto">
-                        {displayItems.map((item, index) => {
+                        {displayItems.map((item) => {
                           const firstQ = item.questions[0];
                           return (
                             <div

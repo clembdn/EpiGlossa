@@ -152,8 +152,7 @@ export default function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'learn' | 'train' | null>(null);
-  const [user, setUser] = useState<any>(null);
-  const router = useRouter();
+  const [, setUser] = useState<unknown>(null);
   const { isAdmin, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
@@ -163,8 +162,8 @@ export default function Navbar() {
         const { data } = await supabase.auth.getUser()
         if (!mounted) return
         setUser(data?.user ?? null)
-      } catch (err) {
-        console.error('Error getting user', err)
+      } catch {
+        console.error('Error getting user')
       }
     }
 
@@ -178,25 +177,11 @@ export default function Navbar() {
       mounted = false
       try {
         listener?.subscription?.unsubscribe()
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
   }, [])
-
-  const handleSignOut = async () => {
-    try {
-      await supabase.auth.signOut()
-      // clear our cookie so middleware won't consider the user authenticated
-      if (typeof document !== 'undefined') {
-        document.cookie = 'epig_token=; path=/; max-age=0;'
-      }
-      setUser(null)
-      router.push('/auth/login')
-    } catch (err) {
-      console.error('Error signing out', err)
-    }
-  }
 
   const handleMobileDropdown = (type: 'learn' | 'train') => {
     setActiveDropdown(type);
