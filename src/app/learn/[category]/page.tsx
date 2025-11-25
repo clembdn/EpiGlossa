@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
 import { grammarLessons } from '@/data/grammar-lessons';
 import { conjugationLessons } from '@/data/conjugation-lessons';
+import { comprehensionLessons } from '@/data/comprehension-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
 
 interface Lesson {
@@ -44,9 +45,7 @@ const categoryData: Record<string, { name: string; emoji: string; color: string;
     name: 'Compréhension',
     emoji: '📖',
     color: 'from-green-400 to-emerald-400',
-    lessons: [
-      { id: 1, title: 'Textes courts', description: 'Lis et comprends', xp: 75, duration: 15, locked: false, completed: false, status: 'available' },
-    ]
+    lessons: comprehensionLessons
   },
 };
 
@@ -63,7 +62,8 @@ export default function CategoryPage() {
     if (categoryInfo) {
       // Mettre à jour les leçons avec la progression réelle
       const updatedLessons = categoryInfo.lessons.map(lesson => {
-        const isCompleted = lessonProgressService.isLessonCompleted(category, lesson.id);
+        const progress = lessonProgressService.getLessonProgress(category, lesson.id);
+        const isCompleted = !!(progress?.completed && progress?.score === 100);
         return {
           ...lesson,
           completed: isCompleted,
@@ -227,6 +227,22 @@ export default function CategoryPage() {
                       <span className="text-gray-600 font-medium">
                         {lesson.duration} min
                       </span>
+                      {/* Afficher le score si la leçon a été tentée mais pas à 100% */}
+                      {!lesson.completed && (() => {
+                        const progress = lessonProgressService.getLessonProgress(category, lesson.id);
+                        return progress && progress.score > 0 ? (
+                          <>
+                            <span className="text-gray-400">•</span>
+                            <span className={`font-semibold ${
+                              progress.score >= 80 ? 'text-green-600' :
+                              progress.score >= 60 ? 'text-yellow-600' :
+                              'text-orange-600'
+                            }`}>
+                              Dernier score: {progress.score}%
+                            </span>
+                          </>
+                        ) : null;
+                      })()}
                     </div>
 
                     {!lesson.locked && !lesson.completed && (
@@ -235,7 +251,12 @@ export default function CategoryPage() {
                           className={`mt-4 w-full bg-gradient-to-r ${categoryInfo.color} text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2`}
                         >
                           <Play className="w-5 h-5" fill="white" />
-                          Commencer la leçon
+                          {(() => {
+                            const progress = lessonProgressService.getLessonProgress(category, lesson.id);
+                            return progress && progress.score > 0 
+                              ? 'Recommencer pour 100%' 
+                              : 'Commencer la leçon';
+                          })()}
                         </motion.button>
                       </Link>
                     )}

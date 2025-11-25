@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AuthGuard from '@/components/AuthGuard';
 import ConditionalLayout from '@/components/ConditionalLayout';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "EpiGlossa - Apprends l'anglais en t'amusant",
@@ -24,6 +25,7 @@ export default function RootLayout({
         <AuthGuard>
           <ConditionalLayout>
             {children}
+            <SpeedInsights />
           </ConditionalLayout>
         </AuthGuard>
       </body>

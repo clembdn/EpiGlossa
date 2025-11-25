@@ -41,12 +41,12 @@ export const lessonProgressService = {
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(allProgress));
   },
 
-  // Marquer une leçon comme complétée
+  // Marquer une leçon comme complétée (seulement si 100%)
   completeLesson(category: string, lessonId: number, score: number, xpEarned: number): void {
     this.saveLessonProgress({
       lessonId,
       category,
-      completed: true,
+      completed: score === 100, // Seulement acquis si 100%
       score,
       xpEarned,
       completedAt: new Date()

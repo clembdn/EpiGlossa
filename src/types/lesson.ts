@@ -86,6 +86,34 @@ export interface ConjugationLesson {
   status: 'locked' | 'available' | 'completed';
 }
 
+export interface ComprehensionStrategy {
+  title: string;
+  explanation: string;
+  tips?: string;
+  examples: string[];
+}
+
+export interface ComprehensionPassage {
+  id: string;
+  text: string;
+  type: 'email' | 'memo' | 'article' | 'announcement' | 'advertisement';
+}
+
+export interface ComprehensionLesson {
+  id: number;
+  title: string;
+  description: string;
+  theme: string;
+  xp: number;
+  duration: number;
+  strategies: ComprehensionStrategy[];
+  passages: ComprehensionPassage[];
+  exercises: Exercise[];
+  locked: boolean;
+  completed: boolean;
+  status: 'locked' | 'available' | 'completed';
+}
+
 export interface LessonProgress {
   lessonId: number;
   category: string;

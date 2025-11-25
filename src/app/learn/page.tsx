@@ -16,6 +16,7 @@ import { lessonProgressService } from '@/lib/lesson-progress';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
 import { grammarLessons } from '@/data/grammar-lessons';
 import { conjugationLessons } from '@/data/conjugation-lessons';
+import { comprehensionLessons } from '@/data/comprehension-lessons';
 
 interface Category {
   id: string;
@@ -76,8 +77,8 @@ const categories: Category[] = [
     gradient: 'bg-gradient-to-br from-green-50 to-emerald-50',
     emoji: '📖',
     progress: 0,
-    lessons: 0,
-    minutes: 0
+    lessons: comprehensionLessons.length,
+    minutes: 11
   },
 ];
 
@@ -110,19 +111,22 @@ export default function LearnPage() {
   const [vocabulaireProgress, setVocabulaireProgress] = useState(0);
   const [grammaireProgress, setGrammaireProgress] = useState(0);
   const [conjugaisonProgress, setConjugaisonProgress] = useState(0);
+  const [comprehensionProgress, setComprehensionProgress] = useState(0);
 
   useEffect(() => {
     // Calculer la progression de chaque catégorie
     const vocabProgress = lessonProgressService.getCategoryProgress('vocabulaire', vocabularyLessons.length);
     const gramProgress = lessonProgressService.getCategoryProgress('grammaire', grammarLessons.length);
     const conjProgress = lessonProgressService.getCategoryProgress('conjugaison', conjugationLessons.length);
+    const compProgress = lessonProgressService.getCategoryProgress('comprehension', comprehensionLessons.length);
     
     setVocabulaireProgress(vocabProgress);
     setGrammaireProgress(gramProgress);
     setConjugaisonProgress(conjProgress);
+    setComprehensionProgress(compProgress);
 
     // Calculer la progression totale
-    const totalLessons = vocabularyLessons.length + grammarLessons.length + conjugationLessons.length;
+    const totalLessons = vocabularyLessons.length + grammarLessons.length + conjugationLessons.length + comprehensionLessons.length;
     const totalCompleted = lessonProgressService.getAllProgress().filter(p => p.completed).length;
     const overallProgress = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
     setTotalProgress(overallProgress);
@@ -205,6 +209,8 @@ export default function LearnPage() {
               categoryProgress = grammaireProgress;
             } else if (category.id === 'conjugaison') {
               categoryProgress = conjugaisonProgress;
+            } else if (category.id === 'comprehension') {
+              categoryProgress = comprehensionProgress;
             }
             
             return (
