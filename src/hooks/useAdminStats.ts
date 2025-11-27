@@ -90,7 +90,45 @@ async function getAllUniqueUserIds(): Promise<Set<string>> {
   return userIds;
 }
 
-export function useAdminStats() {
+export type TimeRange = 'today' | '7d' | '30d';
+
+// Helper pour obtenir les dates selon la plage
+function getDateRanges(range: TimeRange) {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+  
+  let periodStart: string;
+  let previousPeriodStart: string;
+  let previousPeriodEnd: string;
+  let daysInPeriod: number;
+  
+  switch (range) {
+    case 'today':
+      periodStart = todayStart;
+      // Période précédente = hier
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      previousPeriodStart = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate()).toISOString();
+      previousPeriodEnd = todayStart;
+      daysInPeriod = 1;
+      break;
+    case '7d':
+      periodStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      previousPeriodStart = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString();
+      previousPeriodEnd = periodStart;
+      daysInPeriod = 7;
+      break;
+    case '30d':
+      periodStart = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      previousPeriodStart = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000).toISOString();
+      previousPeriodEnd = periodStart;
+      daysInPeriod = 30;
+      break;
+  }
+  
+  return { now, todayStart, periodStart, previousPeriodStart, previousPeriodEnd, daysInPeriod };
+}
+
+export function useAdminStats(range: TimeRange = '7d') {
   const [platformStats, setPlatformStats] = useState<PlatformStats | null>(null);
   const [users, setUsers] = useState<UserStats[]>([]);
   const [loading, setLoading] = useState(true);
@@ -127,9 +165,8 @@ export function useAdminStats() {
       // Le nombre total d'utilisateurs = nombre d'utilisateurs dans auth.users (vrais inscrits)
       const totalUsers = authUsersMap.size;
 
-      // Récupérer les utilisateurs actifs (basé sur user_progress)
-      const now = new Date();
-      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+      // Obtenir les dates selon la plage sélectionnée
+      const { now, todayStart, periodStart, previousPeriodStart, previousPeriodEnd, daysInPeriod } = getDateRanges(range);
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
@@ -140,24 +177,25 @@ export function useAdminStats() {
         .gte('completed_at', todayStart);
       const activeUsersTodayCount = new Set(activeToday?.map(u => u.user_id) || []).size;
 
-      // Utilisateurs actifs cette semaine
-      const { data: activeWeek } = await supabase
+      // Utilisateurs actifs sur la période sélectionnée
+      const { data: activePeriod } = await supabase
         .from('user_progress')
         .select('user_id')
-        .gte('completed_at', weekAgo);
-      const activeUsersWeekCount = new Set(activeWeek?.map(u => u.user_id) || []).size;
+        .gte('completed_at', periodStart);
+      const activeUsersWeekCount = new Set(activePeriod?.map(u => u.user_id) || []).size;
 
-      // Utilisateurs actifs ce mois
+      // Utilisateurs actifs ce mois (pour référence)
       const { data: activeMonth } = await supabase
         .from('user_progress')
         .select('user_id')
         .gte('completed_at', monthAgo);
       const activeUsersMonthCount = new Set(activeMonth?.map(u => u.user_id) || []).size;
 
-      // Stats globales de progression
+      // Stats de progression sur la période sélectionnée
       const { data: progressStats } = await supabase
         .from('user_progress')
-        .select('is_correct');
+        .select('is_correct')
+        .gte('completed_at', periodStart);
       
       const totalQuestionsAnswered = progressStats?.length || 0;
       const totalCorrectAnswers = progressStats?.filter(p => p.is_correct).length || 0;
@@ -210,15 +248,15 @@ export function useAdminStats() {
         { category: 'comprehension', count: comprehensionLessons.length, name: 'Compréhension', emoji: '🎧' },
       ];
 
-      // Inscriptions par jour (7 derniers jours) - basé sur user_streaks.created_at
+      // Inscriptions sur la période sélectionnée
       const { data: recentUsers } = await supabase
         .from('user_streaks')
         .select('user_id, created_at')
-        .gte('created_at', weekAgo)
+        .gte('created_at', periodStart)
         .order('created_at', { ascending: true });
 
       const registrationsPerDay: { date: string; count: number }[] = [];
-      for (let i = 6; i >= 0; i--) {
+      for (let i = daysInPeriod - 1; i >= 0; i--) {
         const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
         const dateStr = date.toISOString().split('T')[0];
         const count = recentUsers?.filter(u => 
@@ -248,38 +286,36 @@ export function useAdminStats() {
         })
       );
 
-      // === Données comparatives (semaine précédente) ===
-      const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString();
-      
-      // Utilisateurs actifs la semaine précédente (entre 14j et 7j)
-      const { data: activePrevWeek } = await supabase
+      // === Données comparatives (période précédente) ===
+      // Utilisateurs actifs la période précédente
+      const { data: activePrevPeriod } = await supabase
         .from('user_progress')
         .select('user_id')
-        .gte('completed_at', twoWeeksAgo)
-        .lt('completed_at', weekAgo);
-      const prevActiveUsersWeek = new Set(activePrevWeek?.map(u => u.user_id) || []).size;
+        .gte('completed_at', previousPeriodStart)
+        .lt('completed_at', previousPeriodEnd);
+      const prevActiveUsersWeek = new Set(activePrevPeriod?.map(u => u.user_id) || []).size;
 
-      // Questions répondues la semaine précédente
+      // Questions répondues la période précédente
       const { data: prevProgressStats } = await supabase
         .from('user_progress')
         .select('is_correct')
-        .gte('completed_at', twoWeeksAgo)
-        .lt('completed_at', weekAgo);
+        .gte('completed_at', previousPeriodStart)
+        .lt('completed_at', previousPeriodEnd);
       const prevQuestionsAnswered = prevProgressStats?.length || 0;
       const prevCorrectAnswers = prevProgressStats?.filter(p => p.is_correct).length || 0;
       const prevSuccessRate = prevQuestionsAnswered > 0 
         ? (prevCorrectAnswers / prevQuestionsAnswered) * 100 
         : 0;
 
-      // Inscriptions la semaine précédente
+      // Inscriptions la période précédente
       const { data: prevRegistrations } = await supabase
         .from('user_streaks')
         .select('user_id')
-        .gte('created_at', twoWeeksAgo)
-        .lt('created_at', weekAgo);
+        .gte('created_at', previousPeriodStart)
+        .lt('created_at', previousPeriodEnd);
       const prevRegistrationsWeek = prevRegistrations?.length || 0;
 
-      // Inscriptions cette semaine (pour comparaison)
+      // Inscriptions cette période (pour comparaison)
       const currentRegistrationsWeek = recentUsers?.length || 0;
 
       const previousPeriod = {
@@ -312,7 +348,7 @@ export function useAdminStats() {
       console.error('Error loading platform stats:', err);
       setError('Erreur lors du chargement des statistiques');
     }
-  }, []);
+  }, [range]);
 
   const loadUsers = useCallback(async (authUsersMap: Map<string, { email: string; full_name: string | null; created_at: string }>) => {
     try {

@@ -10,7 +10,40 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useAdminStats, UserStats } from '@/hooks/useAdminStats';
+import { useAdminStats, UserStats, TimeRange } from '@/hooks/useAdminStats';
+
+// Composant sélecteur de période
+function TimeRangeSelector({ 
+  value, 
+  onChange 
+}: { 
+  value: TimeRange; 
+  onChange: (range: TimeRange) => void;
+}) {
+  const options: { value: TimeRange; label: string }[] = [
+    { value: 'today', label: "Aujourd'hui" },
+    { value: '7d', label: '7 jours' },
+    { value: '30d', label: '30 jours' },
+  ];
+
+  return (
+    <div className="inline-flex bg-gray-100 rounded-xl p-1">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => onChange(option.value)}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            value === option.value
+              ? 'bg-white text-purple-600 shadow-md'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 // Composant Camembert (Pie Chart)
 function PieChart({ 
@@ -312,10 +345,14 @@ function UserRow({ user, rank }: { user: UserStats; rank: number }) {
 }
 
 export default function AdminPage() {
-  const { platformStats, users, loading, error, refresh } = useAdminStats();
+  const [timeRange, setTimeRange] = useState<TimeRange>('7d');
+  const { platformStats, users, loading, error, refresh } = useAdminStats(timeRange);
   const [showAllUsers, setShowAllUsers] = useState(false);
 
   const displayedUsers = showAllUsers ? users : users.slice(0, 10);
+  
+  // Label pour la période sélectionnée
+  const periodLabel = timeRange === 'today' ? "aujourd'hui" : timeRange === '7d' ? '7 jours' : '30 jours';
 
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -408,10 +445,13 @@ export default function AdminPage() {
               transition={{ delay: 0.15 }}
               className="mb-8"
             >
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-7 h-7 text-purple-500" />
-                Indicateurs Clés (KPI)
-              </h2>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <BarChart3 className="w-7 h-7 text-purple-500" />
+                  Indicateurs Clés (KPI)
+                </h2>
+                <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+              </div>
               
               {/* Helper pour calculer le % de variation */}
               {(() => {
@@ -419,6 +459,8 @@ export default function AdminPage() {
                   if (previous === 0) return current > 0 ? 100 : 0;
                   return Math.round(((current - previous) / previous) * 100);
                 };
+                
+                const trendLabel = timeRange === 'today' ? 'vs hier' : timeRange === '7d' ? 'vs 7j' : 'vs 30j';
                 
                 const activeUsersTrend = calcTrend(
                   platformStats.activeUsersWeek, 
@@ -448,26 +490,26 @@ export default function AdminPage() {
                       color="blue"
                     />
                     <KPICard
-                      title="Actifs cette semaine"
+                      title={`Actifs (${periodLabel})`}
                       value={platformStats.activeUsersWeek}
                       subtitle={`${platformStats.activeUsersToday} aujourd'hui`}
-                      trend={{ value: activeUsersTrend, label: "vs 7j" }}
+                      trend={{ value: activeUsersTrend, label: trendLabel }}
                       icon={Activity}
                       color="green"
                     />
                     <KPICard
                       title="Taux de réussite"
                       value={`${Math.round(platformStats.globalSuccessRate)}%`}
-                      subtitle="Moyenne globale"
-                      trend={{ value: successRateTrend, label: "vs 7j" }}
+                      subtitle={`Sur ${periodLabel}`}
+                      trend={{ value: successRateTrend, label: trendLabel }}
                       icon={Percent}
                       color="purple"
                     />
                     <KPICard
-                      title="Rétention (7j)"
+                      title={`Rétention (${periodLabel})`}
                       value={`${Math.round(retentionCurrent)}%`}
                       subtitle="Utilisateurs actifs / inscrits"
-                      trend={{ value: retentionTrend, label: "vs 7j" }}
+                      trend={{ value: retentionTrend, label: trendLabel }}
                       icon={UserCheck}
                       color="orange"
                     />
@@ -613,24 +655,26 @@ export default function AdminPage() {
             >
               <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-6 h-6 text-green-500" />
-                Inscriptions (7 derniers jours)
+                Inscriptions ({timeRange === 'today' ? "aujourd'hui" : timeRange === '7d' ? '7 derniers jours' : '30 derniers jours'})
               </h3>
-              <div className="flex items-end justify-between gap-2 h-32">
+              <div className="flex items-end justify-between gap-1 h-32 overflow-x-auto">
                 {platformStats.registrationsPerDay.map((day, index) => {
                   const maxCount = Math.max(...platformStats.registrationsPerDay.map(d => d.count), 1);
                   const height = (day.count / maxCount) * 100;
-                  const dayName = new Date(day.date).toLocaleDateString('fr-FR', { weekday: 'short' });
+                  const dayFormat = timeRange === '30d' 
+                    ? new Date(day.date).toLocaleDateString('fr-FR', { day: 'numeric' })
+                    : new Date(day.date).toLocaleDateString('fr-FR', { weekday: 'short' });
                   
                   return (
-                    <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
-                      <span className="text-xs font-semibold text-gray-600">{day.count}</span>
+                    <div key={day.date} className="flex-1 min-w-[20px] flex flex-col items-center gap-1">
+                      <span className="text-xs font-semibold text-gray-600">{day.count > 0 ? day.count : ''}</span>
                       <motion.div
                         initial={{ height: 0 }}
                         animate={{ height: `${Math.max(height, 8)}%` }}
-                        transition={{ delay: 0.6 + index * 0.05, duration: 0.5 }}
+                        transition={{ delay: 0.6 + index * 0.02, duration: 0.3 }}
                         className="w-full bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg min-h-2"
                       />
-                      <span className="text-xs text-gray-500 capitalize">{dayName}</span>
+                      <span className="text-xs text-gray-500 capitalize truncate">{dayFormat}</span>
                     </div>
                   );
                 })}
