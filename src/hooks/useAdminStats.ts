@@ -18,6 +18,12 @@ export interface UserStats {
   best_toeic_score: number | null;
 }
 
+export interface DailyStats {
+  date: string;
+  registrations: number;
+  activeUsers: number;
+}
+
 export interface PlatformStats {
   totalUsers: number;
   activeUsersToday: number;
@@ -32,7 +38,7 @@ export interface PlatformStats {
   totalQuestions: number;
   questionsPerCategory: { category: string; count: number; name: string; emoji: string }[];
   lessonsPerCategory: { category: string; count: number; name: string; emoji: string }[];
-  registrationsPerDay: { date: string; count: number }[];
+  dailyStats: DailyStats[];
   topStreaks: { user_id: string; email: string; full_name: string | null; current_streak: number }[];
   // Données comparatives (période précédente)
   previousPeriod: {
@@ -255,14 +261,32 @@ export function useAdminStats(range: TimeRange = '7d') {
         .gte('created_at', periodStart)
         .order('created_at', { ascending: true });
 
-      const registrationsPerDay: { date: string; count: number }[] = [];
+      // Activité quotidienne (pour le graphique combiné)
+      const { data: dailyActivity } = await supabase
+        .from('user_progress')
+        .select('user_id, completed_at')
+        .gte('completed_at', periodStart);
+
+      // Construire les stats quotidiennes (inscriptions + utilisateurs actifs)
+      const dailyStats: DailyStats[] = [];
       for (let i = daysInPeriod - 1; i >= 0; i--) {
         const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
         const dateStr = date.toISOString().split('T')[0];
-        const count = recentUsers?.filter(u => 
+        
+        // Inscriptions ce jour
+        const registrations = recentUsers?.filter(u => 
           u.created_at?.startsWith(dateStr)
         ).length || 0;
-        registrationsPerDay.push({ date: dateStr, count });
+        
+        // Utilisateurs actifs ce jour (utilisateurs uniques ayant répondu à des questions)
+        const activeUsersSet = new Set(
+          dailyActivity?.filter(a => 
+            a.completed_at?.startsWith(dateStr)
+          ).map(a => a.user_id) || []
+        );
+        const activeUsers = activeUsersSet.size;
+        
+        dailyStats.push({ date: dateStr, registrations, activeUsers });
       }
 
       // Top streaks
@@ -339,7 +363,7 @@ export function useAdminStats(range: TimeRange = '7d') {
         totalQuestions: totalQuestions || 0,
         questionsPerCategory,
         lessonsPerCategory,
-        registrationsPerDay,
+        dailyStats,
         topStreaks,
         previousPeriod
       });

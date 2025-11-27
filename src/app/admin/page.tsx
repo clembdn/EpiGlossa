@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useAdminStats, UserStats, TimeRange } from '@/hooks/useAdminStats';
+import { useAdminStats, UserStats, TimeRange, DailyStats } from '@/hooks/useAdminStats';
 
 // Composant sélecteur de période
 function TimeRangeSelector({ 
@@ -41,6 +41,211 @@ function TimeRangeSelector({
           {option.label}
         </button>
       ))}
+    </div>
+  );
+}
+
+// Composant Graphique combiné (Aire + Ligne)
+function DualAreaChart({ 
+  data, 
+  timeRange 
+}: { 
+  data: DailyStats[];
+  timeRange: TimeRange;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
+  if (data.length === 0) return null;
+  
+  const width = 100; // pourcentage
+  const height = 40;
+  const padding = { top: 4, right: 6, bottom: 4, left: 6 };
+  const chartWidth = 100 - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+  
+  // Calculer les max pour l'échelle
+  const maxRegistrations = Math.max(...data.map(d => d.registrations), 1);
+  const maxActive = Math.max(...data.map(d => d.activeUsers), 1);
+  const maxValue = Math.max(maxRegistrations, maxActive);
+  
+  // Générer les points pour les courbes
+  const getX = (index: number) => padding.left + (index / (data.length - 1 || 1)) * chartWidth;
+  const getY = (value: number) => padding.top + chartHeight - (value / maxValue) * chartHeight;
+  
+  // Créer le path pour l'aire des inscriptions
+  const registrationsAreaPath = data.length > 0 ? `
+    M ${getX(0)} ${getY(0)}
+    ${data.map((d, i) => `L ${getX(i)} ${getY(d.registrations)}`).join(' ')}
+    L ${getX(data.length - 1)} ${padding.top + chartHeight}
+    L ${getX(0)} ${padding.top + chartHeight}
+    Z
+  ` : '';
+  
+  // Créer le path pour la ligne des utilisateurs actifs
+  const activeUsersLinePath = data.length > 0 ? `
+    M ${getX(0)} ${getY(data[0].activeUsers)}
+    ${data.slice(1).map((d, i) => `L ${getX(i + 1)} ${getY(d.activeUsers)}`).join(' ')}
+  ` : '';
+  
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    if (timeRange === '30d') {
+      return date.toLocaleDateString('fr-FR', { day: 'numeric' });
+    }
+    return date.toLocaleDateString('fr-FR', { weekday: 'short' });
+  };
+
+  return (
+    <div className="relative">
+      <svg 
+        viewBox={`0 0 100 ${height}`} 
+        className="w-full"
+        preserveAspectRatio="none"
+      >
+        {/* Grille horizontale */}
+        {[0, 1].map((ratio, i) => (
+          <line
+            key={i}
+            x1={padding.left}
+            y1={padding.top + chartHeight * (1 - ratio)}
+            x2={100 - padding.right}
+            y2={padding.top + chartHeight * (1 - ratio)}
+            stroke="#e5e7eb"
+            strokeWidth="0.15"
+            strokeDasharray="1,1"
+          />
+        ))}
+        
+        {/* Aire des inscriptions (vert) */}
+        <motion.path
+          d={registrationsAreaPath}
+          fill="url(#registrationsGradient)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ duration: 0.5 }}
+        />
+        
+        {/* Ligne des inscriptions */}
+        <motion.path
+          d={data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${getX(i)} ${getY(d.registrations)}`).join(' ')}
+          fill="none"
+          stroke="#10b981"
+          strokeWidth="0.3"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+        
+        {/* Ligne des utilisateurs actifs (violet) */}
+        <motion.path
+          d={activeUsersLinePath}
+          fill="none"
+          stroke="#8b5cf6"
+          strokeWidth="0.3"
+          strokeLinecap="round"
+          strokeDasharray="1,0.5"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        />
+        
+        {/* Points interactifs */}
+        {data.map((d, i) => (
+          <g key={i}>
+            {/* Point inscriptions */}
+            <circle
+              cx={getX(i)}
+              cy={getY(d.registrations)}
+              r={hoveredIndex === i ? 0.8 : 0.4}
+              fill="#10b981"
+              className="transition-all"
+            />
+            {/* Point actifs */}
+            <circle
+              cx={getX(i)}
+              cy={getY(d.activeUsers)}
+              r={hoveredIndex === i ? 0.8 : 0.4}
+              fill="#8b5cf6"
+              className="transition-all"
+            />
+            {/* Zone de hover invisible */}
+            <rect
+              x={getX(i) - (chartWidth / data.length / 2)}
+              y={padding.top}
+              width={chartWidth / data.length}
+              height={chartHeight}
+              fill="transparent"
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="cursor-pointer"
+            />
+          </g>
+        ))}
+        
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="registrationsGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+      </svg>
+      
+      {/* Labels des jours */}
+      <div className="flex justify-between px-1 -mt-1">
+        {data.filter((_, i) => {
+          // Afficher moins de labels si beaucoup de jours
+          if (timeRange === '30d') return i % 7 === 0 || i === data.length - 1;
+          if (timeRange === '7d') return i === 0 || i === data.length - 1;
+          return true;
+        }).map((d, i, arr) => (
+          <span key={d.date} className="text-[10px] text-gray-400 capitalize">
+            {formatDate(d.date)}
+          </span>
+        ))}
+      </div>
+      
+      {/* Tooltip */}
+      {hoveredIndex !== null && (
+        <motion.div
+          initial={{ opacity: 0, y: 3 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-white rounded-md shadow-md border border-gray-200 p-2 z-10 pointer-events-none"
+          style={{
+            left: `${getX(hoveredIndex)}%`,
+          }}
+        >
+          <p className="text-[10px] font-medium text-gray-600 mb-1">
+            {new Date(data[hoveredIndex].date).toLocaleDateString('fr-FR', { 
+              day: 'numeric', 
+              month: 'short' 
+            })}
+          </p>
+          <div className="flex items-center gap-1 text-[10px] mb-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span className="text-gray-500">Inscr:</span>
+            <span className="font-bold text-emerald-600">{data[hoveredIndex].registrations}</span>
+          </div>
+          <div className="flex items-center gap-1 text-[10px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+            <span className="text-gray-500">Actifs:</span>
+            <span className="font-bold text-purple-600">{data[hoveredIndex].activeUsers}</span>
+          </div>
+        </motion.div>
+      )}
+      
+      {/* Légende */}
+      <div className="flex items-center justify-center gap-4 mt-1">
+        <div className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span className="text-[10px] text-gray-500">Inscriptions</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+          <span className="text-[10px] text-gray-500">Actifs</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -646,7 +851,7 @@ export default function AdminPage() {
               </motion.div>
             </div>
 
-            {/* Graphique des inscriptions */}
+            {/* Graphique combiné Inscriptions + Utilisateurs actifs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -655,30 +860,9 @@ export default function AdminPage() {
             >
               <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-6 h-6 text-green-500" />
-                Inscriptions ({timeRange === 'today' ? "aujourd'hui" : timeRange === '7d' ? '7 derniers jours' : '30 derniers jours'})
+                Activité ({timeRange === 'today' ? "aujourd'hui" : timeRange === '7d' ? '7 derniers jours' : '30 derniers jours'})
               </h3>
-              <div className="flex items-end justify-between gap-1 h-32 overflow-x-auto">
-                {platformStats.registrationsPerDay.map((day, index) => {
-                  const maxCount = Math.max(...platformStats.registrationsPerDay.map(d => d.count), 1);
-                  const height = (day.count / maxCount) * 100;
-                  const dayFormat = timeRange === '30d' 
-                    ? new Date(day.date).toLocaleDateString('fr-FR', { day: 'numeric' })
-                    : new Date(day.date).toLocaleDateString('fr-FR', { weekday: 'short' });
-                  
-                  return (
-                    <div key={day.date} className="flex-1 min-w-[20px] flex flex-col items-center gap-1">
-                      <span className="text-xs font-semibold text-gray-600">{day.count > 0 ? day.count : ''}</span>
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: `${Math.max(height, 8)}%` }}
-                        transition={{ delay: 0.6 + index * 0.02, duration: 0.3 }}
-                        className="w-full bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg min-h-2"
-                      />
-                      <span className="text-xs text-gray-500 capitalize truncate">{dayFormat}</span>
-                    </div>
-                  );
-                })}
-              </div>
+              <DualAreaChart data={platformStats.dailyStats} timeRange={timeRange} />
             </motion.div>
 
             {/* Liste des utilisateurs */}
