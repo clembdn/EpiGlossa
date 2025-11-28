@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useAdminStats, UserStats, TimeRange, DailyStats } from '@/hooks/useAdminStats';
+import { useAdminStats, UserStats, TimeRange, DailyStats, CategoryDeepDive, LessonDeepDive, ToeicDeepDive } from '@/hooks/useAdminStats';
 
 // Composant sélecteur de période
 function TimeRangeSelector({ 
@@ -245,6 +245,203 @@ function DualAreaChart({
           <span className="w-2 h-2 rounded-full bg-purple-500"></span>
           <span className="text-[10px] text-gray-500">Actifs</span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Types pour les onglets du Deep Dive
+type DeepDiveTab = 'questions' | 'lessons' | 'tests';
+
+// Composant Deep Dive Card
+function DeepDiveCard({
+  categoryData,
+  lessonData,
+  toeicData,
+}: {
+  categoryData: CategoryDeepDive[];
+  lessonData: LessonDeepDive[];
+  toeicData: ToeicDeepDive | null;
+}) {
+  const [activeTab, setActiveTab] = useState<DeepDiveTab>('questions');
+
+  const tabs: { id: DeepDiveTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'questions', label: 'Questions', icon: <Target className="w-3.5 h-3.5" /> },
+    { id: 'lessons', label: 'Leçons', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: 'tests', label: 'Tests TOEIC', icon: <Trophy className="w-3.5 h-3.5" /> },
+  ];
+
+  // Badge de performance
+  const getPerformanceBadge = (rate: number) => {
+    if (rate >= 80) return { label: 'Excellent', color: 'bg-emerald-100 text-emerald-700' };
+    if (rate >= 60) return { label: 'Bon', color: 'bg-blue-100 text-blue-700' };
+    if (rate >= 40) return { label: 'Moyen', color: 'bg-amber-100 text-amber-700' };
+    return { label: 'À améliorer', color: 'bg-red-100 text-red-700' };
+  };
+
+  // Barre de progression avec couleur
+  const ProgressBar = ({ value, max, color }: { value: number; max: number; color: string }) => {
+    const percentage = max > 0 ? (value / max) * 100 : 0;
+    return (
+      <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+        <motion.div
+          className={`h-full rounded-full ${color}`}
+          initial={{ width: 0 }}
+          animate={{ width: `${Math.min(percentage, 100)}%` }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        />
+      </div>
+    );
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      {/* Header avec onglets */}
+      <div className="flex border-b border-gray-100">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-all ${
+              activeTab === tab.id
+                ? 'text-purple-600 bg-purple-50 border-b-2 border-purple-500'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Contenu */}
+      <div className="p-4">
+        {activeTab === 'questions' && (
+          <div className="space-y-3">
+            {categoryData.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-4">Aucune donnée disponible</p>
+            ) : (
+              categoryData.map((cat, index) => {
+                const badge = getPerformanceBadge(cat.successRate);
+                const maxAnswered = Math.max(...categoryData.map(c => c.totalAnswered));
+                return (
+                  <motion.div
+                    key={cat.category}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-xl">{cat.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-800 truncate">{cat.name}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${badge.color}`}>
+                          {badge.label}
+                        </span>
+                      </div>
+                      <ProgressBar value={cat.totalAnswered} max={maxAnswered} color="bg-purple-500" />
+                      <div className="flex items-center justify-between mt-1 text-[10px] text-gray-500">
+                        <span>{cat.totalAnswered} réponses • {cat.uniqueUsers} utilisateurs</span>
+                        <span className="font-semibold text-purple-600">{cat.successRate.toFixed(0)}% succès</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </div>
+        )}
+
+        {activeTab === 'lessons' && (
+          <div className="space-y-3">
+            {lessonData.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-4">Aucune donnée disponible</p>
+            ) : (
+              lessonData.map((lesson, index) => {
+                const maxCompleted = Math.max(...lessonData.map(l => l.completedCount), 1);
+                const badge = getPerformanceBadge(lesson.completionRate);
+                return (
+                  <motion.div
+                    key={lesson.category}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-xl">{lesson.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-800">{lesson.name}</span>
+                        <span className="text-xs text-gray-500">{lesson.totalLessons} leçons</span>
+                      </div>
+                      <ProgressBar value={lesson.completedCount} max={maxCompleted || 1} color="bg-emerald-500" />
+                      <div className="flex items-center justify-between mt-1 text-[10px] text-gray-500">
+                        <span>{lesson.completedCount} complétées • {lesson.uniqueUsers} utilisateurs</span>
+                        <span className="font-semibold text-emerald-600">{lesson.completionRate.toFixed(0)}% taux</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </div>
+        )}
+
+        {activeTab === 'tests' && (
+          <div>
+            {!toeicData || toeicData.totalTests === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-4">Aucun test TOEIC passé</p>
+            ) : (
+              <div className="space-y-4">
+                {/* Stats résumées */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-purple-50 rounded-lg p-2 text-center">
+                    <p className="text-lg font-bold text-purple-600">{toeicData.totalTests}</p>
+                    <p className="text-[10px] text-purple-500">Tests</p>
+                  </div>
+                  <div className="bg-emerald-50 rounded-lg p-2 text-center">
+                    <p className="text-lg font-bold text-emerald-600">{toeicData.averageScore}</p>
+                    <p className="text-[10px] text-emerald-500">Moyenne</p>
+                  </div>
+                  <div className="bg-amber-50 rounded-lg p-2 text-center">
+                    <p className="text-lg font-bold text-amber-600">{toeicData.bestScore}</p>
+                    <p className="text-[10px] text-amber-500">Meilleur</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-2 text-center">
+                    <p className="text-lg font-bold text-blue-600">{toeicData.uniqueUsers}</p>
+                    <p className="text-[10px] text-blue-500">Utilisateurs</p>
+                  </div>
+                </div>
+
+                {/* Distribution des scores */}
+                <div>
+                  <p className="text-xs font-medium text-gray-600 mb-2">Distribution des scores</p>
+                  <div className="space-y-1.5">
+                    {toeicData.scoreDistribution.map((range, index) => {
+                      const maxCount = Math.max(...toeicData.scoreDistribution.map(r => r.count), 1);
+                      const colors = ['bg-red-400', 'bg-orange-400', 'bg-amber-400', 'bg-emerald-400', 'bg-green-500'];
+                      return (
+                        <div key={range.range} className="flex items-center gap-2">
+                          <span className="text-[10px] text-gray-500 w-14">{range.range}</span>
+                          <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
+                            <motion.div
+                              className={`h-full rounded-full ${colors[index]}`}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(range.count / maxCount) * 100}%` }}
+                              transition={{ duration: 0.5, delay: index * 0.1 }}
+                            />
+                          </div>
+                          <span className="text-[10px] font-medium text-gray-600 w-6 text-right">{range.count}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -724,7 +921,7 @@ export default function AdminPage() {
             </motion.div>
 
             {/* Section Graphiques */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
               {/* Camembert - Répartition des questions */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -746,7 +943,7 @@ export default function AdminPage() {
                       emoji: cat.emoji
                     };
                   })}
-                  size={220}
+                  size={180}
                 />
               </motion.div>
 
@@ -771,8 +968,21 @@ export default function AdminPage() {
                       emoji: cat.emoji
                     };
                   })}
-                  size={220}
+                  size={180}
                   label="leçons"
+                />
+              </motion.div>
+
+              {/* Deep Dive Card */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.35 }}
+              >
+                <DeepDiveCard
+                  categoryData={platformStats.categoryDeepDive}
+                  lessonData={platformStats.lessonDeepDive}
+                  toeicData={platformStats.toeicDeepDive}
                 />
               </motion.div>
             </div>

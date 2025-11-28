@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
 import { useProfileCache } from '@/hooks/useProfileCache';
 import { useStreak } from '@/hooks/useStreak';
+import { lessonProgressService } from '@/lib/lesson-progress';
 
 interface UserProfile {
   email: string;
@@ -43,6 +44,13 @@ export default function ProfilePage() {
     loadUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Synchronisation automatique des leçons au chargement
+  useEffect(() => {
+    if (user) {
+      lessonProgressService.syncLocalToSupabase().catch(console.error);
+    }
+  }, [user]);
 
   const loadUserData = async () => {
     try {

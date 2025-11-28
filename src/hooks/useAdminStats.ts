@@ -24,6 +24,36 @@ export interface DailyStats {
   activeUsers: number;
 }
 
+export interface CategoryDeepDive {
+  category: string;
+  name: string;
+  emoji: string;
+  totalAnswered: number;
+  correctAnswers: number;
+  successRate: number;
+  totalXp: number;
+  uniqueUsers: number;
+}
+
+export interface LessonDeepDive {
+  category: string;
+  name: string;
+  emoji: string;
+  totalLessons: number;
+  completedCount: number;
+  completionRate: number;
+  uniqueUsers: number;
+}
+
+export interface ToeicDeepDive {
+  totalTests: number;
+  averageScore: number;
+  bestScore: number;
+  worstScore: number;
+  uniqueUsers: number;
+  scoreDistribution: { range: string; count: number }[];
+}
+
 export interface PlatformStats {
   totalUsers: number;
   activeUsersToday: number;
@@ -47,6 +77,10 @@ export interface PlatformStats {
     globalSuccessRate: number;
     registrationsWeek: number;
   };
+  // Deep dive data
+  categoryDeepDive: CategoryDeepDive[];
+  lessonDeepDive: LessonDeepDive[];
+  toeicDeepDive: ToeicDeepDive | null;
 }
 
 const categoryInfo: Record<string, { name: string; emoji: string }> = {
@@ -349,6 +383,159 @@ export function useAdminStats(range: TimeRange = '7d') {
         registrationsWeek: prevRegistrationsWeek,
       };
 
+      // === Deep Dive: Questions par catégorie (avec taux de succès) ===
+      // user_progress contient directement la catégorie
+      const { data: categoryProgressData } = await supabase
+        .from('user_progress')
+        .select('category, user_id, is_correct');
+
+      // Récupérer les XP depuis user_category_stats
+      const { data: categoryXpData } = await supabase
+        .from('user_category_stats')
+        .select('category, xp_earned');
+
+      const categoryXpMap = new Map<string, number>();
+      categoryXpData?.forEach(s => {
+        const current = categoryXpMap.get(s.category) || 0;
+        categoryXpMap.set(s.category, current + (s.xp_earned || 0));
+      });
+
+      // Calculer les stats par catégorie de questions
+      const categoryStatsMap = new Map<string, { 
+        totalAnswered: number; 
+        correctAnswers: number; 
+        totalXp: number;
+        users: Set<string>;
+      }>();
+
+      categoryProgressData?.forEach(p => {
+        const category = p.category;
+        if (!category) return;
+        
+        // Accepter la catégorie même si elle n'est pas dans categoryInfo
+        if (!categoryStatsMap.has(category)) {
+          categoryStatsMap.set(category, { 
+            totalAnswered: 0, 
+            correctAnswers: 0, 
+            totalXp: 0,
+            users: new Set()
+          });
+        }
+        const stats = categoryStatsMap.get(category)!;
+        stats.totalAnswered++;
+        if (p.is_correct) stats.correctAnswers++;
+        stats.users.add(p.user_id);
+      });
+
+      // Ajouter les XP depuis user_category_stats
+      categoryXpMap.forEach((xp, category) => {
+        if (categoryStatsMap.has(category)) {
+          categoryStatsMap.get(category)!.totalXp = xp;
+        }
+      });
+
+      const categoryDeepDive: CategoryDeepDive[] = Object.entries(categoryInfo)
+        .map(([category, info]) => {
+          const stats = categoryStatsMap.get(category);
+          return {
+            category,
+            name: info.name,
+            emoji: info.emoji,
+            totalAnswered: stats?.totalAnswered || 0,
+            correctAnswers: stats?.correctAnswers || 0,
+            successRate: stats && stats.totalAnswered > 0 
+              ? (stats.correctAnswers / stats.totalAnswered) * 100 
+              : 0,
+            totalXp: stats?.totalXp || 0,
+            uniqueUsers: stats?.users.size || 0,
+          };
+        })
+        .sort((a, b) => b.totalAnswered - a.totalAnswered);
+
+      // === Deep Dive: Leçons par catégorie ===
+      // Récupérer depuis la table lesson_progress
+      const { data: lessonProgressData } = await supabase
+        .from('lesson_progress')
+        .select('category, lesson_id, user_id, completed, score, xp_earned');
+
+      const lessonCategoryMap: Record<string, { name: string; emoji: string; count: number }> = {
+        'grammaire': { name: 'Grammaire', emoji: '📚', count: grammarLessons.length },
+        'vocabulaire': { name: 'Vocabulaire', emoji: '📖', count: vocabularyLessons.length },
+        'conjugaison': { name: 'Conjugaison', emoji: '✏️', count: conjugationLessons.length },
+        'comprehension': { name: 'Compréhension', emoji: '🎧', count: comprehensionLessons.length },
+      };
+
+      // Calculer les stats par catégorie de leçons
+      const lessonStatsMap = new Map<string, { 
+        completedCount: number; 
+        users: Set<string>;
+        totalXp: number;
+      }>();
+
+      lessonProgressData?.forEach(p => {
+        const category = p.category;
+        if (!category || !lessonCategoryMap[category]) return;
+        
+        if (!lessonStatsMap.has(category)) {
+          lessonStatsMap.set(category, { completedCount: 0, users: new Set(), totalXp: 0 });
+        }
+        const stats = lessonStatsMap.get(category)!;
+        if (p.completed) stats.completedCount++;
+        stats.users.add(p.user_id);
+        stats.totalXp += p.xp_earned || 0;
+      });
+
+      const lessonDeepDive: LessonDeepDive[] = Object.entries(lessonCategoryMap)
+        .map(([category, info]) => {
+          const stats = lessonStatsMap.get(category);
+          const totalPossibleCompletions = info.count * Math.max(stats?.users.size || 0, 1);
+          return {
+            category,
+            name: info.name,
+            emoji: info.emoji,
+            totalLessons: info.count,
+            completedCount: stats?.completedCount || 0,
+            completionRate: stats && stats.completedCount > 0 && totalPossibleCompletions > 0
+              ? Math.min((stats.completedCount / totalPossibleCompletions) * 100, 100)
+              : 0,
+            uniqueUsers: stats?.users.size || 0,
+          };
+        })
+        .sort((a, b) => b.completedCount - a.completedCount);
+
+      // === Deep Dive: TOEIC ===
+      let toeicDeepDive: ToeicDeepDive | null = null;
+      if (toeicResults && toeicResults.length > 0) {
+        const scores = toeicResults.map(t => t.total_score);
+        const { data: toeicUsersData } = await supabase
+          .from('toeic_blanc_results')
+          .select('user_id');
+        const uniqueToeicUsers = new Set(toeicUsersData?.map(t => t.user_id) || []).size;
+
+        // Distribution des scores par tranches
+        const ranges = [
+          { range: '0-200', min: 0, max: 200 },
+          { range: '201-400', min: 201, max: 400 },
+          { range: '401-600', min: 401, max: 600 },
+          { range: '601-800', min: 601, max: 800 },
+          { range: '801-990', min: 801, max: 990 },
+        ];
+
+        const scoreDistribution = ranges.map(r => ({
+          range: r.range,
+          count: scores.filter(s => s >= r.min && s <= r.max).length,
+        }));
+
+        toeicDeepDive = {
+          totalTests: toeicResults.length,
+          averageScore: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
+          bestScore: Math.max(...scores),
+          worstScore: Math.min(...scores),
+          uniqueUsers: uniqueToeicUsers,
+          scoreDistribution,
+        };
+      }
+
       setPlatformStats({
         totalUsers,
         activeUsersToday: activeUsersTodayCount,
@@ -365,7 +552,10 @@ export function useAdminStats(range: TimeRange = '7d') {
         lessonsPerCategory,
         dailyStats,
         topStreaks,
-        previousPeriod
+        previousPeriod,
+        categoryDeepDive,
+        lessonDeepDive,
+        toeicDeepDive,
       });
 
     } catch (err) {
