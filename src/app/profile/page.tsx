@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   User, Mail, Calendar, Trophy, Target, 
-  Edit2, Save, X, ChevronRight, Award, Star,
-  BarChart3, Clock, RefreshCw, Flame
+  Edit2, Save, X, Award, Star,
+  BarChart3, RefreshCw, Flame
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
@@ -14,9 +14,11 @@ import { useProfileCache } from '@/hooks/useProfileCache';
 import { useStreak } from '@/hooks/useStreak';
 import { useWeeklyGoals } from '@/hooks/useWeeklyGoals';
 import { useActivityTimeline } from '@/hooks/useActivityTimeline';
+import { useToeicStats } from '@/hooks/useToeicStats';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { WeeklyGoalsCard } from '@/components/WeeklyGoalsCard';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
+import { ToeicStatsCard } from '@/components/ToeicStatsCard';
 
 interface UserProfile {
   email: string;
@@ -58,6 +60,9 @@ export default function ProfilePage() {
     fromCache,
     refresh
   } = useProfileCache(user?.id);
+
+  // Statistiques TOEIC détaillées
+  const toeicStats = useToeicStats(toeicTests);
 
   useEffect(() => {
     loadUserData();
@@ -319,101 +324,85 @@ export default function ProfilePage() {
               </div>
             </motion.div>
 
-            {/* Cartes Streaks */}
+            {/* Carte Streaks combinée */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 }}
-              className="grid grid-cols-1 gap-4"
+              className="bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 rounded-3xl p-5 shadow-xl text-white overflow-hidden relative"
             >
-              {/* Streak actuel */}
-              <div className="bg-gradient-to-br from-orange-400 to-red-500 rounded-3xl p-6 shadow-xl text-white overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                        <Flame className="w-8 h-8" fill="white" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+              
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="flex items-center gap-2 mb-4">
+                  <Flame className="w-5 h-5" fill="white" />
+                  <span className="font-semibold">Séries d&apos;entraînement</span>
+                </div>
+
+                {/* Stats en ligne */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Série actuelle */}
+                  <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
+                    <p className="text-xs opacity-80 mb-1">Série actuelle</p>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-bold">
+                        {streakLoading ? '...' : streak}
+                      </span>
+                      <span className="text-sm opacity-80">jour{streak > 1 ? 's' : ''}</span>
+                    </div>
+                    <div className="mt-2 flex items-center gap-1.5 text-xs">
+                      <div className="flex-1 bg-white/20 rounded-full h-1.5">
+                        <motion.div 
+                          className="bg-white h-1.5 rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ width: streak > 0 ? '100%' : '0%' }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                        />
                       </div>
-                      <div>
-                        <p className="text-sm font-medium opacity-90">Série Actuelle</p>
-                        <p className="text-xs opacity-75">Continue chaque jour !</p>
-                      </div>
+                      <span className="opacity-80">{streak > 0 ? '🔥' : '💤'}</span>
                     </div>
                   </div>
-                  
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold">
-                      {streakLoading ? '...' : streak}
-                    </span>
-                    <span className="text-2xl font-semibold opacity-90">
-                      jour{streak > 1 ? 's' : ''}
-                    </span>
-                  </div>
-                  
-                  <div className="mt-4 flex items-center gap-2 text-sm">
-                    <div className="flex-1 bg-white/20 rounded-full h-2">
-                      <motion.div 
-                        className="bg-white h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: streak > 0 ? '100%' : '0%' }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                      />
+
+                  {/* Record */}
+                  <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
+                    <p className="text-xs opacity-80 mb-1 flex items-center gap-1">
+                      <Trophy className="w-3 h-3" /> Record
+                    </p>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-bold">
+                        {streakLoading ? '...' : longestStreak}
+                      </span>
+                      <span className="text-sm opacity-80">jour{longestStreak > 1 ? 's' : ''}</span>
                     </div>
-                    <span className="font-medium">{streak > 0 ? 'En feu!' : 'Commence aujourd\'hui'}</span>
+                    <div className="mt-2 flex items-center gap-1 text-xs">
+                      <Star className="w-3 h-3 fill-white" />
+                      <span className="opacity-80">
+                        {longestStreak === streak && streak > 0 ? 'Au top!' : 'À battre'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Record personnel */}
-              <div className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl p-6 shadow-xl text-white overflow-hidden relative">
-                <div className="absolute top-0 left-0 w-28 h-28 bg-white/10 rounded-full -translate-y-14 -translate-x-14"></div>
-                <div className="absolute bottom-0 right-0 w-20 h-20 bg-white/10 rounded-full translate-y-10 translate-x-10"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                        <Trophy className="w-8 h-8" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium opacity-90">Record Personnel</p>
-                        <p className="text-xs opacity-75">Ta meilleure série</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold">
-                      {streakLoading ? '...' : longestStreak}
-                    </span>
-                    <span className="text-2xl font-semibold opacity-90">
-                      jour{longestStreak > 1 ? 's' : ''}
-                    </span>
-                  </div>
-                  
-                  <div className="mt-4 flex items-center gap-2">
-                    <Star className="w-5 h-5 fill-white" />
-                    <span className="text-sm font-medium">
-                      {longestStreak === streak && streak > 0 
-                        ? 'Tu es au top ! 🎉' 
-                        : longestStreak > 0 
-                          ? 'Continue pour battre ton record !'
-                          : 'Commence ta première série !'}
-                    </span>
-                  </div>
-                </div>
+                {/* Message motivant */}
+                <p className="text-xs text-center mt-3 opacity-75">
+                  {streak === 0
+                    ? 'Commence ta série aujourd\'hui !'
+                    : longestStreak === streak
+                    ? 'Tu es sur ton record ! Continue 🎉'
+                    : `Plus que ${longestStreak - streak} jour${longestStreak - streak > 1 ? 's' : ''} pour battre ton record !`}
+                </p>
               </div>
-
-              <ActivityHeatmap
-                days={activityDays}
-                summary={activitySummary}
-                loading={activityLoading}
-                variant="compact"
-              />
             </motion.div>
+
+            {/* Timeline d'activité */}
+            <ActivityHeatmap
+              days={activityDays}
+              summary={activitySummary}
+              loading={activityLoading}
+              variant="compact"
+            />
           </div>
 
           {/* Colonne droite - Graphiques et historique (3/4) */}
@@ -585,26 +574,30 @@ export default function ProfilePage() {
               )}
             </motion.div>
 
-            {/* Historique TOEIC Blancs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-3xl p-6 shadow-xl border-2 border-yellow-100"
-            >
-              <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-yellow-500" />
-                Historique TOEIC Blancs
-              </h2>
-
-              {toeicTests.length === 0 ? (
+            {/* Statistiques TOEIC détaillées */}
+            {toeicStats ? (
+              <ToeicStatsCard
+                stats={toeicStats}
+                onStartTest={() => router.push('/train/toeic-blanc')}
+              />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white rounded-3xl p-6 shadow-xl border-2 border-yellow-100"
+              >
+                <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                  <BarChart3 className="w-6 h-6 text-yellow-500" />
+                  Statistiques TOEIC
+                </h2>
                 <div className="text-center py-12">
                   <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500 font-medium mb-2">
                     Aucun TOEIC blanc passé
                   </p>
                   <p className="text-sm text-gray-400 mb-4">
-                    Lance ton premier test pour voir tes résultats ici
+                    Lance ton premier test pour voir tes statistiques détaillées
                   </p>
                   <button
                     onClick={() => router.push('/train/toeic-blanc')}
@@ -613,54 +606,8 @@ export default function ProfilePage() {
                     Commencer un test
                   </button>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  {toeicTests.map((test, index) => (
-                    <motion.div
-                      key={test.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 border-2 border-yellow-200 hover:border-yellow-300 transition-all"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center text-white font-bold">
-                              #{index + 1}
-                            </div>
-                            <div>
-                              <p className="font-bold text-gray-800 text-lg">
-                                Score: {test.score}/990
-                              </p>
-                              <p className="text-sm text-gray-500 flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {new Date(test.date).toLocaleDateString('fr-FR', {
-                                  day: 'numeric',
-                                  month: 'long',
-                                  year: 'numeric'
-                                })}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex gap-4 text-sm">
-                            <div className="flex items-center gap-1">
-                              <span className="text-gray-600">🎧 Listening:</span>
-                              <span className="font-bold text-gray-800">{test.listening_score}/495</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <span className="text-gray-600">📚 Reading:</span>
-                              <span className="font-bold text-gray-800">{test.reading_score}/495</span>
-                            </div>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-6 h-6 text-gray-400" />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
