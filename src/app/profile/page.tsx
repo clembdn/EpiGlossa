@@ -16,11 +16,13 @@ import { useWeeklyGoals } from '@/hooks/useWeeklyGoals';
 import { useActivityTimeline } from '@/hooks/useActivityTimeline';
 import { useToeicStats } from '@/hooks/useToeicStats';
 import { useLessonHistory } from '@/hooks/useLessonHistory';
+import { useBadges } from '@/hooks/useBadges';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { WeeklyGoalsCard } from '@/components/WeeklyGoalsCard';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { ToeicStatsCard } from '@/components/ToeicStatsCard';
 import { LessonHistoryCard } from '@/components/LessonHistoryCard';
+import { BadgesShowcase } from '@/components/BadgesShowcase';
 
 interface UserProfile {
   email: string;
@@ -38,6 +40,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState('');
+  const [badgesExpanded, setBadgesExpanded] = useState(false);
 
   // Hook pour les objectifs hebdomadaires
   const {
@@ -71,6 +74,14 @@ export default function ProfilePage() {
     lessons: lessonHistory,
     loading: lessonHistoryLoading,
   } = useLessonHistory(user?.id, 5);
+
+  // Badges (missions sont sur la page d'accueil)
+  const {
+    badges,
+    unlockedCount,
+    totalBadges,
+    loading: badgesLoading,
+  } = useBadges(user?.id);
 
   useEffect(() => {
     loadUserData();
@@ -188,9 +199,15 @@ export default function ProfilePage() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Colonne gauche - Infos personnelles et stats (1/4) */}
-          <div className="lg:col-span-1 space-y-6">
+        <div className={`grid grid-cols-1 gap-6 transition-all duration-300 ${
+          badgesExpanded 
+            ? 'lg:grid-cols-1' 
+            : 'lg:grid-cols-4'
+        }`}>
+          {/* Colonne gauche - Infos personnelles et stats */}
+          <div className={`space-y-6 transition-all duration-300 ${
+            badgesExpanded ? 'lg:col-span-1' : 'lg:col-span-1'
+          }`}>
             {/* Card Profil */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -411,9 +428,19 @@ export default function ProfilePage() {
               loading={activityLoading}
               variant="compact"
             />
+
+            {/* Badges showcase */}
+            <BadgesShowcase
+              badges={badges}
+              unlockedCount={unlockedCount}
+              totalBadges={totalBadges}
+              loading={badgesLoading}
+              onExpand={setBadgesExpanded}
+            />
           </div>
 
-          {/* Colonne droite - Graphiques et historique (3/4) */}
+          {/* Colonne droite - Graphiques et historique */}
+          {!badgesExpanded && (
           <div className="lg:col-span-3 space-y-6">
             {/* Objectifs hebdomadaires */}
             <WeeklyGoalsCard
@@ -624,6 +651,7 @@ export default function ProfilePage() {
               onViewAll={() => router.push('/learn')}
             />
           </div>
+          )}
         </div>
       </div>
     </div>

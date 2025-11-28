@@ -7,18 +7,30 @@ import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useGlobalProgress } from '@/hooks/useProgress';
 import { useStreak } from '@/hooks/useStreak';
+import { useBadges } from '@/hooks/useBadges';
+import { supabase } from '@/lib/supabase';
+import { MissionsCard } from '@/components/MissionsCard';
 
 export default function Home() {
   const searchParams = useSearchParams();
   const [showUnauthorizedError, setShowUnauthorizedError] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
   const { stats, loading } = useGlobalProgress();
   const { streak, loading: streakLoading } = useStreak();
+  const { missions, loading: missionsLoading } = useBadges(userId);
 
   useEffect(() => {
     if (searchParams.get('error') === 'unauthorized') {
       setShowUnauthorizedError(true);
     }
   }, [searchParams]);
+
+  // Récupérer l'ID utilisateur
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUserId(data.user?.id);
+    });
+  }, []);
 
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -221,38 +233,8 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-white rounded-3xl p-6 shadow-xl border-2 border-yellow-200"
-        >
-          <div className="flex items-start gap-4">
-            <motion.div
-              animate={{ rotate: [0, -10, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="text-5xl"
-            >
-              🎯
-            </motion.div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Défi du jour
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Complète 3 leçons aujourd&apos;hui pour gagner un bonus de 100 XP !
-              </p>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-gray-100 rounded-full h-3 overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full w-0" />
-                  </div>
-                  <span className="text-sm font-bold text-gray-600">0/3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        {/* Missions du jour - Composant fonctionnel */}
+        <MissionsCard missions={missions} loading={missionsLoading || !userId} />
       </div>
     </div>
   );
