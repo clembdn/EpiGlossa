@@ -23,6 +23,7 @@ import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { ToeicStatsCard } from '@/components/ToeicStatsCard';
 import { LessonHistoryCard } from '@/components/LessonHistoryCard';
 import { BadgesShowcase } from '@/components/BadgesShowcase';
+import { NextStepsCard } from '@/components/NextStepsCard';
 
 interface UserProfile {
   email: string;
@@ -442,6 +443,18 @@ export default function ProfilePage() {
           {/* Colonne droite - Graphiques et historique */}
           {!badgesExpanded && (
           <div className="lg:col-span-3 space-y-6">
+            {/* Prochaines étapes - Suggestions personnalisées */}
+            <NextStepsCard
+              categoryScores={categoryScores}
+              streak={streak}
+              longestStreak={longestStreak}
+              toeicCount={toeicTests?.length || 0}
+              bestToeicScore={toeicStats?.bestScore || 0}
+              lessonsCompleted={lessonHistory?.filter(l => l.completed).length || 0}
+              totalXp={globalStats?.total_xp || 0}
+              loading={dataLoading || streakLoading}
+            />
+
             {/* Objectifs hebdomadaires */}
             <WeeklyGoalsCard
               goals={weeklyGoals}
