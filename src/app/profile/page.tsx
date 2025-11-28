@@ -12,7 +12,9 @@ import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
 import { useProfileCache } from '@/hooks/useProfileCache';
 import { useStreak } from '@/hooks/useStreak';
+import { useWeeklyGoals } from '@/hooks/useWeeklyGoals';
 import { lessonProgressService } from '@/lib/lesson-progress';
+import { WeeklyGoalsCard } from '@/components/WeeklyGoalsCard';
 
 interface UserProfile {
   email: string;
@@ -30,6 +32,15 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState('');
+
+  // Hook pour les objectifs hebdomadaires
+  const {
+    goals: weeklyGoals,
+    progress: weeklyProgress,
+    loading: goalsLoading,
+    setGoal,
+    removeGoal,
+  } = useWeeklyGoals(user?.id);
 
   // Utiliser le hook de cache pour les données
   const {
@@ -392,6 +403,15 @@ export default function ProfilePage() {
 
           {/* Colonne droite - Graphiques et historique (3/4) */}
           <div className="lg:col-span-3 space-y-6">
+            {/* Objectifs hebdomadaires */}
+            <WeeklyGoalsCard
+              goals={weeklyGoals}
+              progress={weeklyProgress}
+              loading={goalsLoading}
+              onSetGoal={setGoal}
+              onRemoveGoal={removeGoal}
+            />
+
             {/* Graphe radar des compétences */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
