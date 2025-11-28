@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { 
   User, Mail, Calendar, Trophy, Target, 
   Edit2, Save, X, Award, Star,
-  BarChart3, RefreshCw, Flame, CheckCircle2, AlertCircle
+  BarChart3, RefreshCw, Flame, CheckCircle2, AlertCircle,
+  Download, Share2, FileText, Image as ImageIcon, ChevronDown
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
@@ -24,6 +25,13 @@ import { ToeicStatsCard } from '@/components/ToeicStatsCard';
 import { LessonHistoryCard } from '@/components/LessonHistoryCard';
 import { BadgesShowcase } from '@/components/BadgesShowcase';
 import { NextStepsCard } from '@/components/NextStepsCard';
+import { ShareModal } from '@/components/ShareModal';
+import { 
+  downloadCSV, 
+  downloadPDF, 
+  downloadShareImage,
+  type ExportStats 
+} from '@/lib/export-utils';
 
 interface UserProfile {
   email: string;
@@ -44,6 +52,9 @@ export default function ProfilePage() {
   const [badgesExpanded, setBadgesExpanded] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncStatus, setSyncStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   // Hook pour les objectifs hebdomadaires
   const {
@@ -155,6 +166,66 @@ export default function ProfilePage() {
     }
   };
 
+  // Build export stats object
+  const buildExportStats = (): ExportStats => ({
+    userName: profile?.full_name || '',
+    email: profile?.email || '',
+    memberSince: profile?.created_at
+      ? new Date(profile.created_at).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })
+      : '',
+    totalXp: globalStats?.total_xp || 0,
+    correctCount: globalStats?.correct_count || 0,
+    successRate: globalStats?.global_success_rate
+      ? Math.round(globalStats.global_success_rate)
+      : 0,
+    currentStreak: streak,
+    longestStreak: longestStreak,
+    categoryScores: categoryScores.map((cat) => ({
+      category: cat.name,
+      correct: cat.score,
+      total: cat.maxScore,
+      percentage: cat.percentage,
+    })),
+    toeicTests: toeicTests.map((t) => ({
+      date: t.date,
+      score: t.score,
+      listening: t.listening_score,
+      reading: t.reading_score,
+    })),
+    lessonsCompleted: lessonHistory.length,
+    badgesUnlocked: unlockedCount,
+    totalBadges: totalBadges,
+  });
+
+  const handleExportCSV = () => {
+    setExportMenuOpen(false);
+    downloadCSV(buildExportStats());
+  };
+
+  const handleExportPDF = () => {
+    setExportMenuOpen(false);
+    downloadPDF(buildExportStats());
+  };
+
+  const handleDownloadImage = async () => {
+    setExportMenuOpen(false);
+    setIsExporting(true);
+    try {
+      await downloadShareImage(buildExportStats());
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleOpenShareModal = () => {
+    setExportMenuOpen(false);
+    setShareModalOpen(true);
+  };
+
   const handleSaveProfile = async () => {
     try {
       const { error } = await supabase.auth.updateUser({
@@ -229,6 +300,81 @@ export default function ProfilePage() {
                 <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
                 {isSyncing ? 'Synchronisation...' : 'Forcer la synchro'}
               </button>
+
+              {/* Export / Partage dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setExportMenuOpen(!exportMenuOpen)}
+                  disabled={isExporting}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg disabled:opacity-60"
+                  title="Exporter ou partager ta progression"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
+                  <span className="hidden md:inline">Exporter</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${exportMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {exportMenuOpen && (
+                  <>
+                    {/* Backdrop to close menu */}
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setExportMenuOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-20"
+                    >
+                      <button
+                        onClick={handleExportCSV}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <FileText className="w-5 h-5 text-green-600" />
+                        <div className="text-left">
+                          <p className="font-medium">Exporter en CSV</p>
+                          <p className="text-xs text-gray-500">Tableur, Excel, etc.</p>
+                        </div>
+                      </button>
+                      <button
+                        onClick={handleExportPDF}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <FileText className="w-5 h-5 text-red-600" />
+                        <div className="text-left">
+                          <p className="font-medium">Exporter en PDF</p>
+                          <p className="text-xs text-gray-500">Rapport détaillé</p>
+                        </div>
+                      </button>
+                      <div className="border-t border-gray-100 my-1" />
+                      <button
+                        onClick={handleDownloadImage}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <ImageIcon className="w-5 h-5 text-purple-600" />
+                        <div className="text-left">
+                          <p className="font-medium">Télécharger image</p>
+                          <p className="text-xs text-gray-500">Carte stylée PNG</p>
+                        </div>
+                      </button>
+                      <button
+                        onClick={handleOpenShareModal}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Share2 className="w-5 h-5 text-blue-600" />
+                        <div className="text-left">
+                          <p className="font-medium">Partager</p>
+                          <p className="text-xs text-gray-500">Réseaux, coach, amis…</p>
+                        </div>
+                      </button>
+                    </motion.div>
+                  </>
+                )}
+              </div>
 
               {/* Indicateur de cache */}
               {fromCache && (
@@ -739,6 +885,13 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        stats={buildExportStats()}
+      />
     </div>
   );
 }
