@@ -2,8 +2,45 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, Clock, Trophy, Target, AlertTriangle, Volume2, BookOpen } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, Clock, Trophy, Target, AlertTriangle, Volume2, BookOpen, Play, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+const TOEIC_SAVED_STATE_KEY = 'tepitech_blanc_saved_state';
+
+interface SavedTestState {
+  allQuestions: unknown[];
+  currentQuestionIndex: number;
+  results: unknown[];
+  timeRemaining: number;
+  savedAt: number;
+}
+
+const loadSavedTestState = (): SavedTestState | null => {
+  try {
+    const raw = localStorage.getItem(TOEIC_SAVED_STATE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedTestState;
+    if (
+      !Array.isArray(parsed.allQuestions) ||
+      typeof parsed.currentQuestionIndex !== 'number' ||
+      !Array.isArray(parsed.results) ||
+      typeof parsed.timeRemaining !== 'number'
+    ) {
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+const clearSavedTestState = () => {
+  try {
+    localStorage.removeItem(TOEIC_SAVED_STATE_KEY);
+  } catch (err) {
+    console.warn('Unable to clear TOEIC saved state:', err);
+  }
+};
 
 const TEPITECH_STRUCTURE = [
   {
@@ -32,14 +69,38 @@ const TEPITECH_STRUCTURE = [
 export default function TepitechBlancPage() {
   const router = useRouter();
   const [showConfirm, setShowConfirm] = useState(false);
+  const [savedState, setSavedState] = useState<SavedTestState | null>(null);
+
+  useEffect(() => {
+    const state = loadSavedTestState();
+    setSavedState(state);
+  }, []);
 
   const totalQuestions = 157;
   const totalPoints = 990;
   const testDuration = '2h00';
 
   const handleStartTest = () => {
-    // Démarrer le test
+    // Si on commence un nouveau test, effacer l'ancienne sauvegarde
+    clearSavedTestState();
     router.push('/train/toeic-blanc/test');
+  };
+
+  const handleResumeTest = () => {
+    // Reprendre le test (la page test chargera automatiquement l'état sauvegardé)
+    router.push('/train/toeic-blanc/test');
+  };
+
+  const handleDiscardSavedTest = () => {
+    clearSavedTestState();
+    setSavedState(null);
+  };
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -105,6 +166,46 @@ export default function TepitechBlancPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Resume Saved Test Banner */}
+        {savedState && savedState.timeRemaining > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 mb-6"
+          >
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
+              <div className="flex-1">
+                <h3 className="font-bold text-amber-800 mb-1 flex items-center gap-2">
+                  <Play className="w-5 h-5" />
+                  Test en pause détecté
+                </h3>
+                <p className="text-amber-700 text-sm">
+                  Tu as un test en cours avec{' '}
+                  <span className="font-semibold">{savedState.results.length} réponses</span> enregistrées
+                  et <span className="font-semibold">{formatTime(savedState.timeRemaining)}</span> restantes.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleDiscardSavedTest}
+                  className="flex items-center gap-2 px-4 py-2 border-2 border-amber-300 text-amber-700 font-semibold rounded-xl hover:bg-amber-100 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Abandonner
+                </button>
+                <button
+                  onClick={handleResumeTest}
+                  className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Play className="w-4 h-4" />
+                  Reprendre
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Important Notice */}
         <motion.div
@@ -198,7 +299,9 @@ export default function TepitechBlancPage() {
             onClick={() => setShowConfirm(true)}
             className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-transform duration-200 hover:-translate-y-1"
           >
-            Commencer le TEPITECH BLANC
+            {savedState && savedState.timeRemaining > 0
+              ? 'Commencer un nouveau test'
+              : 'Commencer le TEPITECH BLANC'}
           </motion.button>
         ) : (
           <motion.div
@@ -207,9 +310,15 @@ export default function TepitechBlancPage() {
             className="bg-white rounded-2xl p-6 shadow-xl border-2 border-orange-200"
           >
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Êtes-vous prêt(e) ?</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                {savedState && savedState.timeRemaining > 0
+                  ? 'Abandonner le test en cours ?'
+                  : 'Êtes-vous prêt(e) ?'}
+              </h3>
               <p className="text-gray-600">
-                Le test va commencer immédiatement et le chronomètre se lancera.
+                {savedState && savedState.timeRemaining > 0
+                  ? 'Le test en cours sera perdu et un nouveau test commencera.'
+                  : 'Le test va commencer immédiatement et le chronomètre se lancera.'}
               </p>
             </div>
             <div className="flex gap-4">

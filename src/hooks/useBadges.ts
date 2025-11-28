@@ -334,7 +334,7 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
             .eq('user_id', userId),
           // TOEIC tests
           supabase
-            .from('toeic_test_results')
+            .from('toeic_blanc_results')
             .select('total_score')
             .eq('user_id', userId),
           // Lessons completed

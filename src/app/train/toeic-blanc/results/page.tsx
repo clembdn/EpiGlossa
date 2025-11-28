@@ -4,13 +4,8 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Trophy, Target, Home, RotateCcw, TrendingUp, Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-interface Result {
-  questionNumber: number;
-  isCorrect: boolean;
-  points: number;
-  category: string;
-}
+import { computeToeicSummary, TOEIC_CATEGORY_INFO } from '@/lib/toeic';
+import type { ToeicResultEntry } from '@/types/toeic';
 
 interface CategoryScore {
   name: string;
@@ -21,66 +16,41 @@ interface CategoryScore {
   questions: number;
 }
 
-const CATEGORY_INFO: Record<string, { name: string; emoji: string; maxPoints: number }> = {
-  'audio_with_images': { name: 'IMAGES', emoji: '🎧', maxPoints: 100 },
-  'qa': { name: 'Q&A', emoji: '❓', maxPoints: 150 },
-  'short_conversation': { name: 'SHORT CONVERSATIONS', emoji: '💬', maxPoints: 150 },
-  'short_talks': { name: 'SHORT TALKS', emoji: '🎤', maxPoints: 95 },
-  'incomplete_sentences': { name: 'INCOMPLETE SENTENCES', emoji: '✍️', maxPoints: 200 },
-  'text_completion': { name: 'TEXT COMPLETION', emoji: '📝', maxPoints: 100 },
-  'reading_comprehension': { name: 'READING COMPREHENSION', emoji: '📚', maxPoints: 195 },
-};
-
 export default function TepitechBlancResultsPage() {
   const router = useRouter();
-  const [results, setResults] = useState<Result[]>([]);
+  const [results, setResults] = useState<ToeicResultEntry[]>([]);
   const [categoryScores, setCategoryScores] = useState<CategoryScore[]>([]);
   const [totalScore, setTotalScore] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Charger les résultats depuis sessionStorage
-  const savedResults = sessionStorage.getItem('tepitech_blanc_results');
+    const savedResults = sessionStorage.getItem('tepitech_blanc_results');
     if (!savedResults) {
       router.push('/train/toeic-blanc');
       return;
     }
 
-    const parsedResults: Result[] = JSON.parse(savedResults);
+    const parsedResults: ToeicResultEntry[] = JSON.parse(savedResults);
     setResults(parsedResults);
+    const summary = computeToeicSummary(parsedResults);
 
-    // Calculer les scores par catégorie
-    const scores = new Map<string, { score: number; questions: number }>();
-    
-    parsedResults.forEach((result) => {
-      const current = scores.get(result.category) || { score: 0, questions: 0 };
-      scores.set(result.category, {
-        score: current.score + result.points,
-        questions: current.questions + 1,
-      });
-    });
+    const categoryScoresList: CategoryScore[] = summary.categoryScores.map((category) => {
+      const info = TOEIC_CATEGORY_INFO[category.category];
+      const percentage = category.maxScore > 0 ? (category.score / category.maxScore) * 100 : 0;
 
-    const categoryScoresList: CategoryScore[] = [];
-    let total = 0;
-
-    Object.entries(CATEGORY_INFO).forEach(([key, info]) => {
-      const data = scores.get(key) || { score: 0, questions: 0 };
-      const percentage = (data.score / info.maxPoints) * 100;
-      
-      categoryScoresList.push({
+      return {
         name: info.name,
         emoji: info.emoji,
-        score: data.score,
-        maxScore: info.maxPoints,
+        score: category.score,
+        maxScore: category.maxScore,
         percentage,
-        questions: data.questions,
-      });
-
-      total += data.score;
+        questions: category.questions,
+      };
     });
 
     setCategoryScores(categoryScoresList);
-    setTotalScore(total);
+    setTotalScore(summary.totalScore);
     setLoading(false);
   }, [router]);
 
@@ -318,6 +288,7 @@ export default function TepitechBlancResultsPage() {
           <button
             onClick={() => {
               sessionStorage.removeItem('tepitech_blanc_results');
+              sessionStorage.removeItem('tepitech_blanc_summary');
               router.push('/train/toeic-blanc');
             }}
             className="flex-1 flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
