@@ -750,8 +750,28 @@ export default function AdminPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>('7d');
   const { platformStats, users, loading, error, refresh } = useAdminStats(timeRange);
   const [showAllUsers, setShowAllUsers] = useState(false);
+  const [userFilter, setUserFilter] = useState<'all' | 'active7d' | 'topStreak' | 'topXp' | 'newUsers'>('all');
 
-  const displayedUsers = showAllUsers ? users : users.slice(0, 10);
+  // Filtrer les utilisateurs selon le segment sélectionné
+  const filteredUsers = (() => {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    switch (userFilter) {
+      case 'active7d':
+        return users.filter(u => u.last_activity && new Date(u.last_activity) >= sevenDaysAgo);
+      case 'topStreak':
+        return [...users].sort((a, b) => b.current_streak - a.current_streak);
+      case 'topXp':
+        return [...users].sort((a, b) => b.total_xp - a.total_xp);
+      case 'newUsers':
+        return [...users].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      default:
+        return users;
+    }
+  })();
+
+  const displayedUsers = showAllUsers ? filteredUsers : filteredUsers.slice(0, 10);
   
   // Label pour la période sélectionnée
   const periodLabel = timeRange === 'today' ? "aujourd'hui" : timeRange === '7d' ? '7 jours' : '30 jours';
@@ -1082,21 +1102,65 @@ export default function AdminPage() {
               transition={{ delay: 0.55 }}
               className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100"
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                   <Trophy className="w-6 h-6 text-purple-500" />
                   Classement des utilisateurs
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Clock className="w-4 h-4" />
-                  Trié par XP
+                
+                {/* Filtres de segmentation */}
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'all', label: 'Tous', icon: '👥' },
+                    { id: 'active7d', label: 'Actifs 7j', icon: '🟢' },
+                    { id: 'topStreak', label: 'Top Streak', icon: '🔥' },
+                    { id: 'topXp', label: 'Top XP', icon: '⭐' },
+                    { id: 'newUsers', label: 'Nouveaux', icon: '🆕' },
+                  ].map((filter) => (
+                    <button
+                      key={filter.id}
+                      onClick={() => {
+                        setUserFilter(filter.id as typeof userFilter);
+                        setShowAllUsers(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
+                        userFilter === filter.id
+                          ? 'bg-purple-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      <span>{filter.icon}</span>
+                      {filter.label}
+                    </button>
+                  ))}
                 </div>
               </div>
+              
+              {/* Indicateur de filtre actif */}
+              {userFilter !== 'all' && (
+                <div className="mb-4 text-sm text-purple-600 bg-purple-50 px-3 py-2 rounded-lg flex items-center justify-between">
+                  <span>
+                    {filteredUsers.length} utilisateur{filteredUsers.length > 1 ? 's' : ''} 
+                    {userFilter === 'active7d' && ' actifs ces 7 derniers jours'}
+                    {userFilter === 'topStreak' && ' triés par streak'}
+                    {userFilter === 'topXp' && ' triés par XP'}
+                    {userFilter === 'newUsers' && ' triés par date d\'inscription'}
+                  </span>
+                  <button
+                    onClick={() => setUserFilter('all')}
+                    className="text-purple-500 hover:text-purple-700 font-medium"
+                  >
+                    Réinitialiser
+                  </button>
+                </div>
+              )}
 
-              {users.length === 0 ? (
+              {filteredUsers.length === 0 ? (
                 <div className="text-center py-12">
                   <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 font-medium">Aucun utilisateur inscrit</p>
+                  <p className="text-gray-500 font-medium">
+                    {userFilter === 'all' ? 'Aucun utilisateur inscrit' : 'Aucun utilisateur dans ce segment'}
+                  </p>
                 </div>
               ) : (
                 <>
@@ -1106,7 +1170,7 @@ export default function AdminPage() {
                     ))}
                   </div>
 
-                  {users.length > 10 && (
+                  {filteredUsers.length > 10 && (
                     <button
                       onClick={() => setShowAllUsers(!showAllUsers)}
                       className="w-full mt-4 py-3 text-purple-600 font-medium hover:bg-purple-50 rounded-xl transition-colors flex items-center justify-center gap-2"
@@ -1119,7 +1183,7 @@ export default function AdminPage() {
                       ) : (
                         <>
                           <ChevronDown className="w-5 h-5" />
-                          Voir tous les {users.length} utilisateurs
+                          Voir tous les {filteredUsers.length} utilisateurs
                         </>
                       )}
                     </button>
