@@ -451,12 +451,16 @@ function DeepDiveCard({
 function PieChart({ 
   data, 
   size = 200,
-  label = 'questions'
+  label = 'questions',
+  verticalLegend = false
 }: { 
   data: { name: string; value: number; color: string; emoji?: string }[];
   size?: number;
   label?: string;
+  verticalLegend?: boolean;
 }) {
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; content: string; color: string } | null>(null);
+  
   const total = data.reduce((sum, d) => sum + d.value, 0);
   if (total === 0) return null;
   
@@ -487,32 +491,67 @@ function PieChart({
     return { ...d, percentage, path };
   });
 
+  const handleMouseMove = (e: React.MouseEvent, seg: typeof segments[0]) => {
+    const rect = e.currentTarget.closest('svg')?.getBoundingClientRect();
+    if (rect) {
+      setTooltip({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top - 40,
+        content: `${seg.emoji || ''} ${seg.name}: ${Math.round(seg.percentage)}%`,
+        color: seg.color
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
-      <svg width={size} height={size} className="drop-shadow-lg">
-        {segments.map((seg, i) => (
-          <motion.path
-            key={i}
-            d={seg.path}
-            fill={seg.color}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.1, duration: 0.3 }}
-            className="hover:opacity-80 transition-opacity cursor-pointer"
-          />
-        ))}
-        {/* Cercle central blanc */}
-        <circle cx={size/2} cy={size/2} r={size/4} fill="white" />
-        <text x={size/2} y={size/2 - 5} textAnchor="middle" className="text-2xl font-bold fill-gray-800">
-          {total}
-        </text>
-        <text x={size/2} y={size/2 + 15} textAnchor="middle" className="text-xs fill-gray-500">
-          {label}
-        </text>
-      </svg>
+      <div className="relative">
+        <svg width={size} height={size} className="drop-shadow-lg">
+          {segments.map((seg, i) => (
+            <motion.path
+              key={i}
+              d={seg.path}
+              fill={seg.color}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.1, duration: 0.3 }}
+              className="hover:opacity-80 transition-opacity cursor-pointer"
+              onMouseMove={(e) => handleMouseMove(e, seg)}
+              onMouseLeave={() => setTooltip(null)}
+            />
+          ))}
+          {/* Cercle central blanc */}
+          <circle cx={size/2} cy={size/2} r={size/4} fill="white" />
+          <text x={size/2} y={size/2 - 5} textAnchor="middle" className="text-2xl font-bold fill-gray-800">
+            {total}
+          </text>
+          <text x={size/2} y={size/2 + 15} textAnchor="middle" className="text-xs fill-gray-500">
+            {label}
+          </text>
+        </svg>
+        
+        {/* Tooltip */}
+        {tooltip && (
+          <div
+            className="absolute pointer-events-none z-50 px-3 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg shadow-lg whitespace-nowrap transform -translate-x-1/2"
+            style={{ 
+              left: tooltip.x, 
+              top: tooltip.y,
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: tooltip.color }} />
+              {tooltip.content}
+            </div>
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900"
+            />
+          </div>
+        )}
+      </div>
       
       {/* Légende */}
-      <div className="mt-4 grid grid-cols-2 gap-2 w-full">
+      <div className={`mt-4 grid gap-2 w-full ${verticalLegend ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {segments.map((seg, i) => (
           <div key={i} className="flex items-center gap-2 text-sm">
             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: seg.color }} />
@@ -964,6 +1003,7 @@ export default function AdminPage() {
                     };
                   })}
                   size={180}
+                  verticalLegend={true}
                 />
               </motion.div>
 
@@ -990,6 +1030,7 @@ export default function AdminPage() {
                   })}
                   size={180}
                   label="leçons"
+                  verticalLegend={true}
                 />
               </motion.div>
 
