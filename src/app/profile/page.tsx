@@ -13,8 +13,10 @@ import { useGlobalProgress } from '@/hooks/useProgress';
 import { useProfileCache } from '@/hooks/useProfileCache';
 import { useStreak } from '@/hooks/useStreak';
 import { useWeeklyGoals } from '@/hooks/useWeeklyGoals';
+import { useActivityTimeline } from '@/hooks/useActivityTimeline';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { WeeklyGoalsCard } from '@/components/WeeklyGoalsCard';
+import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 
 interface UserProfile {
   email: string;
@@ -41,6 +43,12 @@ export default function ProfilePage() {
     setGoal,
     removeGoal,
   } = useWeeklyGoals(user?.id);
+
+  const {
+    days: activityDays,
+    summary: activitySummary,
+    loading: activityLoading,
+  } = useActivityTimeline(user?.id);
 
   // Utiliser le hook de cache pour les données
   const {
@@ -398,6 +406,13 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
+
+              <ActivityHeatmap
+                days={activityDays}
+                summary={activitySummary}
+                loading={activityLoading}
+                variant="compact"
+              />
             </motion.div>
           </div>
 
