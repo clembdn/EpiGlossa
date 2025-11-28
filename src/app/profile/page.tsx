@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { 
   User, Mail, Calendar, Trophy, Target, 
   Edit2, Save, X, Award, Star,
-  BarChart3, RefreshCw, Flame
+  BarChart3, RefreshCw, Flame, CheckCircle2, AlertCircle
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useGlobalProgress } from '@/hooks/useProgress';
@@ -42,6 +42,8 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState('');
   const [badgesExpanded, setBadgesExpanded] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // Hook pour les objectifs hebdomadaires
   const {
@@ -96,6 +98,12 @@ export default function ProfilePage() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!syncStatus) return;
+    const timeout = setTimeout(() => setSyncStatus(null), 6000);
+    return () => clearTimeout(timeout);
+  }, [syncStatus]);
+
   const loadUserData = async () => {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
@@ -116,6 +124,34 @@ export default function ProfilePage() {
       console.error('Error loading user:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleManualSync = async () => {
+    if (isSyncing) return;
+    setIsSyncing(true);
+    try {
+      const result = await lessonProgressService.syncLocalToSupabase();
+      if (result.success) {
+        const synced = result.synced ?? 0;
+        const successMessage = synced > 0
+          ? `Progression sécurisée dans le cloud (${synced} élément${synced > 1 ? 's' : ''} synchronisé${synced > 1 ? 's' : ''}). Tu peux continuer sur un autre appareil sans rien perdre.`
+          : 'Tout est déjà à jour dans le cloud. Tu peux changer d’appareil en toute sérénité.';
+        setSyncStatus({ type: 'success', message: successMessage });
+      } else {
+        setSyncStatus({
+          type: 'error',
+          message: result.error || 'La synchronisation n’a pas abouti. Tes progrès restent disponibles localement; réessaie dans un instant.'
+        });
+      }
+    } catch (error) {
+      console.error('Error syncing progress:', error);
+      setSyncStatus({
+        type: 'error',
+        message: 'Une erreur imprévue est survenue pendant la synchronisation. Tes progrès locaux restent intacts; réessaie dans un instant.'
+      });
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -171,7 +207,7 @@ export default function ProfilePage() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-8 space-y-4"
         >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -182,22 +218,58 @@ export default function ProfilePage() {
                 Consulte tes statistiques et personnalise ton profil
               </p>
             </div>
-            
-            {/* Indicateur de cache */}
-            {fromCache && (
-              <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-full text-xs md:text-sm font-medium w-fit">
-                <span className="hidden md:inline">📦 Cache</span>
-                <span className="md:hidden">📦</span>
-                <button
-                  onClick={refresh}
-                  className="hover:bg-green-200 rounded-full p-1 transition-colors"
-                  title="Actualiser les données"
-                >
-                  <RefreshCw className="w-3 h-3 md:w-4 md:h-4" />
-                </button>
-              </div>
-            )}
+
+            <div className="flex flex-wrap items-center justify-start md:justify-end gap-3">
+              <button
+                onClick={handleManualSync}
+                disabled={isSyncing || !user}
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
+                title="Synchroniser manuellement tes progrès sur le cloud"
+              >
+                <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                {isSyncing ? 'Synchronisation...' : 'Forcer la synchro'}
+              </button>
+
+              {/* Indicateur de cache */}
+              {fromCache && (
+                <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-full text-xs md:text-sm font-medium w-fit">
+                  <span className="hidden md:inline">📦 Cache</span>
+                  <span className="md:hidden">📦</span>
+                  <button
+                    onClick={refresh}
+                    className="hover:bg-green-200 rounded-full p-1 transition-colors"
+                    title="Actualiser les données"
+                  >
+                    <RefreshCw className="w-3 h-3 md:w-4 md:h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {syncStatus && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex items-start gap-3 rounded-2xl border px-4 py-3 text-sm ${
+                syncStatus.type === 'success'
+                  ? 'bg-green-50 border-green-200 text-green-900'
+                  : 'bg-red-50 border-red-200 text-red-900'
+              }`}
+            >
+              {syncStatus.type === 'success' ? (
+                <CheckCircle2 className="w-5 h-5 mt-0.5" />
+              ) : (
+                <AlertCircle className="w-5 h-5 mt-0.5" />
+              )}
+              <div className="flex-1">
+                <p className="font-semibold text-sm">
+                  {syncStatus.type === 'success' ? 'Synchronisation réussie' : 'Synchronisation impossible'}
+                </p>
+                <p className="text-sm leading-relaxed">{syncStatus.message}</p>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         <div className={`grid grid-cols-1 gap-6 transition-all duration-300 ${
