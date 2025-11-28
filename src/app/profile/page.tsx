@@ -15,10 +15,12 @@ import { useStreak } from '@/hooks/useStreak';
 import { useWeeklyGoals } from '@/hooks/useWeeklyGoals';
 import { useActivityTimeline } from '@/hooks/useActivityTimeline';
 import { useToeicStats } from '@/hooks/useToeicStats';
+import { useLessonHistory } from '@/hooks/useLessonHistory';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { WeeklyGoalsCard } from '@/components/WeeklyGoalsCard';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { ToeicStatsCard } from '@/components/ToeicStatsCard';
+import { LessonHistoryCard } from '@/components/LessonHistoryCard';
 
 interface UserProfile {
   email: string;
@@ -63,6 +65,12 @@ export default function ProfilePage() {
 
   // Statistiques TOEIC détaillées
   const toeicStats = useToeicStats(toeicTests);
+
+  // Historique des leçons
+  const {
+    lessons: lessonHistory,
+    loading: lessonHistoryLoading,
+  } = useLessonHistory(user?.id, 5);
 
   useEffect(() => {
     loadUserData();
@@ -608,6 +616,13 @@ export default function ProfilePage() {
                 </div>
               </motion.div>
             )}
+
+            {/* Historique des leçons */}
+            <LessonHistoryCard
+              lessons={lessonHistory}
+              loading={lessonHistoryLoading}
+              onViewAll={() => router.push('/learn')}
+            />
           </div>
         </div>
       </div>
