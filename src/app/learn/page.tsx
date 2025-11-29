@@ -34,8 +34,8 @@ interface Category {
 const categories: Category[] = [
   {
     id: 'vocabulaire',
-    name: 'Vocabulaire TOEIC',
-    description: 'Mots essentiels qui tombent à tous les TOEIC',
+  name: 'Vocabulaire TEPITECH',
+  description: 'Mots essentiels qui tombent à tous les TEPITECH',
     icon: BookText,
     color: 'from-purple-400 to-pink-400',
     gradient: 'bg-gradient-to-br from-purple-50 to-pink-50',
@@ -47,7 +47,7 @@ const categories: Category[] = [
   {
     id: 'grammaire',
     name: 'Grammaire',
-    description: 'Règles grammaticales clés du TOEIC',
+  description: 'Règles grammaticales clés du TEPITECH',
     icon: Lightbulb,
     color: 'from-yellow-400 to-orange-400',
     gradient: 'bg-gradient-to-br from-yellow-50 to-orange-50',
@@ -59,7 +59,7 @@ const categories: Category[] = [
   {
     id: 'conjugaison',
     name: 'Conjugaison',
-    description: 'Temps et verbes pour le TOEIC',
+  description: 'Temps et verbes pour le TEPITECH',
     icon: Languages,
     color: 'from-blue-400 to-cyan-400',
     gradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
@@ -156,7 +156,7 @@ export default function LearnPage() {
             Cours spécialisés Tepitech
           </h1>
           <p className="text-gray-600 text-base md:text-lg font-medium">
-            Maîtrise le vocabulaire TOEIC avec nos leçons interactives
+            Maîtrise le vocabulaire TEPITECH avec nos leçons interactives
           </p>
         </motion.div>
 

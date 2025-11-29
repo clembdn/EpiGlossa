@@ -277,7 +277,7 @@ export function BadgesCard({
     streak: { label: 'Série', emoji: '🔥' },
     vocabulary: { label: 'Vocabulaire', emoji: '📚' },
     grammar: { label: 'Grammaire', emoji: '✏️' },
-    toeic: { label: 'TOEIC', emoji: '🎯' },
+  toeic: { label: 'TEPITECH', emoji: '🎯' },
     progress: { label: 'Progression', emoji: '⭐' },
     special: { label: 'Spéciaux', emoji: '✨' },
   };

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error('Error in TOEIC results API:', err);
+  console.error('Error in TEPITECH results API:', err);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }

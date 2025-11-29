@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Clock } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
-import { computeToeicSummary, TOEIC_SECTION_CONFIG, TOEIC_SECTION_ORDER } from '@/lib/toeic';
+import { computeToeicSummary, TEPITECH_SECTION_CONFIG, TEPITECH_SECTION_ORDER } from '@/lib/toeic';
 import type { Question, QuestionCategory } from '@/types/question';
 import type { ToeicResultEntry } from '@/types/toeic';
 import AudioPlayer from '@/components/ui/audio-player';
@@ -210,7 +210,7 @@ const selectReadingPassageQuestions = (questions: Question[], targetCount: numbe
 
 const TOTAL_TIME = 120 * 60; // 2 heures en secondes
 
-const TOEIC_SAVED_STATE_KEY = 'tepitech_blanc_saved_state';
+const TEPITECH_SAVED_STATE_KEY = 'tepitech_blanc_saved_state';
 
 interface SavedTestState {
   allQuestions: TestQuestion[];
@@ -222,15 +222,15 @@ interface SavedTestState {
 
 const saveTestState = (state: SavedTestState) => {
   try {
-    localStorage.setItem(TOEIC_SAVED_STATE_KEY, JSON.stringify(state));
+    localStorage.setItem(TEPITECH_SAVED_STATE_KEY, JSON.stringify(state));
   } catch (err) {
-    console.warn('Unable to save TOEIC test state:', err);
+  console.warn('Unable to save TEPITECH test state:', err);
   }
 };
 
 const loadSavedTestState = (): SavedTestState | null => {
   try {
-    const raw = localStorage.getItem(TOEIC_SAVED_STATE_KEY);
+    const raw = localStorage.getItem(TEPITECH_SAVED_STATE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as SavedTestState;
     // Validate structure
@@ -250,9 +250,9 @@ const loadSavedTestState = (): SavedTestState | null => {
 
 const clearSavedTestState = () => {
   try {
-    localStorage.removeItem(TOEIC_SAVED_STATE_KEY);
+    localStorage.removeItem(TEPITECH_SAVED_STATE_KEY);
   } catch (err) {
-    console.warn('Unable to clear TOEIC saved state:', err);
+  console.warn('Unable to clear TEPITECH saved state:', err);
   }
 };
 
@@ -327,7 +327,7 @@ export default function ToeicBlancTestPage() {
         if (error || !mounted) return;
         setUserId(data.user?.id ?? null);
       } catch (err) {
-        console.warn('Unable to fetch user for TOEIC save:', err);
+  console.warn('Unable to fetch user for TEPITECH save:', err);
       }
     };
 
@@ -383,8 +383,8 @@ export default function ToeicBlancTestPage() {
 
         const generatedQuestions: TestQuestion[] = [];
 
-        for (const category of TOEIC_SECTION_ORDER) {
-          const config = TOEIC_SECTION_CONFIG[category];
+        for (const category of TEPITECH_SECTION_ORDER) {
+          const config = TEPITECH_SECTION_CONFIG[category];
           if (!config) continue;
 
           const { data, error } = await supabase
@@ -438,7 +438,7 @@ export default function ToeicBlancTestPage() {
         let startIndex = 0;
         
         if (skipToSection) {
-          const sectionConfig = TOEIC_SECTION_CONFIG[skipToSection as keyof typeof TOEIC_SECTION_CONFIG];
+          const sectionConfig = TEPITECH_SECTION_CONFIG[skipToSection as keyof typeof TEPITECH_SECTION_CONFIG];
           if (sectionConfig) {
             startIndex = generatedQuestions.findIndex(
               (q) => q.questionNumber >= sectionConfig.start
@@ -483,7 +483,7 @@ export default function ToeicBlancTestPage() {
       sessionStorage.setItem('tepitech_blanc_summary', JSON.stringify(summary));
       localStorage.removeItem('profile_data_cache');
     } catch (storageError) {
-      console.error('Error saving TOEIC results locally:', storageError);
+  console.error('Error saving TEPITECH results locally:', storageError);
     }
 
     let effectiveUserId = userId;
@@ -494,7 +494,7 @@ export default function ToeicBlancTestPage() {
           effectiveUserId = data.user?.id ?? null;
         }
       } catch (authError) {
-        console.warn('Unable to resolve user before saving TOEIC result:', authError);
+  console.warn('Unable to resolve user before saving TEPITECH result:', authError);
       }
     }
 
@@ -535,10 +535,10 @@ export default function ToeicBlancTestPage() {
 
           if (!response.ok) {
             const details = await response.json().catch(() => null);
-            console.error('Fallback TOEIC result save failed:', details || response.statusText);
+            console.error('Fallback TEPITECH result save failed:', details || response.statusText);
           }
         } catch (apiError) {
-          console.error('Error calling TOEIC results API:', apiError);
+          console.error('Error calling TEPITECH results API:', apiError);
         }
       }
     }
@@ -655,7 +655,7 @@ export default function ToeicBlancTestPage() {
       sessionStorage.removeItem('tepitech_blanc_results');
       sessionStorage.removeItem('tepitech_blanc_summary');
     } catch (storageError) {
-      console.warn('Unable to clear TOEIC interim data before pausing:', storageError);
+  console.warn('Unable to clear TEPITECH interim data before pausing:', storageError);
     }
 
     setShowQuitModal(false);

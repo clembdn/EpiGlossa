@@ -120,7 +120,7 @@ export function ToeicStatsCard({ stats, onStartTest }: ToeicStatsCardProps) {
         <div>
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <BarChart3 className="w-7 h-7 text-yellow-500" />
-            Statistiques TOEIC
+            Statistiques TEPITECH
           </h2>
           <p className="text-sm text-gray-500">
             Analyse de {stats.totalTests} test{stats.totalTests > 1 ? 's' : ''} passé{stats.totalTests > 1 ? 's' : ''}

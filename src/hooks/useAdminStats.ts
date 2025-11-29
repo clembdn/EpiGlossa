@@ -249,7 +249,7 @@ export function useAdminStats(range: TimeRange = '7d') {
         .select('xp_earned');
       const totalXpDistributed = categoryStats?.reduce((sum, s) => sum + (s.xp_earned || 0), 0) || 0;
 
-      // Stats TOEIC
+  // Stats TEPITECH
       const { data: toeicResults, count: totalToeicTests } = await supabase
         .from('toeic_blanc_results')
         .select('total_score', { count: 'exact' });
@@ -503,7 +503,7 @@ export function useAdminStats(range: TimeRange = '7d') {
         })
         .sort((a, b) => b.completedCount - a.completedCount);
 
-      // === Deep Dive: TOEIC ===
+  // === Deep Dive: TEPITECH ===
       let toeicDeepDive: ToeicDeepDive | null = null;
       if (toeicResults && toeicResults.length > 0) {
         const scores = toeicResults.map(t => t.total_score);
@@ -609,7 +609,7 @@ export function useAdminStats(range: TimeRange = '7d') {
             .eq('user_id', userId)
             .single();
 
-          // TOEIC tests
+    // TEPITECH tests
           const { data: toeicData, count: toeicCount } = await supabase
             .from('toeic_blanc_results')
             .select('total_score', { count: 'exact' })

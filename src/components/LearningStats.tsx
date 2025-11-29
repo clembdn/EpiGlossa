@@ -55,7 +55,7 @@ export default function LearningStats() {
     },
     {
       icon: TrendingUp,
-      label: 'Vocabulaire TOEIC',
+  label: 'Vocabulaire TEPITECH',
       value: `${stats.vocabulaireProgress}%`,
       color: 'from-purple-400 to-pink-400',
       bgColor: 'from-purple-50 to-pink-50',
@@ -126,7 +126,7 @@ export default function LearningStats() {
               </h3>
               <p className="text-white/90 text-sm">
                 {stats.completedLessons >= vocabularyLessons.length
-                  ? 'Tu maîtrises maintenant les mots essentiels du TOEIC !'
+                  ? 'Tu maîtrises maintenant les mots essentiels du TEPITECH !'
                   : `Plus que ${vocabularyLessons.length - stats.completedLessons} leçons à compléter !`}
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function LearningStats() {
             <div>
               <h3 className="font-bold text-blue-900 mb-2">Commence ton apprentissage !</h3>
               <p className="text-blue-700 text-sm mb-3">
-                Les leçons de vocabulaire TOEIC t&apos;attendent. Commence par les 3 mots les plus fréquents !
+                Les leçons de vocabulaire TEPITECH t&apos;attendent. Commence par les 3 mots les plus fréquents !
               </p>
               <Link
                 href="/learn"

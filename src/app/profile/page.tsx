@@ -80,7 +80,7 @@ export default function ProfilePage() {
     refresh
   } = useProfileCache(user?.id);
 
-  // Statistiques TOEIC détaillées
+  // Statistiques TEPITECH détaillées
   const toeicStats = useToeicStats(toeicTests);
 
   // Historique des leçons
@@ -840,7 +840,7 @@ export default function ProfilePage() {
               )}
             </motion.div>
 
-            {/* Statistiques TOEIC détaillées */}
+            {/* Statistiques TEPITECH détaillées */}
             {toeicStats ? (
               <ToeicStatsCard
                 stats={toeicStats}
@@ -855,12 +855,12 @@ export default function ProfilePage() {
               >
                 <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                   <BarChart3 className="w-6 h-6 text-yellow-500" />
-                  Statistiques TOEIC
+                  Statistiques TEPITECH
                 </h2>
                 <div className="text-center py-12">
                   <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500 font-medium mb-2">
-                    Aucun TOEIC blanc passé
+                    Aucun TEPITECH blanc passé
                   </p>
                   <p className="text-sm text-gray-400 mb-4">
                     Lance ton premier test pour voir tes statistiques détaillées

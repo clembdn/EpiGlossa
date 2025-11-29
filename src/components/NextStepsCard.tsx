@@ -151,11 +151,11 @@ function generateSuggestions(props: NextStepsCardProps): Suggestion[] {
     }
   }
 
-  // 5. Suggérer un TOEIC blanc
+  // 5. Suggérer un TEPITECH blanc
   if (toeicCount === 0) {
     suggestions.push({
       id: 'first-toeic',
-      title: 'Passe ton premier TOEIC blanc',
+  title: 'Passe ton premier TEPITECH blanc',
       description: 'Évalue ton niveau actuel avec un test complet',
       emoji: '🎯',
       priority: 'high',
@@ -166,7 +166,7 @@ function generateSuggestions(props: NextStepsCardProps): Suggestion[] {
   } else if (toeicCount > 0 && toeicCount < 3) {
     suggestions.push({
       id: 'more-toeic',
-      title: 'Refais un TOEIC blanc',
+  title: 'Refais un TEPITECH blanc',
       description: `Tu as fait ${toeicCount} test${toeicCount > 1 ? 's' : ''}. Continue pour voir ta progression !`,
       emoji: '📊',
       priority: 'medium',
@@ -176,7 +176,7 @@ function generateSuggestions(props: NextStepsCardProps): Suggestion[] {
     });
   }
 
-  // 6. Objectifs TOEIC basés sur le score
+  // 6. Objectifs TEPITECH basés sur le score
   if (bestToeicScore > 0) {
     if (bestToeicScore < 600) {
       suggestions.push({

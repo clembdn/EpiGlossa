@@ -248,7 +248,7 @@ export default function AddQuestionPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Category Selection */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Catégorie *
               </label>
               <select
@@ -269,7 +269,7 @@ export default function AddQuestionPage() {
             {category !== 'text_completion' && category !== 'reading_comprehension' && (
               <>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Texte de la question *
                   </label>
                   <textarea
@@ -284,7 +284,7 @@ export default function AddQuestionPage() {
                 {/* Audio Upload */}
                 {(category === 'audio_with_images' || category === 'qa' || category === 'short_conversation' || category === 'short_talks') && (
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900 mb-2">
                       Fichier Audio
                     </label>
                     <input
@@ -299,7 +299,7 @@ export default function AddQuestionPage() {
                 {/* Image Upload */}
                 {category === 'audio_with_images' && (
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">
                       Image
                     </label>
                     <input
@@ -313,7 +313,7 @@ export default function AddQuestionPage() {
 
                 {/* Standard Choices */}
                 <div className="space-y-4">
-                  <label className="block text-sm font-semibold text-gray-700">
+                      <label className="block text-sm font-semibold text-gray-900">
                     Réponses (A, B, C, D) *
                   </label>
                   {choices.map((choice, index) => (
@@ -344,7 +344,7 @@ export default function AddQuestionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Explication *
                   </label>
                   <textarea
@@ -362,7 +362,7 @@ export default function AddQuestionPage() {
             {category === 'text_completion' && (
               <>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Texte avec trous (utilisez {`{{1}}, {{2}}, {{3}}, {{4}}`}) *
                   </label>
                   <textarea
@@ -413,7 +413,7 @@ export default function AddQuestionPage() {
                 ))}
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Explication *
                   </label>
                   <textarea
@@ -431,7 +431,7 @@ export default function AddQuestionPage() {
             {category === 'reading_comprehension' && (
               <>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Image du passage (obligatoire) *
                   </label>
                   <input
@@ -454,7 +454,7 @@ export default function AddQuestionPage() {
                     <h3 className="font-bold text-teal-900 text-xl">Question #{qIndex + 1}</h3>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900 mb-2">
                         Texte de la question *
                       </label>
                       <textarea
@@ -471,7 +471,7 @@ export default function AddQuestionPage() {
                     </div>
 
                     <div className="space-y-3">
-                      <label className="block text-sm font-semibold text-gray-700">
+                      <label className="block text-sm font-semibold text-gray-900">
                         Réponses (A, B, C, D) *
                       </label>
                       {q.choices.map((choice, choiceIndex) => (
@@ -506,7 +506,7 @@ export default function AddQuestionPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900 mb-2">
                         Explication *
                       </label>
                       <textarea

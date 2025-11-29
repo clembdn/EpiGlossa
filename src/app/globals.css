@@ -196,9 +196,16 @@ body {
 
 /* Effets de focus ludiques */
 *:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.35);
   border-radius: calc(var(--radius) * 0.5);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  border-color: hsl(var(--ring));
 }
 
 /* Effet de brillance pour les boutons */

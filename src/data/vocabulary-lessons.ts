@@ -4,7 +4,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
   {
     id: 1,
     title: 'Les 3 mots les plus fréquents',
-    description: 'Maîtrise les verbes qui tombent à TOUS les TOEIC',
+  description: 'Maîtrise les verbes qui tombent à TOUS les TEPITECH',
     theme: 'Vocabulaire essentiel',
     xp: 50,
     duration: 5,
@@ -32,7 +32,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Peux-tu récupérer les documents dans mon bureau ?'
           }
         ],
-        tips: '🔥 ULTRA FRÉQUENT au TOEIC ! Apparaît dans presque tous les tests. Ne confonds pas avec "to pick" seul.'
+  tips: '🔥 ULTRA FRÉQUENT au TEPITECH ! Apparaît dans presque tous les tests. Ne confonds pas avec "to pick" seul.'
       },
       {
         english: 'To attend',
@@ -126,7 +126,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
         question: 'Match the words with their French translation',
         options: ['To pick up', 'To attend', 'Available'],
         correctAnswer: ['Récupérer', 'Assister à', 'Disponible'],
-        explanation: 'Ces trois mots sont les plus fréquents au TOEIC !'
+  explanation: 'Ces trois mots sont les plus fréquents au TEPITECH !'
       }
     ]
   },
@@ -406,7 +406,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
           'La réunion sera tenue lundi'
         ],
         correctAnswer: 'La réunion se tiendra lundi',
-        explanation: '"Will be held" = se tiendra (passif de "to hold"). Expression TRÈS fréquente au TOEIC !'
+  explanation: '"Will be held" = se tiendra (passif de "to hold"). Expression TRÈS fréquente au TEPITECH !'
       },
       {
         id: 'ex3_2',
@@ -570,7 +570,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
           'looked for'
         ],
         correctAnswer: 'towed',
-        explanation: '"Towed" = remorqué. Très courant dans les annonces de parking au TOEIC !'
+  explanation: '"Towed" = remorqué. Très courant dans les annonces de parking au TEPITECH !'
       },
       {
         id: 'ex4_4',
@@ -585,7 +585,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
         question: 'Match the phrasal verbs with their meanings',
         options: ['To look for', 'To hand over', 'To tow', 'To investigate'],
         correctAnswer: ['Chercher', 'Remettre', 'Remorquer', 'Enquêter'],
-        explanation: 'Ces verbes sont essentiels pour le TOEIC !'
+  explanation: 'Ces verbes sont essentiels pour le TEPITECH !'
       }
     ]
   },
@@ -936,7 +936,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Nous n\'avons pas reçu la facture des services du mois dernier.'
           }
         ],
-        tips: '💰 TRÈS fréquent au TOEIC ! À ne pas confondre avec "bill" (note de restaurant, facture simple).'
+  tips: '💰 TRÈS fréquent au TEPITECH ! À ne pas confondre avec "bill" (note de restaurant, facture simple).'
       },
       {
         english: 'To be in effect',
@@ -1002,7 +1002,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
         type: 'fill-blank',
         question: 'Complete: "Please submit your ___ by the end of the month."',
         correctAnswer: 'invoice',
-        explanation: '"Invoice" = facture. Très courant dans les contextes business du TOEIC.'
+  explanation: '"Invoice" = facture. Très courant dans les contextes business du TEPITECH.'
       },
       {
         id: 'ex7_3',
@@ -1158,7 +1158,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Si vous n\'êtes pas satisfait, vous serez remboursé.'
           }
         ],
-        tips: '💰 ULTRA courant au TOEIC ! "Refund" = rembourser/remboursement, "Discount" = réduction.'
+  tips: '💰 ULTRA courant au TEPITECH ! "Refund" = rembourser/remboursement, "Discount" = réduction.'
       }
     ],
     exercises: [
@@ -1532,7 +1532,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
   {
     id: 11,
     title: 'Connecteurs et Grammaire',
-    description: 'Mots de liaison essentiels pour le TOEIC',
+  description: 'Mots de liaison essentiels pour le TEPITECH',
     theme: 'Grammar & Linking',
     xp: 75,
     duration: 9,
@@ -1738,7 +1738,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Rapportez ces chiffres au contrôleur financier.'
           }
         ],
-        tips: '🔥 TRÈS FRÉQUENT au TOEIC ! Attention à l\'orthographe : comptroller (pas "controller").'
+  tips: '🔥 TRÈS FRÉQUENT au TEPITECH ! Attention à l\'orthographe : comptroller (pas "controller").'
       },
       {
         english: 'Competitors',
@@ -1898,7 +1898,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
     id: 13,
     title: 'Adverbes de Manière et Degré',
     description: 'Mots essentiels pour nuancer vos phrases',
-    theme: 'Adverbes TOEIC',
+  theme: 'Adverbes TEPITECH',
     xp: 65,
     duration: 9,
     locked: false,
@@ -1925,7 +1925,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Le projet coûtera environ 50 000 $.'
           }
         ],
-        tips: '⏰ ULTRA FRÉQUENT avec les heures, quantités et coûts au TOEIC !'
+  tips: '⏰ ULTRA FRÉQUENT avec les heures, quantités et coûts au TEPITECH !'
       },
       {
         english: 'Hardly',
@@ -2250,7 +2250,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
     id: 15,
     title: 'Phrasal Verbs Essentiels',
     description: 'Verbes à particules qui tombent souvent',
-    theme: 'Phrasal Verbs TOEIC',
+  theme: 'Phrasal Verbs TEPITECH',
     xp: 75,
     duration: 11,
     locked: false,
@@ -2277,7 +2277,7 @@ export const vocabularyLessons: VocabularyLesson[] = [
             french: 'Puis-je compter sur votre soutien ?'
           }
         ],
-        tips: '🤝 Exprime la confiance et la fiabilité ! Très courant au TOEIC.'
+  tips: '🤝 Exprime la confiance et la fiabilité ! Très courant au TEPITECH.'
       },
       {
         english: 'To find out',

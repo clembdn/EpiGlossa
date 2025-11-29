@@ -118,9 +118,9 @@ export function generateCSV(stats: ExportStats): string {
     lines.push('');
   }
 
-  // TOEIC tests
+  // TEPITECH tests
   if (stats.toeicTests.length > 0) {
-    lines.push('=== Historique TOEIC Blanc ===');
+  lines.push('=== Historique TEPITECH Blanc ===');
     lines.push('Date,Score Total,Listening,Reading');
     stats.toeicTests.forEach((test) => {
       lines.push(`${test.date},${test.score},${test.listening},${test.reading}`);
@@ -194,7 +194,7 @@ export function downloadPDF(stats: ExportStats): void {
   y += 10;
   doc.setFontSize(14);
   doc.setTextColor(224, 231, 255);
-  drawText('Rapport de progression TOEIC', pageWidth / 2, y, { align: 'center' });
+  drawText('Rapport de progression TEPITECH', pageWidth / 2, y, { align: 'center' });
   y += 8;
   doc.setFontSize(10);
   drawText(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, pageWidth / 2, y, { align: 'center' });
@@ -269,7 +269,7 @@ export function downloadPDF(stats: ExportStats): void {
   );
   renderMiniBox(
     smallStartX + (smallBoxWidth + boxSpacing) * 2,
-    'TOEIC blancs',
+  'TEPITECH blancs',
     String(stats.toeicTests.length),
     [224, 231, 255],
     [79, 70, 229]
@@ -324,14 +324,14 @@ export function downloadPDF(stats: ExportStats): void {
     y += 5;
   }
 
-  // === TOEIC HISTORY SECTION ===
+  // === TEPITECH HISTORY SECTION ===
   if (stats.toeicTests.length > 0) {
     ensureSpace(30);
     doc.setFillColor(16, 185, 129);
     doc.roundedRect(margin, y, pageWidth - margin * 2, 10, 3, 3, 'F');
     doc.setFontSize(11);
     doc.setTextColor(255, 255, 255);
-    drawText('Historique TOEIC blanc', margin + 7, y + 7);
+  drawText('Historique TEPITECH blanc', margin + 7, y + 7);
     y += 16;
 
     doc.setFillColor(243, 244, 246);
@@ -390,7 +390,7 @@ export function downloadPDF(stats: ExportStats): void {
   doc.rect(0, pageHeight - 20, pageWidth, 20, 'F');
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  drawText('EpiGlossa - Ton coach TOEIC personnel', pageWidth / 2, pageHeight - 10, { align: 'center' });
+  drawText('EpiGlossa - Ton coach TEPITECH personnel', pageWidth / 2, pageHeight - 10, { align: 'center' });
   doc.setFontSize(7);
   drawText('epiglossa.com', pageWidth / 2, pageHeight - 5, { align: 'center' });
 
@@ -424,7 +424,7 @@ export async function generateShareImage(stats: ExportStats): Promise<Blob | nul
           🎯 EpiGlossa
         </div>
         <div style="font-size: 14px; color: #6b7280;">
-          Ma progression TOEIC
+          Ma progression TEPITECH
         </div>
       </div>
       
@@ -454,7 +454,7 @@ export async function generateShareImage(stats: ExportStats): Promise<Blob | nul
     </div>
     
     <div style="text-align: center; margin-top: 16px; color: white; font-size: 12px; opacity: 0.9;">
-      Rejoint EpiGlossa et prépare ton TOEIC ! 🚀
+  Rejoint EpiGlossa et prépare ton TEPITECH ! 🚀
     </div>
   `;
 

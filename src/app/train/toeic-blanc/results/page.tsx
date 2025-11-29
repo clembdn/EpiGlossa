@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Trophy, Target, Home, RotateCcw, TrendingUp, Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { computeToeicSummary, TOEIC_CATEGORY_INFO } from '@/lib/toeic';
+import { computeToeicSummary, TEPITECH_CATEGORY_INFO } from '@/lib/toeic';
 import type { ToeicResultEntry } from '@/types/toeic';
 
 interface CategoryScore {
@@ -36,7 +36,7 @@ export default function TepitechBlancResultsPage() {
     const summary = computeToeicSummary(parsedResults);
 
     const categoryScoresList: CategoryScore[] = summary.categoryScores.map((category) => {
-      const info = TOEIC_CATEGORY_INFO[category.category];
+      const info = TEPITECH_CATEGORY_INFO[category.category];
       const percentage = category.maxScore > 0 ? (category.score / category.maxScore) * 100 : 0;
 
       return {

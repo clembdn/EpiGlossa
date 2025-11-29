@@ -8,7 +8,7 @@ export interface VocabularyWord {
     french: string;
   }[];
   tips?: string;
-  frequency: 'essential' | 'important' | 'useful'; // Fréquence d'apparition au TOEIC
+  frequency: 'essential' | 'important' | 'useful'; // Fréquence d'apparition au TEPITECH
 }
 
 export interface GrammarRule {

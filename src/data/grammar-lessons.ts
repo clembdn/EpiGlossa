@@ -76,7 +76,7 @@ export const grammarLessons: GrammarLesson[] = [
             correct: true
           }
         ],
-        tips: '🎯 Au TOEIC, "the" est souvent utilisé pour parler d\'un élément précis du contexte professionnel.'
+  tips: '🎯 Au TEPITECH, "the" est souvent utilisé pour parler d\'un élément précis du contexte professionnel.'
       },
       {
         title: 'Pas d\'article (Ø)',

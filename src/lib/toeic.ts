@@ -1,7 +1,7 @@
 import type { QuestionCategory } from '@/types/question';
 import type { ToeicResultEntry } from '@/types/toeic';
 
-export const TOEIC_SECTION_CONFIG: Record<QuestionCategory, {
+export const TEPITECH_SECTION_CONFIG: Record<QuestionCategory, {
   start: number;
   count: number;
   category: QuestionCategory;
@@ -16,7 +16,7 @@ export const TOEIC_SECTION_CONFIG: Record<QuestionCategory, {
   reading_comprehension: { start: 145, count: 13, category: 'reading_comprehension', pointsPerQuestion: 5 },
 };
 
-export const TOEIC_SECTION_ORDER: QuestionCategory[] = [
+export const TEPITECH_SECTION_ORDER: QuestionCategory[] = [
   'audio_with_images',
   'qa',
   'short_conversation',
@@ -26,7 +26,7 @@ export const TOEIC_SECTION_ORDER: QuestionCategory[] = [
   'reading_comprehension',
 ];
 
-export const TOEIC_CATEGORY_INFO: Record<QuestionCategory, { name: string; emoji: string; maxPoints: number }> = {
+export const TEPITECH_CATEGORY_INFO: Record<QuestionCategory, { name: string; emoji: string; maxPoints: number }> = {
   audio_with_images: { name: 'IMAGES', emoji: '🎧', maxPoints: 100 },
   qa: { name: 'Q&A', emoji: '❓', maxPoints: 150 },
   short_conversation: { name: 'SHORT CONVERSATIONS', emoji: '💬', maxPoints: 150 },
@@ -36,21 +36,21 @@ export const TOEIC_CATEGORY_INFO: Record<QuestionCategory, { name: string; emoji
   reading_comprehension: { name: 'READING COMPREHENSION', emoji: '📚', maxPoints: 195 },
 };
 
-export const TOEIC_LISTENING_CATEGORIES: QuestionCategory[] = [
+export const TEPITECH_LISTENING_CATEGORIES: QuestionCategory[] = [
   'audio_with_images',
   'qa',
   'short_conversation',
   'short_talks',
 ];
 
-export const TOEIC_READING_CATEGORIES: QuestionCategory[] = [
+export const TEPITECH_READING_CATEGORIES: QuestionCategory[] = [
   'incomplete_sentences',
   'text_completion',
   'reading_comprehension',
 ];
 
-const LISTENING_SET = new Set(TOEIC_LISTENING_CATEGORIES);
-const READING_SET = new Set(TOEIC_READING_CATEGORIES);
+const LISTENING_SET = new Set(TEPITECH_LISTENING_CATEGORIES);
+const READING_SET = new Set(TEPITECH_READING_CATEGORIES);
 
 export interface ToeicCategoryScore {
   category: QuestionCategory;
@@ -69,7 +69,7 @@ export interface ToeicSummary {
 }
 
 export const buildInitialCategoryScores = (): ToeicCategoryScore[] =>
-  Object.entries(TOEIC_CATEGORY_INFO).map(([key, info]) => ({
+  Object.entries(TEPITECH_CATEGORY_INFO).map(([key, info]) => ({
     category: key as QuestionCategory,
     score: 0,
     maxScore: info.maxPoints,

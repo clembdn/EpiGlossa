@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft, Clock, Trophy, Target, AlertTriangle, Volume2, BookOpen, Play, Trash2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const TOEIC_SAVED_STATE_KEY = 'tepitech_blanc_saved_state';
+const TEPITECH_SAVED_STATE_KEY = 'tepitech_blanc_saved_state';
 
 interface SavedTestState {
   allQuestions: unknown[];
@@ -17,7 +17,7 @@ interface SavedTestState {
 
 const loadSavedTestState = (): SavedTestState | null => {
   try {
-    const raw = localStorage.getItem(TOEIC_SAVED_STATE_KEY);
+    const raw = localStorage.getItem(TEPITECH_SAVED_STATE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as SavedTestState;
     if (
@@ -36,9 +36,9 @@ const loadSavedTestState = (): SavedTestState | null => {
 
 const clearSavedTestState = () => {
   try {
-    localStorage.removeItem(TOEIC_SAVED_STATE_KEY);
+    localStorage.removeItem(TEPITECH_SAVED_STATE_KEY);
   } catch (err) {
-    console.warn('Unable to clear TOEIC saved state:', err);
+  console.warn('Unable to clear TEPITECH saved state:', err);
   }
 };
 

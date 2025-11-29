@@ -213,11 +213,13 @@ export default function TrainCategoryPage() {
 
         {/* Barre de progression XP */}
         {!loading && !progressLoading && questions.length > 0 && (
-          <CategoryProgressBar 
-            stats={stats} 
-            totalQuestions={questions.length} 
-            loading={progressLoading}
-          />
+          <div className="mb-10">
+            <CategoryProgressBar 
+              stats={stats} 
+              totalQuestions={questions.length} 
+              loading={progressLoading}
+            />
+          </div>
         )}
 
         {loading && (

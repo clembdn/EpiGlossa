@@ -268,7 +268,7 @@ function DeepDiveCard({
   const tabs: { id: DeepDiveTab; label: string; icon: React.ReactNode }[] = [
     { id: 'questions', label: 'Questions', icon: <Target className="w-3.5 h-3.5" /> },
     { id: 'lessons', label: 'Leçons', icon: <BookOpen className="w-3.5 h-3.5" /> },
-    { id: 'tests', label: 'Tests TOEIC', icon: <Trophy className="w-3.5 h-3.5" /> },
+  { id: 'tests', label: 'Tests TEPITECH', icon: <Trophy className="w-3.5 h-3.5" /> },
   ];
 
   // Badge de performance
@@ -391,7 +391,7 @@ function DeepDiveCard({
         {activeTab === 'tests' && (
           <div>
             {!toeicData || toeicData.totalTests === 0 ? (
-              <p className="text-gray-500 text-sm text-center py-4">Aucun test TOEIC passé</p>
+              <p className="text-gray-500 text-sm text-center py-4">Aucun test TEPITECH passé</p>
             ) : (
               <div className="space-y-4">
                 {/* Stats résumées */}
@@ -761,11 +761,11 @@ function UserRow({ user, rank }: { user: UserStats; rank: number }) {
               <p className="text-lg font-bold text-yellow-600">{user.longest_streak} jours</p>
             </div>
             <div className="bg-white rounded-lg p-3 border border-gray-200">
-              <p className="text-xs text-gray-500 mb-1">Tests TOEIC</p>
+              <p className="text-xs text-gray-500 mb-1">Tests TEPITECH</p>
               <p className="text-lg font-bold text-indigo-600">{user.toeic_tests_count}</p>
             </div>
             <div className="bg-white rounded-lg p-3 border border-gray-200">
-              <p className="text-xs text-gray-500 mb-1">Meilleur TOEIC</p>
+              <p className="text-xs text-gray-500 mb-1">Meilleur TEPITECH</p>
               <p className="text-lg font-bold text-pink-600">
                 {user.best_toeic_score ? `${user.best_toeic_score}/990` : '-'}
               </p>
@@ -1050,7 +1050,7 @@ export default function AdminPage() {
 
             {/* Stats secondaires */}
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {/* TOEIC Stats */}
+              {/* TEPITECH Stats */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1059,7 +1059,7 @@ export default function AdminPage() {
               >
                 <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <Award className="w-5 h-5 text-yellow-500" />
-                  Tests TOEIC
+                  Tests TEPITECH
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-xl">

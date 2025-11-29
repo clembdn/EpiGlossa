@@ -154,11 +154,11 @@ const BADGE_DEFINITIONS: Omit<Badge, 'currentProgress' | 'unlocked' | 'unlockedA
     rarity: 'epic',
   },
 
-  // Badges TOEIC
+  // Badges TEPITECH
   {
     id: 'toeic-first',
-    name: 'Premier TOEIC Blanc',
-    description: 'Passe ton premier TOEIC blanc',
+  name: 'Premier TEPITECH Blanc',
+  description: 'Passe ton premier TEPITECH blanc',
     emoji: '🎯',
     category: 'toeic',
     requirement: 1,
@@ -167,7 +167,7 @@ const BADGE_DEFINITIONS: Omit<Badge, 'currentProgress' | 'unlocked' | 'unlockedA
   {
     id: 'toeic-5',
     name: 'Entraînement intensif',
-    description: '5 TOEIC blancs complétés',
+  description: '5 TEPITECH blancs complétés',
     emoji: '💼',
     category: 'toeic',
     requirement: 5,
@@ -176,7 +176,7 @@ const BADGE_DEFINITIONS: Omit<Badge, 'currentProgress' | 'unlocked' | 'unlockedA
   {
     id: 'toeic-score-600',
     name: 'Objectif 600',
-    description: 'Atteins 600 points au TOEIC blanc',
+  description: 'Atteins 600 points au TEPITECH blanc',
     emoji: '🥉',
     category: 'toeic',
     requirement: 600,
@@ -185,7 +185,7 @@ const BADGE_DEFINITIONS: Omit<Badge, 'currentProgress' | 'unlocked' | 'unlockedA
   {
     id: 'toeic-score-785',
     name: 'Niveau B2',
-    description: 'Atteins 785 points au TOEIC blanc',
+  description: 'Atteins 785 points au TEPITECH blanc',
     emoji: '🥈',
     category: 'toeic',
     requirement: 785,
@@ -193,8 +193,8 @@ const BADGE_DEFINITIONS: Omit<Badge, 'currentProgress' | 'unlocked' | 'unlockedA
   },
   {
     id: 'toeic-score-945',
-    name: 'Excellence TOEIC',
-    description: 'Atteins 945+ points au TOEIC blanc',
+  name: 'Excellence TEPITECH',
+  description: 'Atteins 945+ points au TEPITECH blanc',
     emoji: '🥇',
     category: 'toeic',
     requirement: 945,
@@ -332,7 +332,7 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
             .from('user_question_progress')
             .select('category, correct_count, total_xp')
             .eq('user_id', userId),
-          // TOEIC tests
+          // TEPITECH tests
           supabase
             .from('toeic_blanc_results')
             .select('total_score')
@@ -441,14 +441,14 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
           unlocked = currentProgress >= def.requirement;
           break;
 
-        // TOEIC count
+  // TEPITECH count
         case 'toeic-first':
         case 'toeic-5':
           currentProgress = userStats.toeicCount;
           unlocked = currentProgress >= def.requirement;
           break;
 
-        // TOEIC score
+  // TEPITECH score
         case 'toeic-score-600':
         case 'toeic-score-785':
         case 'toeic-score-945':
@@ -533,8 +533,8 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
       },
       {
         id: 'weekly-toeic',
-        name: 'TOEIC de la semaine',
-        description: 'Fais un TOEIC blanc cette semaine',
+  name: 'TEPITECH de la semaine',
+  description: 'Fais un TEPITECH blanc cette semaine',
         emoji: '🎯',
         type: 'weekly',
         requirement: 1,
