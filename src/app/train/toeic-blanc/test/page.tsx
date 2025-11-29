@@ -100,6 +100,8 @@ const PROGRESSION_SECTIONS = [
 type TestQuestion = Question & {
   instanceId: string;
   questionNumber: number;
+  // For reading comprehension passages: contains companion questions
+  passageQuestions?: Question[];
 };
 
 const generateInstanceId = () => {
@@ -141,6 +143,69 @@ const selectRandomQuestions = (questions: Question[], count: number): Question[]
   }
 
   return selection;
+};
+
+type ReadingPassageGroup = {
+  passageId: string;
+  questions: Question[];
+};
+
+const groupReadingPassages = (questions: Question[]): ReadingPassageGroup[] => {
+  const passageMap = new Map<string, Question[]>();
+  const fallbackGroups: ReadingPassageGroup[] = [];
+
+  questions.forEach((question) => {
+    const key = question.passage_id || question.id;
+    if (!question.passage_id) {
+      fallbackGroups.push({
+        passageId: key,
+        questions: [question],
+      });
+      return;
+    }
+
+    if (!passageMap.has(key)) {
+      passageMap.set(key, []);
+    }
+
+    passageMap.get(key)?.push(question);
+  });
+
+  const normalizedGroups = Array.from(passageMap.entries()).map(([passageId, groupQuestions]) => ({
+    passageId,
+    questions: [...groupQuestions].sort((a, b) => (a.question_number ?? 0) - (b.question_number ?? 0)),
+  }));
+
+  return [...normalizedGroups, ...fallbackGroups];
+};
+
+const selectReadingPassageQuestions = (questions: Question[], targetCount: number): Question[] => {
+  if (!questions.length || targetCount <= 0) {
+    return [];
+  }
+
+  const passages = groupReadingPassages(questions);
+  if (!passages.length) {
+    return selectRandomQuestions(questions, targetCount);
+  }
+
+  // We need targetCount passages (each passage = 1 entry but contains 2 questions)
+  const selection: ReadingPassageGroup[] = [];
+  const basePool = [...passages];
+  let pool = [...basePool];
+
+  while (selection.length < targetCount) {
+    if (pool.length === 0) {
+      pool = [...basePool];
+    }
+
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const chosenGroup = pool.splice(randomIndex, 1)[0];
+    selection.push(chosenGroup);
+  }
+
+  // Return all questions from selected passages (flattened, ordered by passage)
+  return selection.flatMap((group) => group.questions);
 };
 
 const TOTAL_TIME = 120 * 60; // 2 heures en secondes
@@ -200,6 +265,8 @@ export default function ToeicBlancTestPage() {
   const [currentQuestion, setCurrentQuestion] = useState<TestQuestion | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [selectedGapAnswers, setSelectedGapAnswers] = useState<Record<string, string>>({});
+  // For reading comprehension passages: answers for each question in the passage
+  const [selectedPassageAnswers, setSelectedPassageAnswers] = useState<Record<string, string>>({});
   const [timeRemaining, setTimeRemaining] = useState(TOTAL_TIME);
   const [hasStarted, setHasStarted] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -217,6 +284,7 @@ export default function ToeicBlancTestPage() {
   const [tabChangeDetected, setTabChangeDetected] = useState(false);
   const [mobileProgressOpen, setMobileProgressOpen] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [zoomedImageUrl, setZoomedImageUrl] = useState<string | null>(null);
 
   const totalQuestions = allQuestions.length;
   const answeredCount = results.length;
@@ -289,18 +357,28 @@ export default function ToeicBlancTestPage() {
         setLoading(true);
         setLoadError(null);
 
-        // Vérifier s'il y a un test sauvegardé à reprendre
-        const savedState = loadSavedTestState();
-        if (savedState && savedState.allQuestions.length > 0 && savedState.timeRemaining > 0) {
-          // Restaurer l'état sauvegardé
-          setAllQuestions(savedState.allQuestions);
-          setCurrentQuestionIndex(savedState.currentQuestionIndex);
-          setResults(savedState.results);
-          resultsRef.current = savedState.results;
-          setTimeRemaining(savedState.timeRemaining);
-          setCurrentQuestion(savedState.allQuestions[savedState.currentQuestionIndex] ?? null);
-          setLoading(false);
-          return;
+        // DEV: Check URL params for section skip (e.g., ?skip=text_completion or ?skip=reading_comprehension)
+        const urlParams = new URLSearchParams(window.location.search);
+        const skipToSection = urlParams.get('skip');
+
+        // If skip param is present, ignore saved state and generate fresh test
+        if (!skipToSection) {
+          // Vérifier s'il y a un test sauvegardé à reprendre
+          const savedState = loadSavedTestState();
+          if (savedState && savedState.allQuestions.length > 0 && savedState.timeRemaining > 0) {
+            // Restaurer l'état sauvegardé
+            setAllQuestions(savedState.allQuestions);
+            setCurrentQuestionIndex(savedState.currentQuestionIndex);
+            setResults(savedState.results);
+            resultsRef.current = savedState.results;
+            setTimeRemaining(savedState.timeRemaining);
+            setCurrentQuestion(savedState.allQuestions[savedState.currentQuestionIndex] ?? null);
+            setLoading(false);
+            return;
+          }
+        } else {
+          // Clear any saved state when using skip
+          clearSavedTestState();
         }
 
         const generatedQuestions: TestQuestion[] = [];
@@ -326,19 +404,53 @@ export default function ToeicBlancTestPage() {
             console.warn(`Questions insuffisantes pour ${config.category}. Des doublons seront utilisés.`);
           }
 
-          const selected = selectRandomQuestions(validQuestions, config.count);
+          const selected = config.category === 'reading_comprehension'
+            ? selectReadingPassageQuestions(validQuestions, config.count)
+            : selectRandomQuestions(validQuestions, config.count);
 
-          selected.forEach((question, index) => {
-            generatedQuestions.push({
-              ...question,
-              instanceId: `${config.category}-${config.start + index}-${generateInstanceId()}`,
-              questionNumber: config.start + index,
+          if (config.category === 'reading_comprehension') {
+            // Group questions by passage_id and create one TestQuestion per passage
+            const passageGroups = groupReadingPassages(selected);
+            passageGroups.forEach((group, passageIndex) => {
+              const sortedQuestions = group.questions.sort(
+                (a, b) => (a.question_number ?? 0) - (b.question_number ?? 0)
+              );
+              const primaryQuestion = sortedQuestions[0];
+              generatedQuestions.push({
+                ...primaryQuestion,
+                instanceId: `${config.category}-${config.start + passageIndex}-${generateInstanceId()}`,
+                questionNumber: config.start + passageIndex,
+                passageQuestions: sortedQuestions,
+              });
             });
-          });
+          } else {
+            selected.forEach((question, index) => {
+              generatedQuestions.push({
+                ...question,
+                instanceId: `${config.category}-${config.start + index}-${generateInstanceId()}`,
+                questionNumber: config.start + index,
+              });
+            });
+          }
+        }
+
+        // Apply skip if specified
+        let startIndex = 0;
+        
+        if (skipToSection) {
+          const sectionConfig = TOEIC_SECTION_CONFIG[skipToSection as keyof typeof TOEIC_SECTION_CONFIG];
+          if (sectionConfig) {
+            startIndex = generatedQuestions.findIndex(
+              (q) => q.questionNumber >= sectionConfig.start
+            );
+            if (startIndex < 0) startIndex = 0;
+            console.log(`DEV: Skipping to section ${skipToSection}, starting at question index ${startIndex}`);
+          }
         }
 
         setAllQuestions(generatedQuestions);
-        setCurrentQuestion(generatedQuestions[0] ?? null);
+        setCurrentQuestionIndex(startIndex);
+        setCurrentQuestion(generatedQuestions[startIndex] ?? null);
       } catch (err) {
         console.error('Error loading questions:', err);
         setLoadError(
@@ -596,10 +708,42 @@ export default function ToeicBlancTestPage() {
   };
 
   const handleSubmitAnswer = () => {
-    const isCorrect = checkAnswer();
-    const points = calculatePoints(isCorrect);
     const questionNum = getCurrentQuestionNumber();
     const category = (currentQuestion?.category ?? 'audio_with_images') as QuestionCategory;
+
+    // For reading comprehension passages: record one result per question in the passage
+    if (currentQuestion?.passageQuestions && currentQuestion.passageQuestions.length > 0) {
+      const passageQuestions = currentQuestion.passageQuestions;
+      const entries: ToeicResultEntry[] = [];
+
+      passageQuestions.forEach((pq) => {
+        const selectedOption = selectedPassageAnswers[pq.id];
+        const correctChoice = pq.choices.find((c) => c.is_correct);
+        const isCorrect = selectedOption === correctChoice?.option;
+        const points = isCorrect ? 5 : 0;
+
+        entries.push({
+          questionInstanceId: `${currentQuestion.instanceId}-${pq.id}`,
+          questionNumber: questionNum,
+          isCorrect,
+          points,
+          category,
+        });
+      });
+
+      let latestResults = resultsRef.current;
+      entries.forEach((entry) => {
+        const { nextResults } = recordResult(entry);
+        latestResults = nextResults;
+      });
+
+      moveToNextQuestion(latestResults);
+      return;
+    }
+
+    // Standard question handling
+    const isCorrect = checkAnswer();
+    const points = calculatePoints(isCorrect);
 
     const entry: ToeicResultEntry = {
       questionInstanceId: currentQuestion?.instanceId ?? `${questionNum}-${Date.now()}`,
@@ -626,6 +770,7 @@ export default function ToeicBlancTestPage() {
       setCurrentQuestion(allQuestions[nextIndex]);
       setSelectedAnswer(null);
       setSelectedGapAnswers({});
+      setSelectedPassageAnswers({});
       setAudioHasPlayed(false);
       setAudioPermissionNeeded(false);
       setTabChangeDetected(false);
@@ -673,6 +818,11 @@ export default function ToeicBlancTestPage() {
   }, [handleTabChangeViolation, hasStarted, tabChangeDetected]);
 
   const canSubmit = () => {
+    // For reading comprehension passages: all questions must be answered
+    if (currentQuestion?.passageQuestions && currentQuestion.passageQuestions.length > 0) {
+      return currentQuestion.passageQuestions.every((pq) => selectedPassageAnswers[pq.id]);
+    }
+
     if (currentQuestion?.text_with_gaps && currentQuestion?.gap_choices) {
       const totalGaps = Object.keys(currentQuestion.gap_choices).length;
       return Object.keys(selectedGapAnswers).length === totalGaps;
@@ -963,19 +1113,27 @@ export default function ToeicBlancTestPage() {
                 </div>
               )}
 
-              {/* Image */}
+              {/* Image - clickable to zoom */}
               {currentQuestion.image_url && (
                 <div className="mb-6">
-                  <img
-                    src={currentQuestion.image_url}
-                    alt="Question illustration"
-                    className="w-full max-h-64 md:max-h-72 object-contain mx-auto"
-                  />
+                  <button
+                    onClick={() => setZoomedImageUrl(currentQuestion.image_url)}
+                    className="w-full cursor-zoom-in group relative"
+                  >
+                    <img
+                      src={currentQuestion.image_url}
+                      alt="Question illustration"
+                      className="w-full max-h-64 md:max-h-72 object-contain mx-auto rounded-xl transition-transform group-hover:scale-[1.02]"
+                    />
+                    <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/60 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                      🔍 Cliquer pour agrandir
+                    </div>
+                  </button>
                 </div>
               )}
 
               {/* Question Text */}
-              {currentQuestion.question_text && !currentQuestion.text_with_gaps && (
+              {currentQuestion.question_text && !currentQuestion.text_with_gaps && !currentQuestion.passageQuestions && (
                 <div className="mb-8">
                   <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-relaxed">
                     {currentQuestion.question_text}
@@ -1000,7 +1158,7 @@ export default function ToeicBlancTestPage() {
                         
                         if (beforeText) {
                           parts.push(
-                            <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                            <span key={`text-${lastIndex}`} className="text-gray-800 text-lg leading-loose">
                               {beforeText}
                             </span>
                           );
@@ -1008,6 +1166,7 @@ export default function ToeicBlancTestPage() {
 
                         const gapChoices = currentQuestion.gap_choices?.[gapNumber] || [];
                         const selectedOption = selectedGapAnswers[gapNumber];
+                        const selectedChoice = gapChoices.find(c => c.option === selectedOption);
 
                         parts.push(
                           <select
@@ -1019,14 +1178,24 @@ export default function ToeicBlancTestPage() {
                                 [gapNumber]: e.target.value
                               }));
                             }}
-                            className="inline-block mx-1 px-3 py-2 rounded-lg border-2 border-gray-300 bg-white font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer"
+                            className={`inline-block mx-1 px-4 py-2 rounded-xl border-2 font-medium text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all cursor-pointer appearance-none bg-no-repeat bg-right max-w-[200px] md:max-w-[280px] truncate ${
+                              selectedOption
+                                ? 'border-blue-400 bg-blue-50 text-blue-800'
+                                : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400'
+                            }`}
+                            style={{
+                              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                              backgroundSize: '1.25rem',
+                              backgroundPosition: 'right 0.5rem center',
+                              paddingRight: '2rem',
+                            }}
                           >
                             <option value="" disabled>
-                              ({gapNumber})
+                              Choisir...
                             </option>
                             {gapChoices.map((choice) => (
                               <option key={choice.option} value={choice.option}>
-                                {choice.option}. {choice.text}
+                                {choice.text}
                               </option>
                             ))}
                           </select>
@@ -1037,20 +1206,73 @@ export default function ToeicBlancTestPage() {
 
                       if (lastIndex < text.length) {
                         parts.push(
-                          <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                          <span key={`text-${lastIndex}`} className="text-gray-800 text-lg leading-loose">
                             {text.substring(lastIndex)}
                           </span>
                         );
                       }
 
-                      return <div className="leading-relaxed">{parts}</div>;
+                      return <div className="leading-loose whitespace-pre-line">{parts}</div>;
                     })()}
                   </div>
                 </div>
               )}
 
+              {/* Reading Comprehension Passage with 2 questions */}
+              {currentQuestion.passageQuestions && currentQuestion.passageQuestions.length > 0 && (
+                <div className="space-y-8">
+                  {currentQuestion.passageQuestions.map((pq, pqIndex) => (
+                    <div key={pq.id}>
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
+                          Question {pqIndex + 1}
+                        </span>
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed">{pq.question_text}</h3>
+                      <div className="space-y-3">
+                        {pq.choices.map((choice, choiceIndex) => {
+                          const isSelected = selectedPassageAnswers[pq.id] === choice.option;
+                          return (
+                            <motion.button
+                              key={choice.option}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: choiceIndex * 0.05 }}
+                              onClick={() =>
+                                setSelectedPassageAnswers((prev) => ({
+                                  ...prev,
+                                  [pq.id]: choice.option,
+                                }))
+                              }
+                              className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'border-blue-400 bg-blue-50'
+                                  : 'border-gray-200 bg-white hover:bg-gray-50'
+                              }`}
+                            >
+                              <div className="flex items-center gap-4">
+                                <div
+                                  className={`w-10 h-10 flex-shrink-0 rounded-xl flex items-center justify-center font-bold text-lg ${
+                                    isSelected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'
+                                  }`}
+                                >
+                                  {choice.option}
+                                </div>
+                                <span className={`flex-1 font-medium ${isSelected ? 'text-blue-800' : 'text-gray-800'}`}>
+                                  {choice.text}
+                                </span>
+                              </div>
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {/* Choices */}
-              {currentQuestion.choices && currentQuestion.choices.length > 0 && (
+              {currentQuestion.choices && currentQuestion.choices.length > 0 && !currentQuestion.passageQuestions && (
                 <div className="space-y-3">
                   {currentQuestion.choices.map((choice, index) => {
                     const isSelected = selectedAnswer === choice.option;
@@ -1163,6 +1385,39 @@ export default function ToeicBlancTestPage() {
                   Quitter maintenant
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Image Zoom Modal */}
+      <AnimatePresence>
+        {zoomedImageUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setZoomedImageUrl(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative max-w-5xl max-h-[90vh] w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={zoomedImageUrl}
+                alt="Question illustration (agrandie)"
+                className="w-full h-full object-contain rounded-2xl"
+              />
+              <button
+                onClick={() => setZoomedImageUrl(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-gray-800 font-bold text-xl shadow-lg transition-colors"
+              >
+                ✕
+              </button>
             </motion.div>
           </motion.div>
         )}

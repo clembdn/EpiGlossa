@@ -697,7 +697,7 @@ export default function QuestionPage() {
                     // Add text before the gap
                     if (beforeText) {
                       parts.push(
-                        <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                        <span key={`text-${lastIndex}`} className="text-gray-800 text-lg leading-loose">
                           {beforeText}
                         </span>
                       );
@@ -709,14 +709,16 @@ export default function QuestionPage() {
                     const isGapSubmitted = isSubmitted;
                     
                     // Calculer les classes CSS en fonction de l'état
-                    let selectClasses = 'border-gray-300 bg-white';
+                    let selectClasses = 'border-gray-300 bg-white text-gray-600 hover:border-gray-400';
                     if (isGapSubmitted && selectedOption) {
                       const selectedChoice = gapChoices.find(c => c.option === selectedOption);
                       if (selectedChoice?.is_correct) {
-                        selectClasses = 'border-green-400 bg-green-50';
+                        selectClasses = 'border-green-400 bg-green-50 text-green-800';
                       } else {
-                        selectClasses = 'border-red-400 bg-red-50';
+                        selectClasses = 'border-red-400 bg-red-50 text-red-800';
                       }
+                    } else if (selectedOption) {
+                      selectClasses = 'border-blue-400 bg-blue-50 text-blue-800';
                     }
 
                     parts.push(
@@ -732,16 +734,22 @@ export default function QuestionPage() {
                           }
                         }}
                         disabled={isSubmitted}
-                        className={`inline-block mx-1 px-3 py-2 rounded-lg border-2 ${selectClasses} font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                        className={`inline-block mx-1 px-4 py-2 rounded-xl border-2 ${selectClasses} font-medium text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all appearance-none bg-no-repeat bg-right max-w-[200px] md:max-w-[280px] truncate ${
                           isSubmitted ? 'cursor-default' : 'cursor-pointer'
                         }`}
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                          backgroundSize: '1.25rem',
+                          backgroundPosition: 'right 0.5rem center',
+                          paddingRight: '2rem',
+                        }}
                       >
                         <option value="" disabled>
-                          ({gapNumber})
+                          Choisir...
                         </option>
                         {gapChoices.map((choice) => (
                           <option key={choice.option} value={choice.option}>
-                            {choice.option}. {choice.text}
+                            {choice.text}
                           </option>
                         ))}
                       </select>
@@ -753,13 +761,13 @@ export default function QuestionPage() {
                   // Add remaining text
                   if (lastIndex < text.length) {
                     parts.push(
-                      <span key={`text-${lastIndex}`} className="text-gray-800 text-lg">
+                      <span key={`text-${lastIndex}`} className="text-gray-800 text-lg leading-loose">
                         {text.substring(lastIndex)}
                       </span>
                     );
                   }
 
-                  return <div className="leading-relaxed">{parts}</div>;
+                  return <div className="leading-loose whitespace-pre-line">{parts}</div>;
                 })()}
               </div>
             </div>
