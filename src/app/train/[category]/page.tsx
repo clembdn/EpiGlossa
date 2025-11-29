@@ -60,6 +60,19 @@ const categoryInfo: Record<string, {
   },
 };
 
+const getTextCompletionTitle = (text?: string | null) => {
+  if (!text) return 'Texte à compléter';
+  const cleaned = text
+    .replace(/\{\{\d+\}\}/g, '____')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!cleaned) return 'Texte à compléter';
+
+  const sentenceMatch = cleaned.match(/[^.!?…]+[.!?…]?/);
+  return (sentenceMatch ? sentenceMatch[0] : cleaned).trim();
+};
+
 export default function TrainCategoryPage() {
   const params = useParams();
   const router = useRouter();
@@ -344,7 +357,7 @@ export default function TrainCategoryPage() {
               const questionUrl = `/train/${category}/${question.id}`;
               const displayTitle = 
                 category === 'text_completion'
-                  ? `Texte à compléter (4 trous)`
+                  ? getTextCompletionTitle(question.text_with_gaps)
                   : question.question_text || 'Question audio';
               
               const isCompleted = isQuestionCompleted(question.id);
