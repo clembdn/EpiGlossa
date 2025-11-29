@@ -16,6 +16,15 @@ import {
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
 
+const shuffleArray = (array: string[]) => {
+  const cloned = [...array];
+  for (let i = cloned.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+  }
+  return cloned;
+};
+
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
 
 export default function VocabularyLessonPage() {
@@ -34,6 +43,9 @@ export default function VocabularyLessonPage() {
   const [score, setScore] = useState(0);
   const [hearts, setHearts] = useState(3);
   const [completedWords, setCompletedWords] = useState<number[]>([]);
+  const [matchingSelections, setMatchingSelections] = useState<Record<string, string>>({});
+  const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
+  const [shuffledRightOptions, setShuffledRightOptions] = useState<string[]>([]);
 
   // Sauvegarder la progression quand on atteint l'écran de résultats
   useEffect(() => {
@@ -44,7 +56,38 @@ export default function VocabularyLessonPage() {
     }
   }, [step, lessonId, score, lesson]);
 
-  if (!lesson) {
+  const currentWord = lesson?.words[currentWordIndex];
+  const currentExercise = lesson?.exercises[currentExerciseIndex];
+  const progress = lesson
+    ? step === 'learning' 
+      ? (completedWords.length / lesson.words.length) * 50
+      : 50 + ((currentExerciseIndex / lesson.exercises.length) * 50)
+    : 0;
+  const isMatchingExercise = currentExercise?.type === 'matching';
+  const isMatchingReady = Boolean(
+    isMatchingExercise &&
+    currentExercise?.options &&
+    Object.keys(matchingSelections).length === currentExercise.options.length
+  );
+
+  useEffect(() => {
+    if (!lesson || !currentExercise) {
+      setShuffledRightOptions([]);
+      setMatchingSelections({});
+      setSelectedLeft(null);
+      return;
+    }
+
+    if (isMatchingExercise && Array.isArray(currentExercise.correctAnswer)) {
+      setShuffledRightOptions(shuffleArray(currentExercise.correctAnswer));
+    } else {
+      setShuffledRightOptions([]);
+    }
+    setMatchingSelections({});
+    setSelectedLeft(null);
+  }, [lesson, currentExerciseIndex, currentExercise, isMatchingExercise]);
+
+  if (!lesson || !currentWord || !currentExercise) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-20 md:pt-24">
         <div className="text-center">
@@ -54,12 +97,6 @@ export default function VocabularyLessonPage() {
       </div>
     );
   }
-
-  const currentWord = lesson.words[currentWordIndex];
-  const currentExercise = lesson.exercises[currentExerciseIndex];
-  const progress = step === 'learning' 
-    ? (completedWords.length / lesson.words.length) * 50
-    : 50 + ((currentExerciseIndex / lesson.exercises.length) * 50);
 
   // Fonction pour parler un mot (Text-to-Speech)
   const speakWord = (text: string) => {
@@ -100,6 +137,9 @@ export default function VocabularyLessonPage() {
   const handleNextExercise = () => {
     setShowFeedback(false);
     setUserAnswer('');
+    setMatchingSelections({});
+    setSelectedLeft(null);
+    setShuffledRightOptions([]);
     
     if (currentExerciseIndex < lesson.exercises.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
@@ -115,6 +155,44 @@ export default function VocabularyLessonPage() {
     setIsCorrect(correct);
     setShowFeedback(true);
     
+    if (correct) {
+      setScore(score + 10);
+    } else {
+      setHearts(Math.max(0, hearts - 1));
+    }
+  };
+
+  const handleSelectLeft = (option: string) => {
+    if (showFeedback) return;
+    setSelectedLeft((prev) => (prev === option ? null : option));
+  };
+
+  const handleSelectRight = (answer: string) => {
+    if (showFeedback || !selectedLeft) return;
+
+    setMatchingSelections((prev) => {
+      const updated = { ...prev };
+      const existingLeft = Object.entries(updated).find(([, value]) => value === answer);
+      if (existingLeft) {
+        delete updated[existingLeft[0]];
+      }
+      updated[selectedLeft] = answer;
+      return updated;
+    });
+    setSelectedLeft(null);
+  };
+
+  const handleMatchingSubmit = () => {
+    if (!isMatchingExercise || !currentExercise.options || !Array.isArray(currentExercise.correctAnswer)) return;
+
+    const correct = currentExercise.options.every((option, index) => {
+      return matchingSelections[option] === currentExercise.correctAnswer[index];
+    });
+
+    setIsCorrect(correct);
+    setShowFeedback(true);
+    setSelectedLeft(null);
+
     if (correct) {
       setScore(score + 10);
     } else {
@@ -418,6 +496,76 @@ export default function VocabularyLessonPage() {
                     <button
                       onClick={checkAnswer}
                       disabled={!userAnswer.trim()}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                    >
+                      Vérifier
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Matching Exercise */}
+              {isMatchingExercise && currentExercise.options && Array.isArray(currentExercise.correctAnswer) && (
+                <div className="space-y-6">
+                  <p className="text-center text-gray-600">
+                    Associe chaque mot anglais à sa traduction française.
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      {currentExercise.options.map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleSelectLeft(option)}
+                          disabled={showFeedback}
+                          className={`w-full p-4 rounded-2xl border-2 text-left font-semibold transition-all flex items-center justify-between gap-3 ${
+                            matchingSelections[option]
+                              ? 'border-green-400 bg-green-50 text-green-800'
+                              : selectedLeft === option
+                              ? 'border-purple-500 bg-purple-50 text-purple-800'
+                              : 'border-gray-200 hover:border-purple-400 hover:bg-purple-50'
+                          } ${showFeedback ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        >
+                          <span>{option}</span>
+                          {matchingSelections[option] && (
+                            <span className="text-sm text-green-700">
+                              {matchingSelections[option]}
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="space-y-3">
+                      {shuffledRightOptions.map((answer) => {
+                        const assignedLeft = Object.entries(matchingSelections).find(([, value]) => value === answer)?.[0];
+                        return (
+                          <button
+                            key={answer}
+                            onClick={() => handleSelectRight(answer)}
+                            disabled={showFeedback}
+                            className={`w-full p-4 rounded-2xl border-2 text-left font-semibold transition-all flex items-center justify-between gap-3 ${
+                              assignedLeft
+                                ? 'border-green-400 bg-green-50 text-green-800'
+                                : selectedLeft
+                                ? 'border-blue-400 bg-blue-50 text-blue-800'
+                                : 'border-gray-200 hover:border-blue-400 hover:bg-blue-50'
+                            } ${showFeedback ? 'opacity-70 cursor-not-allowed' : ''}`}
+                          >
+                            <span>{answer}</span>
+                            {assignedLeft && (
+                              <span className="text-sm text-green-700">
+                                {assignedLeft}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {!showFeedback && (
+                    <button
+                      onClick={handleMatchingSubmit}
+                      disabled={!isMatchingReady}
                       className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
                     >
                       Vérifier
