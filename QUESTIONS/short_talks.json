@@ -1,0 +1,230 @@
+[
+  {
+    "category": "short_talks",
+    "question_text": "This speech is being held at the opening of what?",
+    "audio_url": "audios__ST27.mp3",
+    "choices": [
+      { "option": "A", "text": "A photography show", "is_correct": true },
+      { "option": "B", "text": "A technology exhibit", "is_correct": false },
+      { "option": "C", "text": "A forestry demonstration", "is_correct": false },
+      { "option": "D", "text": "A weather experiment", "is_correct": false }
+    ],
+    "explanation": "Le narrateur dit : 'these photos capture the beauty of the rainforest' et 'we hope you enjoy these beautiful photographs'. Bien que le mot 'rainforest' soit prononcé, le sujet de l'événement est bien l'exposition de photos."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What is the legal aid program looking for?",
+    "audio_url": "audios__ST64.mp3",
+    "choices": [
+      { "option": "A", "text": "Tribal members", "is_correct": false },
+      { "option": "B", "text": "Legal borders", "is_correct": false },
+      { "option": "C", "text": "Volunteer lawyers", "is_correct": true },
+      { "option": "D", "text": "Federal laws", "is_correct": false }
+    ],
+    "explanation": "La première phrase est explicite : 'The Native American Legal Aid Program is looking for volunteer lawyers'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "In which field did Camper NOT diversify?",
+    "audio_url": "audios__ST49.mp3",
+    "choices": [
+      { "option": "A", "text": "Food", "is_correct": false },
+      { "option": "B", "text": "Sportswear", "is_correct": false },
+      { "option": "C", "text": "Hotels", "is_correct": false },
+      { "option": "D", "text": "Transports", "is_correct": true }
+    ],
+    "explanation": "L'audio dit : 'Camper has now diversified into the hotel and food industries'. Le 'Sportswear' est leur domaine d'origine ('shoemakers'). Seuls les 'Transports' ne sont jamais mentionnés."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What type of organisation is overcoming challenges?",
+    "audio_url": "audios__ST39.mp3",
+    "choices": [
+      { "option": "A", "text": "A government agency", "is_correct": false },
+      { "option": "B", "text": "A fraternal organisation", "is_correct": false },
+      { "option": "C", "text": "A charity", "is_correct": true },
+      { "option": "D", "text": "A corporation", "is_correct": false }
+    ],
+    "explanation": "L'audio mentionne 'The Red Cross' (La Croix-Rouge) et des activités comme 'raising funds' et 'relief missions', ce qui correspond à une organisation caritative."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "How should you get your tickets?",
+    "audio_url": "audios__STblue10.mp3",
+    "choices": [
+      { "option": "A", "text": "Pick them up from the personnel office.", "is_correct": true },
+      { "option": "B", "text": "They will be sent in the mail.", "is_correct": false },
+      { "option": "C", "text": "Pick them up from the hotel.", "is_correct": false },
+      { "option": "D", "text": "Contact the director", "is_correct": false }
+    ],
+    "explanation": "La consigne est donnée mot pour mot : 'you can pick them up from the personnel office'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "Who is most likely to be making this announcement?",
+    "audio_url": "audios__ST36.mp3",
+    "choices": [
+      { "option": "A", "text": "A lawyer at a legal firm", "is_correct": false },
+      { "option": "B", "text": "An accountant at a shipping company", "is_correct": false },
+      { "option": "C", "text": "An executive assistant at a large corporation", "is_correct": false },
+      { "option": "D", "text": "A receptionist at a small company", "is_correct": true }
+    ],
+    "explanation": "Le locuteur dit 'pick them up at my desk in the reception area' (réceptionniste) et précise 'since we are a small company' (petite entreprise)."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "For how long does the ferry stay in port at Ellis Island?",
+    "audio_url": "audios__ST24.mp3",
+    "choices": [
+      { "option": "A", "text": "2 hours", "is_correct": true },
+      { "option": "B", "text": "10 minutes", "is_correct": false },
+      { "option": "C", "text": "15 minutes", "is_correct": false },
+      { "option": "D", "text": "1 hour", "is_correct": false }
+    ],
+    "explanation": "La phrase exacte est : 'We will be in port at Ellis Island for two hours'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What are the programs about?",
+    "audio_url": "audios__STblue18.mp3",
+    "choices": [
+      { "option": "A", "text": "Major headlines of the day", "is_correct": false },
+      { "option": "B", "text": "Weight-loss plans", "is_correct": false },
+      { "option": "C", "text": "Little-known news events", "is_correct": true },
+      { "option": "D", "text": "Careers in journalism", "is_correct": false }
+    ],
+    "explanation": "Le narrateur explique que l'émission explore 'the little-known news events', c'est-à-dire ceux qui n'ont pas fait les gros titres ('didn't make the headlines')."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "How much money did the man steal?",
+    "audio_url": "audios__ST37.mp3",
+    "choices": [
+      { "option": "A", "text": "$32,000", "is_correct": false },
+      { "option": "B", "text": "$15,000", "is_correct": true },
+      { "option": "C", "text": "$30,000", "is_correct": false },
+      { "option": "D", "text": "$100,000", "is_correct": false }
+    ],
+    "explanation": "L'audio précise clairement : 'The teller handed over fifteen thousand dollars' ($15,000)."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "How long are the programs?",
+    "audio_url": "audios__STblue18_2.mp3",
+    "choices": [
+      { "option": "A", "text": "A half hour", "is_correct": false },
+      { "option": "B", "text": "One and a half hours", "is_correct": false },
+      { "option": "C", "text": "One hour", "is_correct": true },
+      { "option": "D", "text": "Two hours", "is_correct": false }
+    ],
+    "explanation": "La réponse se trouve à la fin de l'audio : 'Stay tuned for a full hour of commercial-free investigative journalism'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What is the purpose of the dinner?",
+    "audio_url": "audios__STblue10_2.mp3",
+    "choices": [
+      { "option": "A", "text": "To honor the personnel office", "is_correct": false },
+      { "option": "B", "text": "To honor the director and the president", "is_correct": false },
+      { "option": "C", "text": "To honor Mr Adams", "is_correct": true },
+      { "option": "D", "text": "To honor employee excellence.", "is_correct": false }
+    ],
+    "explanation": "L'audio déclare explicitement : 'the dinner is being held to honor Mr. Adams', à l'occasion de son départ en retraite."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What are the commentaries about?",
+    "audio_url": "audios__ST60.mp3",
+    "choices": [
+      { "option": "A", "text": "A company visit", "is_correct": false },
+      { "option": "B", "text": "Historical monuments", "is_correct": false },
+      { "option": "C", "text": "Artwork in the permanent collection", "is_correct": true },
+      { "option": "D", "text": "Temporary exhibits", "is_correct": false }
+    ],
+    "explanation": "L'audio-guide précise : 'provide commentaries on the artwork in the permanent collection'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "Where is Jenny's High school situated?",
+    "audio_url": "audios__ST40.mp3",
+    "choices": [
+      { "option": "A", "text": "New York City", "is_correct": false },
+      { "option": "B", "text": "Atlantic City", "is_correct": false },
+      { "option": "C", "text": "Jersey City", "is_correct": false },
+      { "option": "D", "text": "Salt Lake City", "is_correct": true }
+    ],
+    "explanation": "L'audio dit : 'moved to Salt Lake City... She went to high school there'. Le mot 'there' renvoie à la ville précédemment citée, Salt Lake City."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "When should the employees respond to the invitation?",
+    "audio_url": "audios__ST25.mp3",
+    "choices": [
+      { "option": "A", "text": "By December 20th", "is_correct": false },
+      { "option": "B", "text": "By the end of the day", "is_correct": false },
+      { "option": "C", "text": "By the last day of the coming week", "is_correct": true },
+      { "option": "D", "text": "By 7:11", "is_correct": false }
+    ],
+    "explanation": "La consigne audio est 'by Friday of this week'. Parmi les choix, 'By the last day of the coming week' est la seule option logique correspondant à une date limite de réponse (le 20 décembre étant la date de la fête)."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "The party will include which of the following?",
+    "audio_url": "audios__ST25_2.mp3",
+    "choices": [
+      { "option": "A", "text": "E-mail", "is_correct": false },
+      { "option": "B", "text": "Debate", "is_correct": false },
+      { "option": "C", "text": "Drinks", "is_correct": true },
+      { "option": "D", "text": "Candy", "is_correct": false }
+    ],
+    "explanation": "L'audio mentionne : 'There will be plenty of food and drinks'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "Who is the speaker?",
+    "audio_url": "audios__ST52.mp3",
+    "choices": [
+      { "option": "A", "text": "A researcher", "is_correct": false },
+      { "option": "B", "text": "The facilities manager", "is_correct": true },
+      { "option": "C", "text": "A construction worker", "is_correct": false },
+      { "option": "D", "text": "A lab technician", "is_correct": false }
+    ],
+    "explanation": "Le locuteur se présente dès le début : 'I'm the Facilities Manager here at the Science Center'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What will Ms Sunwoo be doing for the next few weeks?",
+    "audio_url": "audios__ST28.mp3",
+    "choices": [
+      { "option": "A", "text": "Specialising in logistics", "is_correct": false },
+      { "option": "B", "text": "Moving to San Francisco", "is_correct": false },
+      { "option": "C", "text": "Investigating the inventory process", "is_correct": true },
+      { "option": "D", "text": "Running a marathon", "is_correct": false }
+    ],
+    "explanation": "L'audio explique le but de sa visite : 'visiting our office... to investigate the inventory process'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "Who will be leading the meetings after dinner?",
+    "audio_url": "audios__ST29.mp3",
+    "choices": [
+      { "option": "A", "text": "Management employees from Arlington Technologies", "is_correct": false },
+      { "option": "B", "text": "Motivational speakers from the region", "is_correct": true },
+      { "option": "C", "text": "Trained teachers from the conference center", "is_correct": false },
+      { "option": "D", "text": "Drill sergeants from boot camp", "is_correct": false }
+    ],
+    "explanation": "Le programme mentionne : 'meetings led by motivational speakers from the region'."
+  },
+  {
+    "category": "short_talks",
+    "question_text": "What was announced yesterday?",
+    "audio_url": "audios__STblue19.mp3",
+    "choices": [
+      { "option": "A", "text": "A sale", "is_correct": false },
+      { "option": "B", "text": "A bankruptcy", "is_correct": false },
+      { "option": "C", "text": "A strike", "is_correct": false },
+      { "option": "D", "text": "A joint venture", "is_correct": true }
+    ],
+    "explanation": "La réponse est donnée dans la première phrase : 'Yesterday, the president of the company announced a joint venture'."
+  }
+]
