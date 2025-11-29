@@ -254,11 +254,11 @@ export default function AddQuestionPage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as QuestionCategory)}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-gray-900 bg-white"
                 required
               >
                 {categories.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
+                  <option key={cat.value} value={cat.value} className="text-gray-900">
                     {cat.label}
                   </option>
                 ))}
