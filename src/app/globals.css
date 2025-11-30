@@ -248,3 +248,13 @@ select option {
 .btn-shine:hover::before {
   transform: translateX(100%) translateY(100%) rotate(45deg);
 }
+
+/* Cacher la scrollbar tout en gardant le scroll fonctionnel */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
