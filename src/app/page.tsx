@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { BookOpen, Dumbbell, Trophy, Star, Flame, TrendingUp, AlertCircle, X } from 'lucide-react';
+import { BookOpen, Dumbbell, Trophy, Star, Flame, TrendingUp, AlertCircle, X, Info } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useGlobalProgress } from '@/hooks/useProgress';
@@ -15,7 +15,8 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [showUnauthorizedError, setShowUnauthorizedError] = useState(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
-  const { stats, loading } = useGlobalProgress();
+  const [showXpDetails, setShowXpDetails] = useState(false);
+  const { stats, loading, lessonXp, missionXp, baseXp } = useGlobalProgress();
   const { streak, loading: streakLoading } = useStreak();
   const { missions, loading: missionsLoading } = useBadges(userId);
 
@@ -105,7 +106,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-2xl p-4 shadow-lg text-center"
+            className="bg-white rounded-2xl p-4 shadow-lg text-center relative group"
           >
             <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl mx-auto mb-2 flex items-center justify-center">
               <Trophy className="w-6 h-6 text-white" />
@@ -114,6 +115,56 @@ export default function Home() {
               {loading ? '...' : stats?.total_xp || 0}
             </p>
             <p className="text-xs text-gray-500 font-medium">Points XP</p>
+            
+            {/* Bouton info discret sur desktop */}
+            <button
+              onClick={() => setShowXpDetails(!showXpDetails)}
+              className="hidden md:flex absolute top-2 right-2 w-5 h-5 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+              title="Voir le détail"
+            >
+              <Info className="w-3 h-3" />
+            </button>
+
+            {/* Tooltip détaillé (desktop seulement) */}
+            {showXpDetails && !loading && (
+              <motion.div
+                initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                className="hidden md:block absolute z-20 top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 p-3"
+              >
+                <p className="text-xs font-semibold text-gray-600 mb-2">Répartition XP</p>
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-gray-700">
+                      <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                      Entraînements
+                    </span>
+                    <span className="font-bold text-gray-700">{baseXp || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-gray-700">
+                      <span className="w-2 h-2 rounded-full bg-purple-400"></span>
+                      Leçons
+                    </span>
+                    <span className="font-bold text-gray-700">{lessonXp || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-gray-700">
+                      <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+                      Défis
+                    </span>
+                    <span className="font-bold text-gray-700">{missionXp || 0}</span>
+                  </div>
+                </div>
+                <div className="border-t border-gray-100 mt-2 pt-2 flex items-center justify-between text-xs font-bold">
+                  <span className="text-gray-600">Total</span>
+                  <span className="text-gray-800">{stats?.total_xp || 0}</span>
+                </div>
+                {/* Arrow */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-2 h-2 bg-white border-l border-t border-gray-200 transform rotate-45 mb-[-5px]" />
+              </motion.div>
+            )}
           </motion.div>
 
           <motion.div

@@ -41,7 +41,7 @@ interface UserProfile {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { stats: globalStats } = useGlobalProgress();
+  const { stats: globalStats, lessonXp, missionXp, baseXp } = useGlobalProgress();
   const { streak, longestStreak, loading: streakLoading } = useStreak();
   
   const [user, setUser] = useState<{id: string} | null>(null);
@@ -55,6 +55,8 @@ export default function ProfilePage() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+
+  const totalXp = globalStats?.total_xp || 0;
 
   // Hook pour les objectifs hebdomadaires
   const {
@@ -177,7 +179,7 @@ export default function ProfilePage() {
           year: 'numeric',
         })
       : '',
-    totalXp: globalStats?.total_xp || 0,
+  totalXp,
     correctCount: globalStats?.correct_count || 0,
     successRate: globalStats?.global_success_rate
       ? Math.round(globalStats.global_success_rate)
@@ -551,9 +553,18 @@ export default function ProfilePage() {
                 Statistiques Globales
               </h2>
               <div className="space-y-3">
-                <div className="flex items-center justify-between bg-white/20 rounded-xl p-3">
-                  <span className="font-medium">Total XP</span>
-                  <span className="text-2xl font-bold">{globalStats?.total_xp || 0}</span>
+                <div className="bg-white/20 rounded-xl p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">Total XP</span>
+                    <span className="text-2xl font-bold">{totalXp}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2 text-xs text-white/80">
+                    <span>Entraînements {baseXp}</span>
+                    <span>·</span>
+                    <span>Leçons {lessonXp}</span>
+                    <span>·</span>
+                    <span>Défis {missionXp}</span>
+                  </div>
                 </div>
                 <div className="flex items-center justify-between bg-white/20 rounded-xl p-3">
                   <span className="font-medium">Questions réussies</span>
@@ -669,7 +680,7 @@ export default function ProfilePage() {
               toeicCount={toeicTests?.length || 0}
               bestToeicScore={toeicStats?.bestScore || 0}
               lessonsCompleted={lessonHistory?.filter(l => l.completed).length || 0}
-              totalXp={globalStats?.total_xp || 0}
+              totalXp={totalXp}
               loading={dataLoading || streakLoading}
             />
 

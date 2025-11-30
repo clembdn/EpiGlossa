@@ -2,6 +2,80 @@ import { LessonProgress } from '@/types/lesson';
 import { supabase } from './supabase';
 
 const PROGRESS_KEY = 'epiglossa_lesson_progress';
+const LESSON_KEY_SEPARATOR = '::';
+
+const buildLessonKey = (category: string, lessonId: number) => `${category}${LESSON_KEY_SEPARATOR}${lessonId}`;
+
+const clampXp = (value: number) => Math.max(0, value || 0);
+
+const applyLessonXpDeltaToGlobalStats = async (userId: string, deltaXp: number) => {
+  if (deltaXp <= 0) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('user_global_stats')
+      .select('user_id,total_attempted,correct_count,total_xp,global_success_rate,categories_attempted')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('Error reading global stats for XP sync:', error);
+      return;
+    }
+
+    const currentTotal = clampXp(data?.total_xp);
+    const newTotal = clampXp(currentTotal + deltaXp);
+
+    const baseStats = {
+      user_id: userId,
+      total_attempted: data?.total_attempted ?? 0,
+      correct_count: data?.correct_count ?? 0,
+      global_success_rate: data?.global_success_rate ?? 0,
+      categories_attempted: data?.categories_attempted ?? 0,
+    };
+
+    const statsPayload = {
+      ...baseStats,
+      total_xp: newTotal,
+    };
+
+    const { error: upsertError } = await supabase
+      .from('user_global_stats')
+      .upsert(statsPayload, { onConflict: 'user_id' });
+
+    if (upsertError) {
+      console.error('Error updating global stats with lesson XP:', upsertError);
+    }
+  } catch (err) {
+    console.error('Unexpected global XP sync error:', err);
+  }
+};
+
+type ProgressChangeListener = () => void;
+const progressListeners = new Set<ProgressChangeListener>();
+let storageListenerInitialized = false;
+
+const notifyProgressListeners = () => {
+  progressListeners.forEach((listener) => {
+    try {
+      listener();
+    } catch (err) {
+      console.error('Lesson progress listener error:', err);
+    }
+  });
+};
+
+const ensureStorageListener = () => {
+  if (typeof window === 'undefined' || storageListenerInitialized) return;
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === PROGRESS_KEY) {
+      notifyProgressListeners();
+    }
+  });
+
+  storageListenerInitialized = true;
+};
 
 // Service hybride : Supabase (si connecté) + localStorage (fallback)
 export const lessonProgressService = {
@@ -95,10 +169,22 @@ export const lessonProgressService = {
       p => p.category === progress.category && p.lessonId === progress.lessonId
     );
 
-    const updatedProgress = { ...progress, completedAt: new Date() };
+    const previousProgress = existingIndex >= 0 ? allProgress[existingIndex] : null;
+    const previousXp = clampXp(previousProgress?.xpEarned || 0);
+    const safeXpEarned = Math.max(previousXp, clampXp(progress.xpEarned));
+    const safeScore = Math.max(previousProgress?.score || 0, progress.score || 0);
+
+    const updatedProgress: LessonProgress = {
+      ...previousProgress,
+      ...progress,
+      xpEarned: safeXpEarned,
+      score: safeScore,
+      completed: Boolean(previousProgress?.completed || progress.completed),
+      completedAt: new Date()
+    };
 
     if (existingIndex >= 0) {
-      allProgress[existingIndex] = { ...allProgress[existingIndex], ...updatedProgress };
+      allProgress[existingIndex] = updatedProgress;
     } else {
       allProgress.push(updatedProgress);
     }
@@ -107,24 +193,33 @@ export const lessonProgressService = {
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(allProgress));
     }
 
+    notifyProgressListeners();
+
     // Sauvegarder aussi sur Supabase si connecté
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
-        await supabase
+        const { error } = await supabase
           .from('lesson_progress')
           .upsert({
             user_id: user.id,
             category: progress.category,
             lesson_id: progress.lessonId,
-            completed: progress.completed,
-            score: progress.score,
-            xp_earned: progress.xpEarned,
+            completed: updatedProgress.completed,
+            score: updatedProgress.score,
+            xp_earned: updatedProgress.xpEarned,
             completed_at: new Date().toISOString(),
           }, {
             onConflict: 'user_id,category,lesson_id'
           });
+
+        if (error) {
+          console.error('Error saving lesson progress to Supabase:', error);
+        } else {
+          const xpDelta = updatedProgress.xpEarned - previousXp;
+          await applyLessonXpDeltaToGlobalStats(user.id, xpDelta);
+        }
       }
     } catch (err) {
       console.error('Error saving to Supabase:', err);
@@ -161,6 +256,31 @@ export const lessonProgressService = {
     return allProgress.reduce((total, p) => total + (p.xpEarned || 0), 0);
   },
 
+  async getTotalXpFromSupabase(): Promise<number> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        return this.getTotalXP();
+      }
+
+      const { data, error } = await supabase
+        .from('lesson_progress')
+        .select('xp_earned')
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error fetching lesson XP from Supabase:', error);
+        return this.getTotalXP();
+      }
+
+      return (data || []).reduce((sum, record) => sum + clampXp(record.xp_earned || 0), 0);
+    } catch (err) {
+      console.error('Unexpected error while fetching lesson XP from Supabase:', err);
+      return this.getTotalXP();
+    }
+  },
+
   // Calculer le pourcentage de progression pour une catégorie
   getCategoryProgress(category: string, totalLessons: number): number {
     const allProgress = this.getLocalProgress();
@@ -183,6 +303,17 @@ export const lessonProgressService = {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(PROGRESS_KEY);
     }
+
+    notifyProgressListeners();
+  },
+
+  subscribeToChanges(listener: ProgressChangeListener): () => void {
+    ensureStorageListener();
+    progressListeners.add(listener);
+
+    return () => {
+      progressListeners.delete(listener);
+    };
   },
 
   // Obtenir les statistiques globales
@@ -210,21 +341,50 @@ export const lessonProgressService = {
       const localProgress = this.getLocalProgress();
       if (localProgress.length === 0) return { success: true, synced: 0 };
 
-      const records = localProgress.map(p => ({
-        user_id: user.id,
-        category: p.category,
-        lesson_id: p.lessonId,
-        completed: p.completed,
-        score: p.score,
-        xp_earned: p.xpEarned,
-        completed_at: p.completedAt ? new Date(p.completedAt).toISOString() : new Date().toISOString(),
-      }));
+      const { data: remoteProgress, error: remoteError } = await supabase
+        .from('lesson_progress')
+        .select('lesson_id, category, xp_earned')
+        .eq('user_id', user.id);
+
+      if (remoteError) {
+        return { success: false, synced: 0, error: remoteError.message };
+      }
+
+      const remoteXpMap = new Map<string, number>();
+      (remoteProgress || []).forEach((record) => {
+        remoteXpMap.set(buildLessonKey(record.category, record.lesson_id), clampXp(record.xp_earned));
+      });
+
+      let totalDelta = 0;
+      const now = new Date();
+
+      const records = localProgress.map(p => {
+        const key = buildLessonKey(p.category, p.lessonId);
+        const remoteXp = remoteXpMap.get(key) || 0;
+        const safeXp = Math.max(remoteXp, clampXp(p.xpEarned));
+        totalDelta += safeXp - remoteXp;
+
+        return {
+          user_id: user.id,
+          category: p.category,
+          lesson_id: p.lessonId,
+          completed: p.completed,
+          score: p.score,
+          xp_earned: safeXp,
+          completed_at: p.completedAt ? new Date(p.completedAt).toISOString() : now.toISOString(),
+        };
+      });
 
       const { error } = await supabase
         .from('lesson_progress')
         .upsert(records, { onConflict: 'user_id,category,lesson_id' });
 
       if (error) return { success: false, synced: 0, error: error.message };
+
+      if (totalDelta > 0) {
+        await applyLessonXpDeltaToGlobalStats(user.id, totalDelta);
+      }
+
       return { success: true, synced: localProgress.length };
     } catch (err) {
       return { success: false, synced: 0, error: err instanceof Error ? err.message : 'Erreur' };

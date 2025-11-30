@@ -13,7 +13,7 @@ import {
   Sparkles,
   BookOpen,
 } from 'lucide-react';
-import { Mission } from '@/hooks/useBadges';
+import type { Mission } from '@/types/mission';
 
 interface MissionsCardProps {
   missions: Mission[];

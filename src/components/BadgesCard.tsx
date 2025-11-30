@@ -16,7 +16,8 @@ import {
   CheckCircle2,
   Flame,
 } from 'lucide-react';
-import { Badge, Mission } from '@/hooks/useBadges';
+import { Badge } from '@/hooks/useBadges';
+import type { Mission } from '@/types/mission';
 
 interface BadgesCardProps {
   badges: Badge[];

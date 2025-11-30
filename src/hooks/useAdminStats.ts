@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
+import { buildMissions, calculateMissionXp } from '@/lib/missions';
 
 export interface UserStats {
   id: string;
@@ -9,6 +10,9 @@ export interface UserStats {
   full_name: string | null;
   created_at: string;
   total_xp: number;
+  training_xp: number;
+  lesson_xp: number;
+  mission_xp: number;
   questions_answered: number;
   success_rate: number;
   current_streak: number;
@@ -591,16 +595,26 @@ export function useAdminStats(range: TimeRange = '7d') {
       // Pour chaque utilisateur, récupérer ses stats
       const usersWithStats = await Promise.all(
         Array.from(allUserIds).map(async (userId) => {
-          // Stats de catégorie
+          // Stats de catégorie (XP entraînements)
           const { data: categoryStats } = await supabase
             .from('user_category_stats')
             .select('xp_earned, total_attempted, correct_count')
             .eq('user_id', userId);
 
-          const totalXp = categoryStats?.reduce((sum, s) => sum + (s.xp_earned || 0), 0) || 0;
+          const trainingXp = categoryStats?.reduce((sum, s) => sum + (s.xp_earned || 0), 0) || 0;
           const questionsAnswered = categoryStats?.reduce((sum, s) => sum + (s.total_attempted || 0), 0) || 0;
           const correctAnswers = categoryStats?.reduce((sum, s) => sum + (s.correct_count || 0), 0) || 0;
           const successRate = questionsAnswered > 0 ? (correctAnswers / questionsAnswered) * 100 : 0;
+
+          // XP des leçons
+          const { data: lessonProgress } = await supabase
+            .from('lesson_progress')
+            .select('xp_earned, completed, score')
+            .eq('user_id', userId);
+
+          const lessonXp = lessonProgress?.reduce((sum, l) => sum + (l.xp_earned || 0), 0) || 0;
+          const lessonsCompleted = lessonProgress?.filter((l) => l.completed).length ?? 0;
+          const perfectLessons = lessonProgress?.filter((l) => l.completed && l.score === 100).length ?? 0;
 
           // Streak
           const { data: streakData } = await supabase
@@ -609,13 +623,27 @@ export function useAdminStats(range: TimeRange = '7d') {
             .eq('user_id', userId)
             .single();
 
-    // TEPITECH tests
+          const currentStreak = streakData?.current_streak || 0;
+
+          // TEPITECH tests
           const { data: toeicData, count: toeicCount } = await supabase
             .from('toeic_blanc_results')
             .select('total_score', { count: 'exact' })
             .eq('user_id', userId)
             .order('total_score', { ascending: false })
             .limit(1);
+
+          // Calculer XP des missions
+          const missions = buildMissions({
+            lessonsCompleted,
+            currentStreak,
+            toeicCount: toeicCount || 0,
+            perfectLessons,
+          });
+          const missionXp = calculateMissionXp(missions);
+
+          // XP total combiné
+          const totalXp = trainingXp + lessonXp + missionXp;
 
           // Dernière activité
           const { data: lastActivity } = await supabase
@@ -634,9 +662,12 @@ export function useAdminStats(range: TimeRange = '7d') {
             full_name: authInfo?.full_name || null,
             created_at: authInfo?.created_at || streakCreatedAtMap.get(userId) || new Date().toISOString(),
             total_xp: totalXp,
+            training_xp: trainingXp,
+            lesson_xp: lessonXp,
+            mission_xp: missionXp,
             questions_answered: questionsAnswered,
             success_rate: successRate,
-            current_streak: streakData?.current_streak || 0,
+            current_streak: currentStreak,
             longest_streak: streakData?.longest_streak || 0,
             last_activity: lastActivity?.[0]?.completed_at || streakData?.last_activity_date || null,
             toeic_tests_count: toeicCount || 0,

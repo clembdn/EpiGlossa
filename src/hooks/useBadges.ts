@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
+import { buildMissions } from '@/lib/missions';
+import type { Mission } from '@/types/mission';
 
 export interface Badge {
   id: string;
@@ -14,19 +16,6 @@ export interface Badge {
   unlocked: boolean;
   unlockedAt?: string;
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
-}
-
-export interface Mission {
-  id: string;
-  name: string;
-  description: string;
-  emoji: string;
-  type: 'daily' | 'weekly' | 'challenge';
-  requirement: number;
-  currentProgress: number;
-  completed: boolean;
-  xpReward: number;
-  expiresAt?: string;
 }
 
 interface UseBadgesReturn {
@@ -498,76 +487,18 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
 
   // Missions quotidiennes/hebdomadaires
   const missions = useMemo<Mission[]>(() => {
-    const today = new Date();
-    const endOfDay = new Date(today);
-    endOfDay.setHours(23, 59, 59);
-
-    const endOfWeek = new Date(today);
-    endOfWeek.setDate(today.getDate() + (7 - today.getDay()));
-    endOfWeek.setHours(23, 59, 59);
-
-    return [
-      {
-        id: 'daily-lesson',
-        name: 'Leçon du jour',
-        description: 'Termine une leçon aujourd\'hui',
-        emoji: '📖',
-        type: 'daily',
-        requirement: 1,
-        currentProgress: userStats.lessonsCompleted > 0 ? 1 : 0, // Simplifié
-        completed: userStats.lessonsCompleted > 0,
-        xpReward: 20,
-        expiresAt: endOfDay.toISOString(),
-      },
-      {
-        id: 'daily-streak',
-        name: 'Garde ta flamme',
-        description: 'Connecte-toi aujourd\'hui pour maintenir ta série',
-        emoji: '🔥',
-        type: 'daily',
-        requirement: 1,
-        currentProgress: userStats.currentStreak > 0 ? 1 : 0,
-        completed: userStats.currentStreak > 0,
-        xpReward: 10,
-        expiresAt: endOfDay.toISOString(),
-      },
-      {
-        id: 'weekly-toeic',
-  name: 'TEPITECH de la semaine',
-  description: 'Fais un TEPITECH blanc cette semaine',
-        emoji: '🎯',
-        type: 'weekly',
-        requirement: 1,
-        currentProgress: Math.min(userStats.toeicCount, 1),
-        completed: userStats.toeicCount > 0,
-        xpReward: 50,
-        expiresAt: endOfWeek.toISOString(),
-      },
-      {
-        id: 'weekly-lessons',
-        name: 'Semaine productive',
-        description: 'Termine 5 leçons cette semaine',
-        emoji: '📚',
-        type: 'weekly',
-        requirement: 5,
-        currentProgress: Math.min(userStats.lessonsCompleted, 5),
-        completed: userStats.lessonsCompleted >= 5,
-        xpReward: 75,
-        expiresAt: endOfWeek.toISOString(),
-      },
-      {
-        id: 'challenge-perfect',
-        name: 'Défi perfection',
-        description: 'Obtiens 100% sur une leçon',
-        emoji: '💯',
-        type: 'challenge',
-        requirement: 1,
-        currentProgress: Math.min(userStats.perfectLessons, 1),
-        completed: userStats.perfectLessons >= 1,
-        xpReward: 100,
-      },
-    ];
-  }, [userStats]);
+    return buildMissions({
+      lessonsCompleted: userStats.lessonsCompleted,
+      currentStreak: userStats.currentStreak,
+      toeicCount: userStats.toeicCount,
+      perfectLessons: userStats.perfectLessons,
+    });
+  }, [
+    userStats.lessonsCompleted,
+    userStats.currentStreak,
+    userStats.toeicCount,
+    userStats.perfectLessons,
+  ]);
 
   // Badges récemment débloqués (les 3 derniers)
   const recentUnlocks = useMemo(() => {

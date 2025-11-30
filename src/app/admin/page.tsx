@@ -707,6 +707,7 @@ function UserRow({ user, rank }: { user: UserStats; rank: number }) {
           <div className="text-center">
             <p className="font-bold text-purple-600">{user.total_xp}</p>
             <p className="text-xs text-gray-500">XP</p>
+            <p className="text-[10px] text-gray-400">{user.training_xp}·{user.lesson_xp}·{user.mission_xp}</p>
           </div>
           <div className="text-center">
             <p className="font-bold text-blue-600">{user.questions_answered}</p>
@@ -743,6 +744,9 @@ function UserRow({ user, rank }: { user: UserStats; rank: number }) {
             <div className="bg-white rounded-lg p-3 border border-gray-200">
               <p className="text-xs text-gray-500 mb-1">Total XP</p>
               <p className="text-lg font-bold text-purple-600">{user.total_xp}</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Entraînements {user.training_xp} · Leçons {user.lesson_xp} · Défis {user.mission_xp}
+              </p>
             </div>
             <div className="bg-white rounded-lg p-3 border border-gray-200">
               <p className="text-xs text-gray-500 mb-1">Questions répondues</p>
