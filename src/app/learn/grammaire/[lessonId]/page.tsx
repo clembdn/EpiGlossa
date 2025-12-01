@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { grammarLessons } from '@/data/grammar-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
+import { XPGainNotification } from '@/components/ProgressComponents';
 
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
 
@@ -34,14 +35,31 @@ export default function GrammarLessonPage() {
   const [score, setScore] = useState(0);
   const [hearts, setHearts] = useState(3);
   const [completedRules, setCompletedRules] = useState<number[]>([]);
+  const [showXpNotification, setShowXpNotification] = useState(false);
+  const [xpNotificationValue, setXpNotificationValue] = useState(0);
 
   useEffect(() => {
     if (step === 'results' && lesson) {
       const percentage = Math.round((score / (lesson.exercises.length * 10)) * 100);
       const xpEarned = Math.round((percentage / 100) * lesson.xp);
       lessonProgressService.completeLesson('grammaire', lessonId, percentage, xpEarned);
+      if (xpEarned > 0) {
+        setXpNotificationValue(xpEarned);
+        setShowXpNotification(true);
+      }
     }
   }, [step, lessonId, score, lesson]);
+
+  const xpNotificationNode = (
+    <AnimatePresence>
+      {showXpNotification && (
+        <XPGainNotification
+          xpGained={xpNotificationValue}
+          onClose={() => setShowXpNotification(false)}
+        />
+      )}
+    </AnimatePresence>
+  );
 
   if (!lesson) {
     return (
@@ -100,13 +118,14 @@ export default function GrammarLessonPage() {
   // Intro Screen
   if (step === 'intro') {
     return (
-      <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-2xl w-full"
-        >
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-yellow-100">
+      <>
+        <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 flex items-center justify-center px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="max-w-2xl w-full"
+          >
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-yellow-100">
             <motion.div
               animate={{ rotate: [0, -10, 10, -10, 0] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
@@ -158,24 +177,27 @@ export default function GrammarLessonPage() {
               Commencer la leçon
             </motion.button>
 
-            <button
-              onClick={() => router.back()}
-              className="w-full mt-4 text-gray-600 hover:text-gray-800 font-medium flex items-center justify-center gap-2"
-            >
-              <ChevronLeft className="w-5 h-5" />
-              Retour
-            </button>
-          </div>
-        </motion.div>
-      </div>
+              <button
+                onClick={() => router.back()}
+                className="w-full mt-4 text-gray-600 hover:text-gray-800 font-medium flex items-center justify-center gap-2"
+              >
+                <ChevronLeft className="w-5 h-5" />
+                Retour
+              </button>
+            </div>
+          </motion.div>
+        </div>
+        {xpNotificationNode}
+      </>
     );
   }
 
   // Learning Phase
   if (step === 'learning') {
     return (
-      <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
-        <div className="max-w-4xl mx-auto px-4 py-6">
+      <>
+        <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
+          <div className="max-w-4xl mx-auto px-4 py-6">
           {/* Progress Bar */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
@@ -285,16 +307,19 @@ export default function GrammarLessonPage() {
               </motion.button>
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
-      </div>
+        {xpNotificationNode}
+      </>
     );
   }
 
   // Exercise Phase
   if (step === 'exercises') {
     return (
-      <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-        <div className="max-w-4xl mx-auto px-4 py-6">
+      <>
+        <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+          <div className="max-w-4xl mx-auto px-4 py-6">
           {/* Progress Bar & Hearts */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
@@ -408,8 +433,10 @@ export default function GrammarLessonPage() {
               </AnimatePresence>
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
-      </div>
+        {xpNotificationNode}
+      </>
     );
   }
 
@@ -419,13 +446,14 @@ export default function GrammarLessonPage() {
     const xpEarned = Math.round((percentage / 100) * lesson.xp);
 
     return (
-      <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-2xl w-full"
-        >
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-yellow-100 text-center">
+      <>
+        <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 flex items-center justify-center px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="max-w-2xl w-full"
+          >
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-yellow-100 text-center">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -509,6 +537,8 @@ export default function GrammarLessonPage() {
           </div>
         </motion.div>
       </div>
+      {xpNotificationNode}
+      </>
     );
   }
 

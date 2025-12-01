@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Play, Trophy, Clock, Target, Star, Loader2, ChevronRight, Search, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
@@ -327,11 +328,16 @@ export default function TrainCategoryPage() {
                               ).join(' • ')}
                             </p>
                             {passage.image_url && (
-                              <img 
-                                src={passage.image_url} 
-                                alt="Passage" 
-                                className="w-full h-32 object-cover rounded-xl mt-3"
-                              />
+                              <div className="relative w-full h-32 mt-3">
+                                <Image
+                                  src={passage.image_url}
+                                  alt="Passage"
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 400px"
+                                  className="object-cover rounded-xl"
+                                  priority={index < 2}
+                                />
+                              </div>
                             )}
                           </div>
                           <div className="flex flex-col items-end gap-2">
@@ -415,11 +421,16 @@ export default function TrainCategoryPage() {
                           
                           {/* Display image thumbnail for audio_with_images category */}
                           {category === 'audio_with_images' && question.image_url && (
-                            <img 
-                              src={question.image_url} 
-                              alt="Question" 
-                              className="w-full h-32 object-cover rounded-xl mt-3"
-                            />
+                            <div className="relative w-full h-32 mt-3">
+                              <Image
+                                src={question.image_url}
+                                alt="Question illustration"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 400px"
+                                className="object-cover rounded-xl"
+                                priority={index < 4}
+                              />
+                            </div>
                           )}
                         </div>
 

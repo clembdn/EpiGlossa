@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Clock } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -1120,10 +1121,13 @@ export default function ToeicBlancTestPage() {
                     onClick={() => setZoomedImageUrl(currentQuestion.image_url)}
                     className="w-full cursor-zoom-in group relative"
                   >
-                    <img
+                    <Image
                       src={currentQuestion.image_url}
                       alt="Question illustration"
+                      width={1200}
+                      height={700}
                       className="w-full max-h-64 md:max-h-72 object-contain mx-auto rounded-xl transition-transform group-hover:scale-[1.02]"
+                      priority
                     />
                     <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/60 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
                       🔍 Cliquer pour agrandir
@@ -1407,11 +1411,15 @@ export default function ToeicBlancTestPage() {
               className="relative max-w-5xl max-h-[90vh] w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={zoomedImageUrl}
-                alt="Question illustration (agrandie)"
-                className="w-full h-full object-contain rounded-2xl"
-              />
+              <div className="relative w-full h-[70vh]">
+                <Image
+                  src={zoomedImageUrl}
+                  alt="Question illustration (agrandie)"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  className="object-contain rounded-2xl"
+                />
+              </div>
               <button
                 onClick={() => setZoomedImageUrl(null)}
                 className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-gray-800 font-bold text-xl shadow-lg transition-colors"

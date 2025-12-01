@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft, CheckCircle2, XCircle, Lightbulb, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -363,10 +364,13 @@ export default function QuestionPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-blue-100 mb-6"
             >
-              <img
+              <Image
                 src={passageImage}
                 alt="Reading passage"
+                width={1024}
+                height={512}
                 className="w-full max-h-64 md:max-h-72 object-contain mx-auto"
+                priority
               />
             </motion.div>
           )}
@@ -662,10 +666,13 @@ export default function QuestionPage() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
-                <img
+                <Image
                   src={shuffledQuestion.image_url}
                   alt="Question illustration"
+                  width={1024}
+                  height={512}
                   className="w-full max-h-64 md:max-h-72 object-contain mx-auto rounded-2xl"
+                  priority
                 />
             </motion.div>
           )}
