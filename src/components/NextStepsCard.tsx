@@ -2,20 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import {
-  Lightbulb,
-  TrendingUp,
-  BookOpen,
-  Target,
-  Flame,
-  Trophy,
-  Zap,
-  ChevronRight,
-  Sparkles,
-  GraduationCap,
-  Clock,
-  AlertCircle,
-} from 'lucide-react';
+import { Lightbulb, ChevronRight, GraduationCap } from 'lucide-react';
 
 interface CategoryScore {
   category: string;
