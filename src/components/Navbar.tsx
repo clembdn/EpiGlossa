@@ -195,9 +195,8 @@ export default function Navbar() {
     setActiveDropdown(null);
   };
 
-  // Gestion du long press pour navigation directe
+  // Gestion simplifiée du long press pour navigation directe (compatible Android)
   const handleTouchStart = useCallback((type: 'learn' | 'train', href: string) => {
-    setIsLongPress(false);
     longPressTimer.current = setTimeout(() => {
       setIsLongPress(true);
       // Vibration haptique si disponible
@@ -208,17 +207,12 @@ export default function Navbar() {
     }, 500);
   }, [router]);
 
-  const handleTouchEnd = useCallback((type: 'learn' | 'train') => {
+  const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
-    // Si ce n'était pas un long press, ouvrir le dropdown
-    if (!isLongPress) {
-      handleMobileDropdown(type);
-    }
-    setIsLongPress(false);
-  }, [isLongPress]);
+  }, []);
 
   const handleTouchCancel = useCallback(() => {
     if (longPressTimer.current) {
@@ -227,6 +221,16 @@ export default function Navbar() {
     }
     setIsLongPress(false);
   }, []);
+
+  // Click handler séparé pour éviter les conflits avec touch events sur Android
+  const handleDropdownClick = useCallback((type: 'learn' | 'train') => {
+    // Si c'était un long press, ne pas ouvrir le dropdown
+    if (isLongPress) {
+      setIsLongPress(false);
+      return;
+    }
+    handleMobileDropdown(type);
+  }, [isLongPress]);
 
   // Calculer la hauteur du sheet en fonction du contenu
   useEffect(() => {
@@ -433,9 +437,9 @@ export default function Navbar() {
                   <button
                     key={item.name}
                     onTouchStart={() => handleTouchStart(item.dropdownType!, item.href)}
-                    onTouchEnd={() => handleTouchEnd(item.dropdownType!)}
+                    onTouchEnd={handleTouchEnd}
                     onTouchCancel={handleTouchCancel}
-                    onClick={() => handleMobileDropdown(item.dropdownType!)}
+                    onClick={() => handleDropdownClick(item.dropdownType!)}
                     className="flex-1 flex flex-col items-center py-1 relative select-none"
                   >
                     {/* Indicateur de sélection */}
