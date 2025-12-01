@@ -178,9 +178,6 @@ export function useAdminStats(range: TimeRange = '7d') {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Cache pour les utilisateurs auth (partagé entre les fonctions)
-  const [authUsersCache, setAuthUsersCache] = useState<Map<string, { email: string; full_name: string | null; created_at: string }>>(new Map());
-
   // Charger les utilisateurs auth depuis l'API
   const loadAuthUsers = useCallback(async () => {
     try {
@@ -195,7 +192,6 @@ export function useAdminStats(range: TimeRange = '7d') {
             created_at: u.created_at
           });
         });
-        setAuthUsersCache(map);
         return map;
       }
     } catch (apiErr) {
@@ -210,8 +206,7 @@ export function useAdminStats(range: TimeRange = '7d') {
       const totalUsers = authUsersMap.size;
 
       // Obtenir les dates selon la plage sélectionnée
-      const { now, todayStart, periodStart, previousPeriodStart, previousPeriodEnd, daysInPeriod } = getDateRanges(range);
-      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { now, todayStart, periodStart, previousPeriodStart, previousPeriodEnd, daysInPeriod } = getDateRanges(range);
       const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
       // Utilisateurs actifs aujourd'hui
@@ -376,9 +371,6 @@ export function useAdminStats(range: TimeRange = '7d') {
         .gte('created_at', previousPeriodStart)
         .lt('created_at', previousPeriodEnd);
       const prevRegistrationsWeek = prevRegistrations?.length || 0;
-
-      // Inscriptions cette période (pour comparaison)
-      const currentRegistrationsWeek = recentUsers?.length || 0;
 
       const previousPeriod = {
         activeUsersWeek: prevActiveUsersWeek,

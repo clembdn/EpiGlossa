@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect, use } from 'react';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { Loader2, ArrowLeft, Upload, Trash2 } from 'lucide-react';
@@ -516,7 +517,16 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                   )}
                 </div>
                 {imageUrl && (
-                  <img src={imageUrl} alt="Preview" className="w-full rounded-xl mt-2" />
+                  <div className="relative w-full h-64 mt-2">
+                    <Image
+                      src={imageUrl}
+                      alt="Preview"
+                      fill
+                      className="object-cover rounded-xl"
+                      sizes="(max-width: 768px) 100vw, 768px"
+                      priority
+                    />
+                  </div>
                 )}
               </div>
 

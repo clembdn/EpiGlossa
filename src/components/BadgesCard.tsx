@@ -2,14 +2,11 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import Link from 'next/link';
 import {
   Trophy,
   Lock,
   Sparkles,
   Clock,
-  ChevronRight,
-  Star,
   Zap,
   Target,
   Gift,

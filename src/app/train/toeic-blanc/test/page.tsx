@@ -1170,7 +1170,6 @@ export default function ToeicBlancTestPage() {
 
                         const gapChoices = currentQuestion.gap_choices?.[gapNumber] || [];
                         const selectedOption = selectedGapAnswers[gapNumber];
-                        const selectedChoice = gapChoices.find(c => c.option === selectedOption);
 
                         parts.push(
                           <select

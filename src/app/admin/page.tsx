@@ -5,7 +5,7 @@ import {
   Plus, Users, Activity, Trophy, Target, 
   TrendingUp, BookOpen, Award, Flame,
   RefreshCw, ChevronDown, ChevronUp,
-  BarChart3, Clock, Zap, Percent, 
+  BarChart3, Zap, Percent, 
   CalendarDays, UserCheck, Mail, User
 } from 'lucide-react';
 import Link from 'next/link';
@@ -57,7 +57,6 @@ function DualAreaChart({
   
   if (data.length === 0) return null;
   
-  const width = 100; // pourcentage
   const height = 40;
   const padding = { top: 4, right: 6, bottom: 4, left: 6 };
   const chartWidth = 100 - padding.left - padding.right;
@@ -199,7 +198,7 @@ function DualAreaChart({
           if (timeRange === '30d') return i % 7 === 0 || i === data.length - 1;
           if (timeRange === '7d') return i === 0 || i === data.length - 1;
           return true;
-        }).map((d, i, arr) => (
+        }).map((d) => (
           <span key={d.date} className="text-[10px] text-gray-400 capitalize">
             {formatDate(d.date)}
           </span>
@@ -560,46 +559,6 @@ function PieChart({
           </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-// Composant Barre horizontale
-function HorizontalBarChart({ 
-  data 
-}: { 
-  data: { name: string; value: number; maxValue: number; color: string; emoji?: string }[] 
-}) {
-  return (
-    <div className="space-y-3">
-      {data.map((item, i) => {
-        const percentage = item.maxValue > 0 ? (item.value / item.maxValue) * 100 : 0;
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                {item.emoji && <span>{item.emoji}</span>}
-                {item.name}
-              </span>
-              <span className="text-sm font-bold text-gray-800">{item.value}</span>
-            </div>
-            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
-              <motion.div
-                className="h-3 rounded-full"
-                style={{ backgroundColor: item.color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${percentage}%` }}
-                transition={{ duration: 0.8, delay: i * 0.05 }}
-              />
-            </div>
-          </motion.div>
-        );
-      })}
     </div>
   );
 }
