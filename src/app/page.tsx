@@ -10,6 +10,7 @@ import { useStreak } from '@/hooks/useStreak';
 import { useBadges } from '@/hooks/useBadges';
 import { supabase } from '@/lib/supabase';
 import { MissionsCard } from '@/components/MissionsCard';
+import { LeaderboardCard } from '@/components/LeaderboardCard';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -286,6 +287,9 @@ export default function Home() {
 
         {/* Missions du jour - Composant fonctionnel */}
         <MissionsCard missions={missions} loading={missionsLoading || !userId} />
+
+        {/* Classement général */}
+        <LeaderboardCard />
       </div>
     </div>
   );
