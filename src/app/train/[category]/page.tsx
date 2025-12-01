@@ -288,164 +288,251 @@ export default function TrainCategoryPage() {
               </div>
             </div>
 
-            <div className="space-y-6 md:space-y-8">
-              {filteredItems.map((item, index) => {
-              // For READING COMPREHENSION: item is a passage with 3 questions
-              if (category === 'reading_comprehension' && 'questions' in item) {
-                const passage = item as ReadingPassage;
-                const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
-                
-                return (
-                  <motion.div
-                    key={passage.passage_id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Link href={`/train/${category}/${passage.passage_id}`}>
-                      <div className={`bg-white rounded-2xl p-6 shadow-lg transition-all cursor-pointer group relative ${
-                        passageCompleted 
-                          ? 'border-4 border-green-500 hover:shadow-2xl' 
-                          : 'border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl'
-                      }`}>
-                        
-                        <div className="flex items-start gap-4">
-                          <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md`}>
-                            <span className="text-3xl">{info.emoji}</span>
+            {/* Séparer les exercices en deux groupes: non réussis et réussis */}
+            {(() => {
+              // Séparer les items en fonction de leur statut de complétion
+              const notCompletedItems: (Question | ReadingPassage)[] = [];
+              const completedItems: (Question | ReadingPassage)[] = [];
+
+              filteredItems.forEach((item) => {
+                if (category === 'reading_comprehension' && 'questions' in item) {
+                  const passage = item as ReadingPassage;
+                  const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
+                  if (passageCompleted) {
+                    completedItems.push(item);
+                  } else {
+                    notCompletedItems.push(item);
+                  }
+                } else {
+                  const question = item as Question;
+                  if (isQuestionCompleted(question.id)) {
+                    completedItems.push(item);
+                  } else {
+                    notCompletedItems.push(item);
+                  }
+                }
+              });
+
+              const renderItem = (item: Question | ReadingPassage, index: number, isInCompletedSection: boolean) => {
+                // For READING COMPREHENSION: item is a passage with 3 questions
+                if (category === 'reading_comprehension' && 'questions' in item) {
+                  const passage = item as ReadingPassage;
+                  const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
+                  
+                  return (
+                    <motion.div
+                      key={passage.passage_id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Link href={`/train/${category}/${passage.passage_id}`}>
+                        <div className={`bg-white rounded-2xl p-6 shadow-lg transition-all cursor-pointer group relative ${
+                          passageCompleted 
+                            ? 'border-4 border-green-500 hover:shadow-2xl opacity-75' 
+                            : 'border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl'
+                        }`}>
+                          
+                          <div className="flex items-start gap-4">
+                            <div className={`w-16 h-16 flex-shrink-0 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-md ${passageCompleted ? 'grayscale-[30%]' : ''}`}>
+                              <span className="text-3xl">{info.emoji}</span>
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <h3 className="text-lg font-bold text-gray-800">
+                                  Passage de lecture (3 questions)
+                                </h3>
+                                <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-bold">
+                                  3 Q
+                                </span>
+                              </div>
+                              <p className="text-gray-600 text-sm line-clamp-2">
+                                {passage.questions.map((q, i) => 
+                                  `Q${i+1}: ${q.question_text?.substring(0, 30)}...`
+                                ).join(' • ')}
+                              </p>
+                              {passage.image_url && (
+                                <div className="relative w-full h-32 mt-3">
+                                  <Image
+                                    src={passage.image_url}
+                                    alt="Passage"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 400px"
+                                    className={`object-cover rounded-xl ${passageCompleted ? 'grayscale-[30%]' : ''}`}
+                                    priority={index < 2}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                              <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
+                                passageCompleted 
+                                  ? 'bg-green-100 border-green-300 text-green-700' 
+                                  : 'bg-yellow-50 border-yellow-200 text-yellow-600'
+                              }`}>
+                                <Trophy className={`w-4 h-4 ${passageCompleted ? 'text-green-600' : 'text-yellow-600'}`} />
+                                <span className="text-sm font-bold">
+                                  {passageCompleted ? '✓ 150 XP' : '+150 XP'}
+                                </span>
+                              </div>
+                              <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                            </div>
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="text-lg font-bold text-gray-800">
-                                Passage de lecture (3 questions)
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                }
+                
+                // For other categories: standard question display
+                const question = item as Question;
+                const questionUrl = `/train/${category}/${question.id}`;
+                const displayTitle = 
+                  category === 'text_completion'
+                    ? getTextCompletionTitle(question.text_with_gaps)
+                    : question.question_text || 'Question audio';
+                
+                const isCompleted = isQuestionCompleted(question.id);
+
+                return (
+                  <div key={question.id}>
+                    <Link href={questionUrl} className="block">
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className={`bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all group cursor-pointer relative overflow-hidden ${
+                          isCompleted 
+                            ? 'border-4 border-green-500 opacity-75' 
+                            : 'border-2 border-gray-100 hover:border-blue-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform ${isCompleted ? 'grayscale-[30%]' : ''}`}>
+                            {isInCompletedSection ? '✓' : index + 1}
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-4 mb-2">
+                              <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 pr-10">
+                                {displayTitle}
                               </h3>
-                              <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-bold">
-                                3 Q
+                              <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
+                                TEPITECH
                               </span>
                             </div>
-                            <p className="text-gray-600 text-sm line-clamp-2">
-                              {passage.questions.map((q, i) => 
-                                `Q${i+1}: ${q.question_text?.substring(0, 30)}...`
-                              ).join(' • ')}
-                            </p>
-                            {passage.image_url && (
+
+                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                <span>3 min</span>
+                              </div>
+                              <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg ${
+                                isCompleted 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : 'bg-yellow-50 text-yellow-600'
+                              }`}>
+                                <Trophy className={`w-4 h-4 ${isCompleted ? 'text-green-600' : 'text-yellow-500'}`} />
+                                <span className="font-bold">
+                                  {isCompleted ? '✓ 50 XP' : '+50 XP'}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Target className="w-4 h-4 text-blue-500" />
+                                <span>{question.choices?.length || 0} choix</span>
+                              </div>
+                            </div>
+                            
+                            {/* Display image thumbnail for audio_with_images category */}
+                            {category === 'audio_with_images' && question.image_url && (
                               <div className="relative w-full h-32 mt-3">
                                 <Image
-                                  src={passage.image_url}
-                                  alt="Passage"
+                                  src={question.image_url}
+                                  alt="Question illustration"
                                   fill
                                   sizes="(max-width: 768px) 100vw, 400px"
-                                  className="object-cover rounded-xl"
-                                  priority={index < 2}
+                                  className={`object-cover rounded-xl ${isCompleted ? 'grayscale-[30%]' : ''}`}
+                                  priority={index < 4}
                                 />
                               </div>
                             )}
                           </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
-                              passageCompleted 
-                                ? 'bg-green-100 border-green-300 text-green-700' 
-                                : 'bg-yellow-50 border-yellow-200 text-yellow-600'
-                            }`}>
-                              <Trophy className={`w-4 h-4 ${passageCompleted ? 'text-green-600' : 'text-yellow-600'}`} />
-                              <span className="text-sm font-bold">
-                                {passageCompleted ? '✓ 150 XP' : '+150 XP'}
-                              </span>
-                            </div>
-                            <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
-                          </div>
+
+                          <motion.div
+                            className={`w-12 h-12 bg-gradient-to-br ${isCompleted ? 'from-green-500 to-emerald-500' : 'from-blue-500 to-purple-500'} rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0`}
+                          >
+                            <Play className="w-5 h-5 fill-current" />
+                          </motion.div>
                         </div>
-                      </div>
+                      </motion.div>
                     </Link>
-                  </motion.div>
+                  </div>
                 );
-              }
-              
-              // For other categories: standard question display
-              const question = item as Question;
-              const questionUrl = `/train/${category}/${question.id}`;
-              const displayTitle = 
-                category === 'text_completion'
-                  ? getTextCompletionTitle(question.text_with_gaps)
-                  : question.question_text || 'Question audio';
-              
-              const isCompleted = isQuestionCompleted(question.id);
+              };
 
               return (
-                <div key={question.id}>
-                  <Link href={questionUrl} className="block">
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className={`bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all group cursor-pointer relative overflow-hidden ${
-                        isCompleted 
-                          ? 'border-4 border-green-500' 
-                          : 'border-2 border-gray-100 hover:border-blue-200'
-                      }`}
-                    >
-                                            <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                          {index + 1}
+                <>
+                  {/* Section: Exercices à faire */}
+                  {notCompletedItems.length > 0 && (
+                    <div className="mb-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                          <Target className="w-5 h-5 text-white" />
                         </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-4 mb-2">
-                            <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 pr-10">
-                              {displayTitle}
-                            </h3>
-                            <span className="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-blue-100 text-blue-700">
-                              TEPITECH
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-4 text-sm text-gray-600">
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              <span>3 min</span>
-                            </div>
-                            <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg ${
-                              isCompleted 
-                                ? 'bg-green-100 text-green-700' 
-                                : 'bg-yellow-50 text-yellow-600'
-                            }`}>
-                              <Trophy className={`w-4 h-4 ${isCompleted ? 'text-green-600' : 'text-yellow-500'}`} />
-                              <span className="font-bold">
-                                {isCompleted ? '✓ 50 XP' : '+50 XP'}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Target className="w-4 h-4 text-blue-500" />
-                              <span>{question.choices?.length || 0} choix</span>
-                            </div>
-                          </div>
-                          
-                          {/* Display image thumbnail for audio_with_images category */}
-                          {category === 'audio_with_images' && question.image_url && (
-                            <div className="relative w-full h-32 mt-3">
-                              <Image
-                                src={question.image_url}
-                                alt="Question illustration"
-                                fill
-                                sizes="(max-width: 768px) 100vw, 400px"
-                                className="object-cover rounded-xl"
-                                priority={index < 4}
-                              />
-                            </div>
-                          )}
+                        <div>
+                          <h2 className="text-lg font-bold text-gray-800">À faire</h2>
+                          <p className="text-sm text-gray-500">{notCompletedItems.length} exercice{notCompletedItems.length > 1 ? 's' : ''} restant{notCompletedItems.length > 1 ? 's' : ''}</p>
                         </div>
-
-                      <motion.div
-                        className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
-                      >
-                        <Play className="w-5 h-5 fill-current" />
-                      </motion.div>
+                      </div>
+                      <div className="space-y-4 md:space-y-6">
+                        {notCompletedItems.map((item, index) => renderItem(item, index, false))}
+                      </div>
                     </div>
-                  </motion.div>
-                </Link>
-                </div>
+                  )}
+
+                  {/* Section: Exercices réussis */}
+                  {completedItems.length > 0 && (
+                    <div className="mt-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                          <Trophy className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-bold text-gray-800">Déjà réussis</h2>
+                          <p className="text-sm text-gray-500">{completedItems.length} exercice{completedItems.length > 1 ? 's' : ''} complété{completedItems.length > 1 ? 's' : ''}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Collapse/Expand toggle pour les exercices réussis */}
+                      <details className="group">
+                        <summary className="cursor-pointer list-none mb-4">
+                          <div className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+                            <ChevronRight className="w-4 h-4 transition-transform group-open:rotate-90" />
+                            <span>Afficher les {completedItems.length} exercice{completedItems.length > 1 ? 's' : ''} réussi{completedItems.length > 1 ? 's' : ''}</span>
+                          </div>
+                        </summary>
+                        <div className="space-y-4 md:space-y-6">
+                          {completedItems.map((item, index) => renderItem(item, index, true))}
+                        </div>
+                      </details>
+                    </div>
+                  )}
+
+                  {/* Message si tout est complété */}
+                  {notCompletedItems.length === 0 && completedItems.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 text-center mb-6"
+                    >
+                      <span className="text-5xl mb-3 block">🎉</span>
+                      <h3 className="text-xl font-bold text-green-700 mb-2">Bravo !</h3>
+                      <p className="text-green-600">Tu as réussi tous les exercices de cette catégorie !</p>
+                    </motion.div>
+                  )}
+                </>
               );
-            })}
-          </div>
+            })()}
           </>
         )}
       </div>
