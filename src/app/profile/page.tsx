@@ -26,6 +26,7 @@ import { LessonHistoryCard } from '@/components/LessonHistoryCard';
 import { BadgesShowcase } from '@/components/BadgesShowcase';
 import { NextStepsCard } from '@/components/NextStepsCard';
 import { ShareModal } from '@/components/ShareModal';
+import { ToastModal } from '@/components/ui/modal';
 import { 
   downloadCSV, 
   downloadPDF, 
@@ -55,6 +56,12 @@ export default function ProfilePage() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [toast, setToast] = useState<{ isOpen: boolean; variant: 'success' | 'error'; title: string; message: string }>({
+    isOpen: false,
+    variant: 'error',
+    title: '',
+    message: '',
+  });
 
   const totalXp = globalStats?.total_xp || 0;
 
@@ -240,7 +247,12 @@ export default function ProfilePage() {
       setIsEditing(false);
     } catch (err) {
       console.error('Error updating profile:', err);
-      alert('Erreur lors de la mise à jour du profil');
+      setToast({
+        isOpen: true,
+        variant: 'error',
+        title: 'Erreur',
+        message: 'Une erreur est survenue lors de la mise à jour du profil.',
+      });
     }
   };
 
@@ -902,6 +914,15 @@ export default function ProfilePage() {
         isOpen={shareModalOpen}
         onClose={() => setShareModalOpen(false)}
         stats={buildExportStats()}
+      />
+
+      {/* Toast Modal */}
+      <ToastModal
+        isOpen={toast.isOpen}
+        onClose={() => setToast(prev => ({ ...prev, isOpen: false }))}
+        title={toast.title}
+        message={toast.message}
+        variant={toast.variant}
       />
     </div>
   );

@@ -16,6 +16,7 @@ import {
 import { grammarLessons } from '@/data/grammar-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
 import { XPGainNotification } from '@/components/ProgressComponents';
+import { useStreak } from '@/hooks/useStreak';
 
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
 
@@ -23,6 +24,7 @@ export default function GrammarLessonPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.lessonId as string);
+  const { updateStreak } = useStreak();
   
   const lesson = grammarLessons.find(l => l.id === lessonId);
   
@@ -43,12 +45,14 @@ export default function GrammarLessonPage() {
       const percentage = Math.round((score / (lesson.exercises.length * 10)) * 100);
       const xpEarned = Math.round((percentage / 100) * lesson.xp);
       lessonProgressService.completeLesson('grammaire', lessonId, percentage, xpEarned);
+      // Mettre à jour le streak quand une leçon est terminée
+      updateStreak();
       if (xpEarned > 0) {
         setXpNotificationValue(xpEarned);
         setShowXpNotification(true);
       }
     }
-  }, [step, lessonId, score, lesson]);
+  }, [step, lessonId, score, lesson, updateStreak]);
 
   const xpNotificationNode = (
     <AnimatePresence>

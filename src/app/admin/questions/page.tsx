@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Trash2, Edit, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import type { Question } from '@/types/question';
+import { ToastModal, ConfirmModal } from '@/components/ui/modal';
 
 const categoryLabels: Record<string, string> = {
   audio_with_images: '🎧 Audio avec Images',
@@ -22,6 +23,16 @@ export default function AdminQuestionsPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
+    isOpen: false,
+    id: null,
+  });
+  const [toast, setToast] = useState<{ isOpen: boolean; variant: 'success' | 'error'; title: string; message: string }>({
+    isOpen: false,
+    variant: 'success',
+    title: '',
+    message: '',
+  });
 
   useEffect(() => {
     fetchQuestions();
@@ -45,7 +56,14 @@ export default function AdminQuestionsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette question ?')) return;
+    setConfirmDelete({ isOpen: true, id });
+  };
+
+  const confirmDeleteAction = async () => {
+    const id = confirmDelete.id;
+    if (!id) return;
+    
+    setConfirmDelete({ isOpen: false, id: null });
 
     try {
       setDeleting(id);
@@ -54,10 +72,20 @@ export default function AdminQuestionsPage() {
       if (error) throw error;
 
       setQuestions(questions.filter(q => q.id !== id));
-      alert('✅ Question supprimée avec succès !');
+      setToast({
+        isOpen: true,
+        variant: 'success',
+        title: 'Question supprimée',
+        message: 'La question a été supprimée avec succès.',
+      });
     } catch (error) {
       console.error('Error deleting question:', error);
-      alert('❌ Erreur lors de la suppression');
+      setToast({
+        isOpen: true,
+        variant: 'error',
+        title: 'Erreur',
+        message: 'Une erreur est survenue lors de la suppression.',
+      });
     } finally {
       setDeleting(null);
     }
@@ -84,6 +112,26 @@ export default function AdminQuestionsPage() {
   }
 
   return (
+    <>
+      <ConfirmModal
+        isOpen={confirmDelete.isOpen}
+        onClose={() => setConfirmDelete({ isOpen: false, id: null })}
+        onConfirm={confirmDeleteAction}
+        title="Supprimer la question ?"
+        message="Cette action est irréversible. La question sera définitivement supprimée."
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        variant="warning"
+      />
+      
+      <ToastModal
+        isOpen={toast.isOpen}
+        onClose={() => setToast(prev => ({ ...prev, isOpen: false }))}
+        title={toast.title}
+        message={toast.message}
+        variant={toast.variant}
+      />
+
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Header */}
@@ -251,5 +299,6 @@ export default function AdminQuestionsPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

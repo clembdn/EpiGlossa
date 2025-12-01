@@ -26,25 +26,44 @@ const applyLessonXpDeltaToGlobalStats = async (userId: string, deltaXp: number) 
     const currentTotal = clampXp(data?.total_xp);
     const newTotal = clampXp(currentTotal + deltaXp);
 
-    const baseStats = {
-      user_id: userId,
-      total_attempted: data?.total_attempted ?? 0,
-      correct_count: data?.correct_count ?? 0,
-      global_success_rate: data?.global_success_rate ?? 0,
-      categories_attempted: data?.categories_attempted ?? 0,
-    };
+    // Si les stats existent, faire un UPDATE simple pour éviter les problèmes de RLS
+    if (data) {
+      const { error: updateError } = await supabase
+        .from('user_global_stats')
+        .update({ total_xp: newTotal })
+        .eq('user_id', userId);
 
-    const statsPayload = {
-      ...baseStats,
-      total_xp: newTotal,
-    };
+      if (updateError) {
+        console.error('Error updating global stats with lesson XP:', updateError.message || updateError);
+      }
+    } else {
+      // Sinon, insérer une nouvelle ligne
+      const { error: insertError } = await supabase
+        .from('user_global_stats')
+        .insert({
+          user_id: userId,
+          total_attempted: 0,
+          correct_count: 0,
+          total_xp: newTotal,
+          global_success_rate: 0,
+          categories_attempted: 0,
+        });
 
-    const { error: upsertError } = await supabase
-      .from('user_global_stats')
-      .upsert(statsPayload, { onConflict: 'user_id' });
-
-    if (upsertError) {
-      console.error('Error updating global stats with lesson XP:', upsertError);
+      if (insertError) {
+        // Si l'insert échoue (peut-être la ligne existe maintenant), essayer un update
+        if (insertError.code === '23505') { // Duplicate key
+          const { error: fallbackError } = await supabase
+            .from('user_global_stats')
+            .update({ total_xp: newTotal })
+            .eq('user_id', userId);
+          
+          if (fallbackError) {
+            console.error('Error in fallback update:', fallbackError.message || fallbackError);
+          }
+        } else {
+          console.error('Error inserting global stats:', insertError.message || insertError);
+        }
+      }
     }
   } catch (err) {
     console.error('Unexpected global XP sync error:', err);

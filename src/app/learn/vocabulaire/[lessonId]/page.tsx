@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { vocabularyLessons } from '@/data/vocabulary-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
+import { useStreak } from '@/hooks/useStreak';
 
 const shuffleArray = (array: string[]) => {
   const cloned = [...array];
@@ -31,6 +32,7 @@ export default function VocabularyLessonPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.lessonId as string);
+  const { updateStreak } = useStreak();
   
   const lesson = vocabularyLessons.find(l => l.id === lessonId);
   
@@ -53,8 +55,10 @@ export default function VocabularyLessonPage() {
       const percentage = Math.round((score / (lesson.exercises.length * 10)) * 100);
       const xpEarned = Math.round((percentage / 100) * lesson.xp);
       lessonProgressService.completeLesson('vocabulaire', lessonId, percentage, xpEarned);
+      // Mettre à jour le streak quand une leçon est terminée
+      updateStreak();
     }
-  }, [step, lessonId, score, lesson]);
+  }, [step, lessonId, score, lesson, updateStreak]);
 
   const currentWord = lesson?.words[currentWordIndex];
   const currentExercise = lesson?.exercises[currentExerciseIndex];

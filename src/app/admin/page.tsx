@@ -10,7 +10,27 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useAdminStats, UserStats, TimeRange, DailyStats, CategoryDeepDive, LessonDeepDive, ToeicDeepDive } from '@/hooks/useAdminStats';
+import { useAdminStatsOptimized as useAdminStats, TimeRange } from '@/hooks/useAdminStatsOptimized';
+import type { DailyStats, CategoryDeepDive, LessonDeepDive, ToeicDeepDive } from '@/hooks/useAdminStatsOptimized';
+
+// Types réexportés pour compatibilité
+interface UserStats {
+  id: string;
+  email: string;
+  full_name: string | null;
+  created_at: string;
+  total_xp: number;
+  training_xp: number;
+  lesson_xp: number;
+  mission_xp: number;
+  questions_answered: number;
+  success_rate: number;
+  current_streak: number;
+  longest_streak: number;
+  last_activity: string | null;
+  toeic_tests_count: number;
+  best_toeic_score: number | null;
+}
 
 // Composant sélecteur de période
 function TimeRangeSelector({ 

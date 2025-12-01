@@ -5,11 +5,18 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { ChevronLeft, Loader2, Plus } from 'lucide-react';
 import type { QuestionCategory } from '@/types/question';
+import { ToastModal } from '@/components/ui/modal';
 
 export default function AddQuestionPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<QuestionCategory>('audio_with_images');
+  const [modal, setModal] = useState<{ isOpen: boolean; variant: 'success' | 'error'; title: string; message: string }>({
+    isOpen: false,
+    variant: 'success',
+    title: '',
+    message: '',
+  });
   
   // Standard fields
   const [questionText, setQuestionText] = useState('');
@@ -181,11 +188,21 @@ export default function AddQuestionPage() {
         if (error) throw error;
       }
 
-      alert('Question ajoutée avec succès!');
-      router.push('/admin');
+      setModal({
+        isOpen: true,
+        variant: 'success',
+        title: 'Question ajoutée !',
+        message: 'La question a été ajoutée avec succès.',
+      });
+      setTimeout(() => router.push('/admin'), 2000);
     } catch (error) {
       console.error('Error:', error);
-      alert('Erreur lors de l\'ajout de la question');
+      setModal({
+        isOpen: true,
+        variant: 'error',
+        title: 'Erreur',
+        message: 'Une erreur est survenue lors de l\'ajout de la question.',
+      });
     } finally {
       setLoading(false);
     }
@@ -232,25 +249,34 @@ export default function AddQuestionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6 font-medium transition-colors"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          Retour
-        </button>
+    <>
+      <ToastModal
+        isOpen={modal.isOpen}
+        onClose={() => setModal(prev => ({ ...prev, isOpen: false }))}
+        title={modal.title}
+        message={modal.message}
+        variant={modal.variant}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6 font-medium transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            Retour
+          </button>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">Ajouter une Question</h1>
+          <div className="bg-white rounded-3xl shadow-xl p-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-8">Ajouter une Question</h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Category Selection */}
-            <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Catégorie *
-              </label>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Category Selection */}
+              <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Catégorie *
+                </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as QuestionCategory)}
@@ -548,5 +574,6 @@ export default function AddQuestionPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

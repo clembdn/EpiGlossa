@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { conjugationLessons } from '@/data/conjugation-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
+import { useStreak } from '@/hooks/useStreak';
 
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
 
@@ -22,6 +23,7 @@ export default function ConjugationLessonPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.lessonId as string);
+  const { updateStreak } = useStreak();
   
   const lesson = conjugationLessons.find(l => l.id === lessonId);
   
@@ -40,8 +42,10 @@ export default function ConjugationLessonPage() {
       const percentage = Math.round((score / (lesson.exercises.length * 10)) * 100);
       const xpEarned = Math.round((percentage / 100) * lesson.xp);
       lessonProgressService.completeLesson('conjugaison', lessonId, percentage, xpEarned);
+      // Mettre à jour le streak quand une leçon est terminée
+      updateStreak();
     }
-  }, [step, lessonId, score, lesson]);
+  }, [step, lessonId, score, lesson, updateStreak]);
 
   if (!lesson) {
     return (

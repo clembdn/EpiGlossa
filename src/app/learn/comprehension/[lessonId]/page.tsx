@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { comprehensionLessons } from '@/data/comprehension-lessons';
 import { lessonProgressService } from '@/lib/lesson-progress';
+import { useStreak } from '@/hooks/useStreak';
 
 type LessonStep = 'intro' | 'learning' | 'exercises' | 'results';
 
@@ -23,6 +24,7 @@ export default function ComprehensionLessonPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.lessonId as string);
+  const { updateStreak } = useStreak();
   
   const lesson = comprehensionLessons.find(l => l.id === lessonId);
   
@@ -42,8 +44,10 @@ export default function ComprehensionLessonPage() {
       const percentage = Math.round((score / (lesson.exercises.length * 10)) * 100);
       const xpEarned = Math.round((percentage / 100) * lesson.xp);
       lessonProgressService.completeLesson('comprehension', lessonId, percentage, xpEarned);
+      // Mettre à jour le streak quand une leçon est terminée
+      updateStreak();
     }
-  }, [step, lessonId, score, lesson]);
+  }, [step, lessonId, score, lesson, updateStreak]);
 
   if (!lesson) {
     return (
