@@ -789,7 +789,7 @@
       {
         "option": "A",
         "text": "Would not have hired",
-        "is_correct": true
+        "is_correct": false
       },
       {
         "option": "B",
@@ -799,7 +799,7 @@
       {
         "option": "C",
         "text": "Would not have been hired",
-        "is_correct": false
+        "is_correct": true
       },
       {
         "option": "D",
@@ -807,7 +807,7 @@
         "is_correct": false
       }
     ],
-    "explanation": "This is a Type 3 conditional structure (unreal past). The main clause requires the Conditional Perfect ('would not have hired') in the active voice, meaning the company would not have done the hiring."
+    "explanation": "The sentence requires the passive voice (she was hired) and the conditional perfect (would have + past participle) to match the past condition 'if she had not applied'. Therefore, 'would not have been hired' is correct."
   },
   {
     "category": "incomplete_sentences",
@@ -1645,60 +1645,6 @@
       }
     ],
     "explanation": "The subject 'Coral' (singular) requires the singular verb 'is' to form the passive voice for the main clause. The phrase in commas is an appositive."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "The bank __ another branch in Houston within the next year",
-    "choices": [
-      {
-        "option": "A",
-        "text": "Would open",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "Will be opening",
-        "is_correct": true
-      },
-      {
-        "option": "C",
-        "text": "Opened",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "Have opened",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The time phrase 'within the next year' indicates a planned, ongoing future action or arrangement, correctly expressed by the Future Continuous tense ('will be opening')."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "The purchaser wanted the equipment __ by Monday morning",
-    "choices": [
-      {
-        "option": "A",
-        "text": "Will be delivered",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "Must be delivered",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "Delivering",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "Delivered",
-        "is_correct": true
-      }
-    ],
-    "explanation": "The passive causative structure 'wanted [object] [past participle]' is correct when the purchaser wants someone else to perform the action ('delivered') on the object ('the equipment')."
   },
   {
     "category": "incomplete_sentences",
@@ -2647,33 +2593,6 @@
   },
   {
     "category": "incomplete_sentences",
-    "question_text": "The satellite photographed a __ moon in orbit around Saturn.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "previous undetection",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "previously undetecteding",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "previously undetected",
-        "is_correct": true
-      },
-      {
-        "option": "D",
-        "text": "previously undetection",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The correct structure is Adverb ('previously') + Adjective/Past Participle ('undetected') to modify the noun 'moon'."
-  },
-  {
-    "category": "incomplete_sentences",
     "question_text": "You can't rent any vehicle __ you have a licence.",
     "choices": [
       {
@@ -2806,33 +2725,6 @@
       }
     ],
     "explanation": "'Fed up' is the idiomatic expression meaning 'annoyed or bored with something that has been happening for a long time'. 'Tired of' is also possible, but 'fed up' is more forceful."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "The company offers a __ plan for its workers.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "Retire",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "Retirement",
-        "is_correct": true
-      },
-      {
-        "option": "C",
-        "text": "Retired",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "Retiring",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The noun 'plan' requires a preceding noun or adjective to describe its type. 'Retirement' is the noun used adjectivally (a 'retirement plan')."
   },
   {
     "category": "incomplete_sentences",
@@ -3130,249 +3022,6 @@
       }
     ],
     "explanation": "The verb 'would like' used in the causative sense with an object ('the invoices') followed by a passive action requires the past participle ('faxed'): 'would like [object] [past participle]'."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Tina spent a long time ___ for the right way to go.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "for looking",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "looking",
-        "is_correct": true
-      },
-      {
-        "option": "C",
-        "text": "to looking",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "to look at",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The structure 'spend time' is correctly followed by the gerund form of the verb ('looking')."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "If our candidates ___ elected, we’ll have a strong board.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "will be",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "have been",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "were",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "are",
-        "is_correct": true
-      }
-    ],
-    "explanation": "This is a Type 1 conditional (likely event). The 'if' clause requires the Present Simple Passive voice, which is 'are elected' (the candidates are the object of the action)."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Ms. Lopez has ___ learned to created zip files.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "certain",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "already",
-        "is_correct": true
-      },
-      {
-        "option": "C",
-        "text": "yet",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "ever",
-        "is_correct": false
-      }
-    ],
-    "explanation": "'Already' is the correct adverb to use with the Present Perfect ('has learned') to indicate that the action happened sooner than expected. 'Yet' is usually used in negative statements."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Some employees get their paychecks automatically ___ in their bank accounts.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "deposit",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "deposited",
-        "is_correct": true
-      },
-      {
-        "option": "C",
-        "text": "depositing",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "are deposited",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The structure 'get [object] [past participle]' is the passive causative, meaning the employees arrange for the action ('deposited') to be done to the object ('paychecks') by someone else."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Mr Kekkonen accused Boris of ____ when he handed in this report a week late.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "proliferating",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "professing",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "procrastinating",
-        "is_correct": true
-      },
-      {
-        "option": "D",
-        "text": "profiling",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The idiom 'accused... of' requires a gerund. 'Procrastinating' (delaying work) is the only verb that relates to handing in a report late."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "The bank invites you to keep your securities safe in our vault ___ strict audit controls.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "under",
-        "is_correct": true
-      },
-      {
-        "option": "B",
-        "text": "inside",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "beneath",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "herein",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The preposition 'under' is used to express that something is subject to or governed by rules or conditions ('strict audit controls')."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "What a shame! If Mrs. Dwayne ___ so disorganized, she would be given far more responsibilities.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "hadn’t been",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "wasn’t being",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "wasn’t",
-        "is_correct": true
-      },
-      {
-        "option": "D",
-        "text": "isn't",
-        "is_correct": false
-      }
-    ],
-    "explanation": "This is a Type 2 conditional (present unreal). The 'if' clause requires the Simple Past tense ('wasn’t') to refer to an unreal or hypothetical condition in the present."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Make sure to use an ____ dealer.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "authorized",
-        "is_correct": true
-      },
-      {
-        "option": "B",
-        "text": "authorization",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "authority",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "authoritarian",
-        "is_correct": false
-      }
-    ],
-    "explanation": "The past participle 'authorized' functions as an adjective to describe the noun 'dealer', meaning the dealer has official permission."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Extreme ___ should be used when the forklift truck is being operated.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "Cautiously",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "cautioned",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "cautious",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "caution",
-        "is_correct": true
-      }
-    ],
-    "explanation": "The adjective 'Extreme' requires the noun 'caution' to follow it, forming the noun phrase 'Extreme caution', which is the subject of the sentence."
   },
   {
     "category": "incomplete_sentences",
@@ -3805,33 +3454,6 @@
       }
     ],
     "explanation": "The verb 'demonstrate' means to show or prove clearly. Piazzo hopes to display his talent ('flare') through his project."
-  },
-  {
-    "category": "incomplete_sentences",
-    "question_text": "Cooks must remember that some raw foods are very __ and should be refrigerated or chilled until ready to be eaten or cooked.",
-    "choices": [
-      {
-        "option": "A",
-        "text": "Periodic",
-        "is_correct": false
-      },
-      {
-        "option": "B",
-        "text": "Peripheral",
-        "is_correct": false
-      },
-      {
-        "option": "C",
-        "text": "Permanent",
-        "is_correct": false
-      },
-      {
-        "option": "D",
-        "text": "Perishable",
-        "is_correct": true
-      }
-    ],
-    "explanation": "'Perishable' is the correct adjective to describe food that spoils quickly and thus requires refrigeration."
   },
   {
     "category": "incomplete_sentences",
@@ -4539,10 +4161,26 @@
     "category": "incomplete_sentences",
     "question_text": "Ambition, talent, ______ desire are ingredients for success.",
     "choices": [
-      { "option": "A", "text": "or", "is_correct": false },
-      { "option": "B", "text": "and", "is_correct": true },
-      { "option": "C", "text": "never", "is_correct": false },
-      { "option": "D", "text": "yet", "is_correct": false }
+      {
+        "option": "A",
+        "text": "or",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "and",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "never",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "yet",
+        "is_correct": false
+      }
     ],
     "explanation": "The correct conjunction is 'and' because it connects similar elements in a series."
   },
@@ -4550,10 +4188,26 @@
     "category": "incomplete_sentences",
     "question_text": "Mrs Kawabata is ready to see you now. Thank you for ______.",
     "choices": [
-      { "option": "A", "text": "waiting", "is_correct": true },
-      { "option": "B", "text": "waited", "is_correct": false },
-      { "option": "C", "text": "to wait", "is_correct": false },
-      { "option": "D", "text": "wait", "is_correct": false }
+      {
+        "option": "A",
+        "text": "waiting",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "waited",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "to wait",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "wait",
+        "is_correct": false
+      }
     ],
     "explanation": "After a preposition like 'for', the verb must be in the gerund form ('waiting')."
   },
@@ -4561,10 +4215,26 @@
     "category": "incomplete_sentences",
     "question_text": "The Executive Council of the Fashion Buyers Congress is ______ of fifteen members from various branches of the fashion industry.",
     "choices": [
-      { "option": "A", "text": "to compose", "is_correct": false },
-      { "option": "B", "text": "composed", "is_correct": true },
-      { "option": "C", "text": "composing", "is_correct": false },
-      { "option": "D", "text": "compose", "is_correct": false }
+      {
+        "option": "A",
+        "text": "to compose",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "composed",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "composing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "compose",
+        "is_correct": false
+      }
     ],
     "explanation": "The correct form is 'composed of', meaning 'made up of'."
   },
@@ -4572,10 +4242,26 @@
     "category": "incomplete_sentences",
     "question_text": "Office branches are located ______ the metropolitan area.",
     "choices": [
-      { "option": "A", "text": "at", "is_correct": false },
-      { "option": "B", "text": "on", "is_correct": false },
-      { "option": "C", "text": "throughout", "is_correct": true },
-      { "option": "D", "text": "about", "is_correct": false }
+      {
+        "option": "A",
+        "text": "at",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "on",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "throughout",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "about",
+        "is_correct": false
+      }
     ],
     "explanation": "'Throughout' is used to indicate something distributed across an entire area."
   },
@@ -4583,32 +4269,80 @@
     "category": "incomplete_sentences",
     "question_text": "According to the manufacturer, the new generator is capable of ______ the amount of power consumed bu out facility by nearly ten percent.",
     "choices": [
-      { "option": "A", "text": "reducing", "is_correct": true },
-      { "option": "B", "text": "reduce", "is_correct": false },
-      { "option": "C", "text": "reduced", "is_correct": false },
-      { "option": "D", "text": "reduces", "is_correct": false }
+      {
+        "option": "A",
+        "text": "reducing",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "reduce",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "reduced",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "reduces",
+        "is_correct": false
+      }
     ],
     "explanation": "The preposition 'of' must always be followed by a verb in the gerund form (-ing), so 'reducing' is the only correct answer."
   },
   {
-  "category": "incomplete_sentences",
-  "question_text": "_____ substantial layoffs, cost were reduced.",
-  "choices": [
-    { "option": "A", "text": "Although", "is_correct": false },
-    { "option": "B", "text": "When", "is_correct": false },
-    { "option": "C", "text": "Because of", "is_correct": true },
-    { "option": "D", "text": "Since", "is_correct": false }
-  ],
-  "explanation": "'Because of' is a compound preposition used to show cause and is followed by a noun phrase ('substantial layoffs'). The other options ('Although', 'When', 'Since') function as conjunctions in this context and would require a full clause (subject + verb) to follow them (e.g., 'Although there were layoffs...')."
+    "category": "incomplete_sentences",
+    "question_text": "_____ substantial layoffs, cost were reduced.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Although",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "When",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Because of",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Since",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Because of' is a compound preposition used to show cause and is followed by a noun phrase ('substantial layoffs'). The other options ('Although', 'When', 'Since') function as conjunctions in this context and would require a full clause (subject + verb) to follow them (e.g., 'Although there were layoffs...')."
   },
   {
     "category": "incomplete_sentences",
     "question_text": "The recession is not expected to ______ until year's end.",
     "choices": [
-      { "option": "A", "text": "abandon", "is_correct": false },
-      { "option": "B", "text": "abduct", "is_correct": false },
-      { "option": "C", "text": "abate", "is_correct": true },
-      { "option": "D", "text": "abdicate", "is_correct": false }
+      {
+        "option": "A",
+        "text": "abandon",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "abduct",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "abate",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "abdicate",
+        "is_correct": false
+      }
     ],
     "explanation": "'Abate' means to become less intense or widespread (to subside), which is the correct context for a recession. 'Abandon' means to leave, 'abduct' means to kidnap, and 'abdicate' is for a monarch giving up power."
   },
@@ -4616,10 +4350,26 @@
     "category": "incomplete_sentences",
     "question_text": "Mr Fox ______ the results tomorrow afternoon.",
     "choices": [
-      { "option": "A", "text": "will be knowing", "is_correct": false },
-      { "option": "B", "text": "will know", "is_correct": true },
-      { "option": "C", "text": "is going to be knowing", "is_correct": false },
-      { "option": "D", "text": "will have known", "is_correct": false }
+      {
+        "option": "A",
+        "text": "will be knowing",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "will know",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "is going to be knowing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "will have known",
+        "is_correct": false
+      }
     ],
     "explanation": "The verb 'to know' is a stative verb (describing a state of mind), which is generally not used in continuous or progressive forms (ending in -ing). Therefore, the simple future 'will know' is the correct grammatical choice."
   }
