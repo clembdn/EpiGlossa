@@ -2,7 +2,7 @@
   {
     "category": "short_talks",
     "question_text": "This speech is being held at the opening of what?",
-    "audio_url": "audios__ST27.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST27.mp3",
     "choices": [
       { "option": "A", "text": "A photography show", "is_correct": true },
       { "option": "B", "text": "A technology exhibit", "is_correct": false },
@@ -14,7 +14,7 @@
   {
     "category": "short_talks",
     "question_text": "What is the legal aid program looking for?",
-    "audio_url": "audios__ST64.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST64.mp3",
     "choices": [
       { "option": "A", "text": "Tribal members", "is_correct": false },
       { "option": "B", "text": "Legal borders", "is_correct": false },
@@ -26,7 +26,7 @@
   {
     "category": "short_talks",
     "question_text": "In which field did Camper NOT diversify?",
-    "audio_url": "audios__ST49.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST49.mp3",
     "choices": [
       { "option": "A", "text": "Food", "is_correct": false },
       { "option": "B", "text": "Sportswear", "is_correct": false },
@@ -38,7 +38,7 @@
   {
     "category": "short_talks",
     "question_text": "What type of organisation is overcoming challenges?",
-    "audio_url": "audios__ST39.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST39.mp3",
     "choices": [
       { "option": "A", "text": "A government agency", "is_correct": false },
       { "option": "B", "text": "A fraternal organisation", "is_correct": false },
@@ -50,7 +50,7 @@
   {
     "category": "short_talks",
     "question_text": "How should you get your tickets?",
-    "audio_url": "audios__STblue10.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__STblue10.mp3",
     "choices": [
       { "option": "A", "text": "Pick them up from the personnel office.", "is_correct": true },
       { "option": "B", "text": "They will be sent in the mail.", "is_correct": false },
@@ -62,7 +62,7 @@
   {
     "category": "short_talks",
     "question_text": "Who is most likely to be making this announcement?",
-    "audio_url": "audios__ST36.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST36.mp3",
     "choices": [
       { "option": "A", "text": "A lawyer at a legal firm", "is_correct": false },
       { "option": "B", "text": "An accountant at a shipping company", "is_correct": false },
@@ -74,7 +74,7 @@
   {
     "category": "short_talks",
     "question_text": "For how long does the ferry stay in port at Ellis Island?",
-    "audio_url": "audios__ST24.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST24.mp3",
     "choices": [
       { "option": "A", "text": "2 hours", "is_correct": true },
       { "option": "B", "text": "10 minutes", "is_correct": false },
@@ -86,7 +86,7 @@
   {
     "category": "short_talks",
     "question_text": "What are the programs about?",
-    "audio_url": "audios__STblue18.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__STblue18.mp3",
     "choices": [
       { "option": "A", "text": "Major headlines of the day", "is_correct": false },
       { "option": "B", "text": "Weight-loss plans", "is_correct": false },
@@ -98,7 +98,7 @@
   {
     "category": "short_talks",
     "question_text": "How much money did the man steal?",
-    "audio_url": "audios__ST37.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST37.mp3",
     "choices": [
       { "option": "A", "text": "$32,000", "is_correct": false },
       { "option": "B", "text": "$15,000", "is_correct": true },
@@ -110,7 +110,7 @@
   {
     "category": "short_talks",
     "question_text": "How long are the programs?",
-    "audio_url": "audios__STblue18_2.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__STblue18_2.mp3",
     "choices": [
       { "option": "A", "text": "A half hour", "is_correct": false },
       { "option": "B", "text": "One and a half hours", "is_correct": false },
@@ -122,7 +122,7 @@
   {
     "category": "short_talks",
     "question_text": "What is the purpose of the dinner?",
-    "audio_url": "audios__STblue10_2.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__STblue10_2.mp3",
     "choices": [
       { "option": "A", "text": "To honor the personnel office", "is_correct": false },
       { "option": "B", "text": "To honor the director and the president", "is_correct": false },
@@ -134,7 +134,7 @@
   {
     "category": "short_talks",
     "question_text": "What are the commentaries about?",
-    "audio_url": "audios__ST60.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST60.mp3",
     "choices": [
       { "option": "A", "text": "A company visit", "is_correct": false },
       { "option": "B", "text": "Historical monuments", "is_correct": false },
@@ -146,7 +146,7 @@
   {
     "category": "short_talks",
     "question_text": "Where is Jenny's High school situated?",
-    "audio_url": "audios__ST40.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST40.mp3",
     "choices": [
       { "option": "A", "text": "New York City", "is_correct": false },
       { "option": "B", "text": "Atlantic City", "is_correct": false },
@@ -158,7 +158,7 @@
   {
     "category": "short_talks",
     "question_text": "When should the employees respond to the invitation?",
-    "audio_url": "audios__ST25.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST25.mp3",
     "choices": [
       { "option": "A", "text": "By December 20th", "is_correct": false },
       { "option": "B", "text": "By the end of the day", "is_correct": false },
@@ -170,7 +170,7 @@
   {
     "category": "short_talks",
     "question_text": "The party will include which of the following?",
-    "audio_url": "audios__ST25_2.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST25_2.mp3",
     "choices": [
       { "option": "A", "text": "E-mail", "is_correct": false },
       { "option": "B", "text": "Debate", "is_correct": false },
@@ -182,7 +182,7 @@
   {
     "category": "short_talks",
     "question_text": "Who is the speaker?",
-    "audio_url": "audios__ST52.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST52.mp3",
     "choices": [
       { "option": "A", "text": "A researcher", "is_correct": false },
       { "option": "B", "text": "The facilities manager", "is_correct": true },
@@ -194,7 +194,7 @@
   {
     "category": "short_talks",
     "question_text": "What will Ms Sunwoo be doing for the next few weeks?",
-    "audio_url": "audios__ST28.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST28.mp3",
     "choices": [
       { "option": "A", "text": "Specialising in logistics", "is_correct": false },
       { "option": "B", "text": "Moving to San Francisco", "is_correct": false },
@@ -206,7 +206,7 @@
   {
     "category": "short_talks",
     "question_text": "Who will be leading the meetings after dinner?",
-    "audio_url": "audios__ST29.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__ST29.mp3",
     "choices": [
       { "option": "A", "text": "Management employees from Arlington Technologies", "is_correct": false },
       { "option": "B", "text": "Motivational speakers from the region", "is_correct": true },
@@ -218,7 +218,7 @@
   {
     "category": "short_talks",
     "question_text": "What was announced yesterday?",
-    "audio_url": "audios__STblue19.mp3",
+    "audio_url": "https://ukoneniuzrppljsgzzrb.supabase.co/storage/v1/object/public/question-audio/ST/audios__STblue19.mp3",
     "choices": [
       { "option": "A", "text": "A sale", "is_correct": false },
       { "option": "B", "text": "A bankruptcy", "is_correct": false },
