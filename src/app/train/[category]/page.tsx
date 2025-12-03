@@ -91,11 +91,25 @@ export default function TrainCategoryPage() {
   // Ignore error warning
   void error;
   
+  // Fonction pour créer un ID de passage à partir de l'image_url
+  const getPassageId = (imageUrl: string) => encodeURIComponent(imageUrl);
+  
+  // Fonction pour obtenir les questions d'un passage comme tableau
+  const getPassageQuestionsArray = (passage: ReadingPassage) => {
+    return Object.entries(passage.questions)
+      .sort(([a], [b]) => parseInt(a) - parseInt(b))
+      .map(([num, q]) => ({
+        id: `${getPassageId(passage.image_url)}_q${num}`,
+        questionNumber: num,
+        ...q
+      }));
+  };
+  
   useEffect(() => {
     // Sauvegarder l'ordre des questions dans sessionStorage pour la navigation
     if (questions.length > 0) {
       if (category === 'reading_comprehension') {
-        const passageIds = (questions as ReadingPassage[]).map(p => p.passage_id);
+        const passageIds = (questions as ReadingPassage[]).map(p => getPassageId(p.image_url));
         sessionStorage.setItem(`question_order_${category}`, JSON.stringify(passageIds));
       } else {
         const questionIds = (questions as Question[]).map(q => q.id);
@@ -125,7 +139,18 @@ export default function TrainCategoryPage() {
 
   // Filtrage des questions par texte de question ou de réponse
   const term = search.trim().toLowerCase();
-  const matchesQuestion = (q: Question | ReadingPassage) => {
+  const matchesRCPassage = (passage: ReadingPassage): boolean => {
+    if (!term) return true;
+    // Chercher dans toutes les questions du passage
+    return Object.values(passage.questions).some(q => {
+      const text = (q.question_text || '').toLowerCase();
+      if (text.includes(term)) return true;
+      if (q.choices?.some(c => (c.text || '').toLowerCase().includes(term))) return true;
+      return false;
+    });
+  };
+  
+  const matchesQuestion = (q: Question) => {
     if (!term) return true;
     const questionWithText = q as { question_text?: string; text_with_gaps?: string; choices?: { text?: string }[]; gap_choices?: Record<string, { text?: string }[]> };
     const text = (questionWithText.question_text || questionWithText.text_with_gaps || '').toLowerCase();
@@ -145,7 +170,7 @@ export default function TrainCategoryPage() {
   const filteredItems = ((): (Question | ReadingPassage)[] => {
     if (!term) return questions as (Question | ReadingPassage)[];
     if (category === 'reading_comprehension') {
-      return (questions as ReadingPassage[]).filter(p => p.questions.some(q => matchesQuestion(q as unknown as Question)));
+      return (questions as ReadingPassage[]).filter(p => matchesRCPassage(p));
     }
     return (questions as Question[]).filter(q => matchesQuestion(q));
   })();
@@ -297,7 +322,8 @@ export default function TrainCategoryPage() {
               filteredItems.forEach((item) => {
                 if (category === 'reading_comprehension' && 'questions' in item) {
                   const passage = item as ReadingPassage;
-                  const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
+                  const questionsArray = getPassageQuestionsArray(passage);
+                  const passageCompleted = questionsArray.every(q => isQuestionCompleted(q.id));
                   if (passageCompleted) {
                     completedItems.push(item);
                   } else {
@@ -314,19 +340,22 @@ export default function TrainCategoryPage() {
               });
 
               const renderItem = (item: Question | ReadingPassage, index: number, isInCompletedSection: boolean) => {
-                // For READING COMPREHENSION: item is a passage with 3 questions
+                // For READING COMPREHENSION: item is a passage with questions object
                 if (category === 'reading_comprehension' && 'questions' in item) {
                   const passage = item as ReadingPassage;
-                  const passageCompleted = passage.questions.every(q => isQuestionCompleted(q.id));
+                  const questionsArray = getPassageQuestionsArray(passage);
+                  const passageId = getPassageId(passage.image_url);
+                  const questionCount = questionsArray.length;
+                  const passageCompleted = questionsArray.every(q => isQuestionCompleted(q.id));
                   
                   return (
                     <motion.div
-                      key={passage.passage_id}
+                      key={passageId}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                     >
-                      <Link href={`/train/${category}/${passage.passage_id}`}>
+                      <Link href={`/train/${category}/${passageId}`}>
                         <div className={`bg-white rounded-2xl p-6 shadow-lg transition-all cursor-pointer group relative ${
                           passageCompleted 
                             ? 'border-4 border-green-500 hover:shadow-2xl opacity-75' 
@@ -340,14 +369,14 @@ export default function TrainCategoryPage() {
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
                                 <h3 className="text-lg font-bold text-gray-800">
-                                  Passage de lecture (3 questions)
+                                  Passage de lecture ({questionCount} question{questionCount > 1 ? 's' : ''})
                                 </h3>
                                 <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-bold">
-                                  3 Q
+                                  {questionCount} Q
                                 </span>
                               </div>
                               <p className="text-gray-600 text-sm line-clamp-2">
-                                {passage.questions.map((q, i) => 
+                                {questionsArray.map((q, i) => 
                                   `Q${i+1}: ${q.question_text?.substring(0, 30)}...`
                                 ).join(' • ')}
                               </p>
@@ -372,7 +401,7 @@ export default function TrainCategoryPage() {
                               }`}>
                                 <Trophy className={`w-4 h-4 ${passageCompleted ? 'text-green-600' : 'text-yellow-600'}`} />
                                 <span className="text-sm font-bold">
-                                  {passageCompleted ? '✓ 150 XP' : '+150 XP'}
+                                  {passageCompleted ? `✓ ${questionCount * 50} XP` : `+${questionCount * 50} XP`}
                                 </span>
                               </div>
                               <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />

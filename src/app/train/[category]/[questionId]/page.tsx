@@ -375,8 +375,8 @@ export default function QuestionPage() {
             </motion.div>
           )}
 
-          {/* 3 Questions */}
-          {questions.map((q, qIndex) => {
+          {/* Questions du passage */}
+          {shuffledQuestions.map((q, qIndex) => {
             const questionSelectedAnswer = selectedAnswers[q.id];
             
             return (

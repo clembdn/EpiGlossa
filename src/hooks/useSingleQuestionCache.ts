@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { Question } from '@/types/question'
+import type { Question, Choice } from '@/types/question'
 
 interface CacheEntry<T> {
   data: T
@@ -109,9 +109,12 @@ export function useSingleQuestionCache(questionId: string, _category: string) {
   }
 }
 
-// Hook pour les passages de lecture (reading comprehension)
+// Hook pour les passages de lecture (reading comprehension) - FORMAT PLAT EN BDD
+// Le passageId est maintenant l'image_url encodée
 export function useReadingPassageCache(passageId: string) {
   const [questions, setQuestions] = useState<Question[]>([])
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [explanation, setExplanation] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [fromCache, setFromCache] = useState(false)
 
@@ -119,45 +122,79 @@ export function useReadingPassageCache(passageId: string) {
     try {
       setLoading(true)
       
-      const cacheKey = `passage_${passageId}`
+      const cacheKey = `passage_v3_${passageId}`
       
       // Essayer de lire depuis le cache
       const cached = sessionStorage.getItem(cacheKey)
       if (cached) {
         try {
-          const entry: CacheEntry<Question[]> = JSON.parse(cached)
+          const entry: CacheEntry<{ questions: Question[], imageUrl: string, explanation: string }> = JSON.parse(cached)
           if (isCacheValid(entry.timestamp)) {
-            setQuestions(entry.data)
+            setQuestions(entry.data.questions)
+            setImageUrl(entry.data.imageUrl)
+            setExplanation(entry.data.explanation)
             setFromCache(true)
             setLoading(false)
             return
           }
-        } catch {}
+        } catch { /* ignore parse errors */ }
       }
       
       setFromCache(false)
       
-      // Charger depuis Supabase
+      // Décoder l'image_url depuis le passageId
+      const decodedImageUrl = decodeURIComponent(passageId)
+      
+      // Charger depuis Supabase - FORMAT PLAT: plusieurs lignes par passage
       const { data, error } = await supabase
         .from('questions')
         .select('*')
-        .eq('passage_id', passageId)
+        .eq('category', 'reading_comprehension')
+        .eq('image_url', decodedImageUrl)
         .order('question_number', { ascending: true })
 
       if (error) {
         console.warn('Error fetching passage:', error.message)
         setQuestions([])
-      } else if (data) {
-        const entry: CacheEntry<Question[]> = {
-          data,
+        setImageUrl('')
+        setExplanation('')
+      } else if (data && data.length > 0) {
+        // Les données sont déjà au format plat (une ligne par question)
+        const questionsArray: Question[] = data.map((row, idx) => ({
+          id: row.id,
+          category: 'reading_comprehension' as const,
+          question_text: row.question_text,
+          audio_url: row.audio_url,
+          image_url: row.image_url,
+          choices: row.choices as Choice[],
+          explanation: row.explanation,
+          question_number: row.question_number || (idx + 1),
+          passage_id: row.passage_id
+        }))
+        
+        const passageImageUrl = data[0].image_url || ''
+        const passageExplanation = data[0].explanation || ''
+        
+        // Sauvegarder dans le cache
+        const entry: CacheEntry<{ questions: Question[], imageUrl: string, explanation: string }> = {
+          data: { questions: questionsArray, imageUrl: passageImageUrl, explanation: passageExplanation },
           timestamp: Date.now()
         }
         sessionStorage.setItem(cacheKey, JSON.stringify(entry))
-        setQuestions(data)
+        
+        setQuestions(questionsArray)
+        setImageUrl(passageImageUrl)
+        setExplanation(passageExplanation)
+      } else {
+        setQuestions([])
+        setImageUrl('')
+        setExplanation('')
       }
     } catch (err) {
       console.error('Error:', err)
       setQuestions([])
+      setImageUrl('')
+      setExplanation('')
     } finally {
       setLoading(false)
     }
@@ -171,6 +208,8 @@ export function useReadingPassageCache(passageId: string) {
 
   return {
     questions,
+    imageUrl,
+    explanation,
     loading,
     fromCache
   }

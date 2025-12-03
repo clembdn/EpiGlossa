@@ -156,8 +156,9 @@ const groupReadingPassages = (questions: Question[]): ReadingPassageGroup[] => {
   const fallbackGroups: ReadingPassageGroup[] = [];
 
   questions.forEach((question) => {
-    const key = question.passage_id || question.id;
-    if (!question.passage_id) {
+    // Utiliser passage_id (legacy) ou image_url (nouveau format) comme clé de regroupement
+    const key = question.passage_id || question.image_url || question.id;
+    if (!question.passage_id && !question.image_url) {
       fallbackGroups.push({
         passageId: key,
         questions: [question],

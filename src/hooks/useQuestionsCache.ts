@@ -10,7 +10,7 @@ interface CacheEntry<T> {
   version: string
 }
 
-const CACHE_VERSION = '1.0.0'
+const CACHE_VERSION = '2.0.0' // Version mise à jour pour le nouveau format RC
 const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes en millisecondes
 
 // Clés de cache
@@ -107,12 +107,11 @@ export function useQuestionsCache(category: string) {
       setFromCache(false)
       
       if (category === 'reading_comprehension') {
-        // Pour la compréhension écrite : grouper par passage
+        // Pour RC : charger depuis Supabase (format individuel) et grouper par image_url
         const { data, error: fetchError } = await supabase
           .from('questions')
           .select('*')
           .eq('category', category)
-          .order('passage_id', { ascending: false })
 
         if (fetchError) throw fetchError
         const source = data ?? []
@@ -123,26 +122,38 @@ export function useQuestionsCache(category: string) {
           return []
         }
         
-        // Grouper par passage_id
-        const passageMap = new Map<string, ReadingPassage>()
-        source.forEach((q) => {
-          if (q.passage_id) {
-            if (!passageMap.has(q.passage_id)) {
-              passageMap.set(q.passage_id, {
-                passage_id: q.passage_id,
-                image_url: q.image_url,
-                questions: [],
-              })
-            }
-            passageMap.get(q.passage_id)!.questions.push(q)
-          }
-        })
+        // Grouper les questions par image_url pour créer des ReadingPassage
+        const passagesMap = new Map<string, ReadingPassage>();
         
-        // Convertir en tableau et trier
-        const passages = Array.from(passageMap.values()).map(passage => ({
-          ...passage,
-          questions: passage.questions.sort((a, b) => (a.question_number || 0) - (b.question_number || 0)),
-        }))
+        source.forEach((q: any) => {
+          // Utiliser image_url comme clé de regroupement
+          // Si pas d'image_url, utiliser passage_id ou id (fallback)
+          const key = q.image_url || q.passage_id || q.id;
+          
+          if (!passagesMap.has(key)) {
+            passagesMap.set(key, {
+              category: 'reading_comprehension',
+              image_url: q.image_url || '',
+              questions: {},
+              explanation: q.explanation || ''
+            });
+          }
+          
+          const passage = passagesMap.get(key)!;
+          const qNum = q.question_number || (Object.keys(passage.questions).length + 1);
+          
+          passage.questions[qNum.toString()] = {
+            question_text: q.question_text,
+            choices: q.choices
+          };
+          
+          // Mettre à jour l'explication si elle est plus complète (parfois stockée sur la 1ère question)
+          if (q.explanation && q.explanation.length > passage.explanation.length) {
+            passage.explanation = q.explanation;
+          }
+        });
+        
+        const passages = Array.from(passagesMap.values());
         
         // Mélanger les passages
         const shuffled = shuffleArray(passages)
