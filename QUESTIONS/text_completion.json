@@ -1,0 +1,280 @@
+[
+  {
+    "category": "text_completion",
+    "text_with_gaps": "Please be aware that there was a misprint in an advertisement... for 55% percent off rather {{1}} 15% off. If customers come in... please {{2}} and explain the printing error. Offer them an additional 5% off coupon {{3}} for coming into our store... Please call a manager to the sales floor {{4}} you encounter any customers who have the ad with them...",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "than", "is_correct": true },
+        { "option": "B", "text": "then", "is_correct": false },
+        { "option": "C", "text": "that", "is_correct": false },
+        { "option": "D", "text": "they're", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "apologize", "is_correct": true },
+        { "option": "B", "text": "analyze", "is_correct": false },
+        { "option": "C", "text": "compromise", "is_correct": false },
+        { "option": "D", "text": "categorize", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "to thank them", "is_correct": true },
+        { "option": "B", "text": "thanks them", "is_correct": false },
+        { "option": "C", "text": "to thanks them", "is_correct": false },
+        { "option": "D", "text": "thank them", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "if", "is_correct": true },
+        { "option": "B", "text": "before", "is_correct": false },
+        { "option": "C", "text": "because", "is_correct": false },
+        { "option": "D", "text": "whether", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'Rather than' is the correct comparative phrase. 2. In a customer service context involving a mistake, 'apologize' is the logical action. 3. The infinitive 'to thank them' is used here to express the purpose of the coupon. 4. 'If' introduces the condition under which a manager should be called."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "Thank you for shopping at Larson’s China. Our products are known for their modern... patterns... as well as {{1}} and strength. {{2}} Please note, however, that repeated drops... will {{3}} eventual breakage. We suggest you store them carefully... steel sponges, or {{4}} scrubbing when cleaning them...",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "durability", "is_correct": true },
+        { "option": "B", "text": "durable", "is_correct": false },
+        { "option": "C", "text": "ambitious", "is_correct": false },
+        { "option": "D", "text": "combative", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "They are dishwasher- and microwave-safe and we’re confident that you’ll be using them for years to come.", "is_correct": true },
+        { "option": "B", "text": "Visit our store to check out our other beautiful products.", "is_correct": false },
+        { "option": "C", "text": "Larson's utensils and silverware go great with the dinnerware.", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "result in", "is_correct": true },
+        { "option": "B", "text": "stop with", "is_correct": false },
+        { "option": "C", "text": "occur to", "is_correct": false },
+        { "option": "D", "text": "ending at", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "aggressive", "is_correct": true },
+        { "option": "B", "text": "durable", "is_correct": false },
+        { "option": "C", "text": "ambitious", "is_correct": false },
+        { "option": "D", "text": "complacent", "is_correct": false }
+      ]
+    },
+    "explanation": "1. A noun is required to parallel 'strength'; 'durability' is the noun form. 2. This sentence reinforces product quality before the text introduces a warning ('however') about breakage. 3. 'Result in' implies a cause-and-effect relationship (drops cause breakage). 4. 'Aggressive' is the appropriate adjective to describe harsh scrubbing that causes damage."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "LightWorld was established in the U.K. in 1997 and has {{1}} grown into an international franchising network... providing lighting solutions for the home and office {{2}} are practical... We are currently inviting expressions of interest from potential {{3}}. ...if you would like to run a LightWorld network within your own country... or if you would like to open your own {{4}}...",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "since", "is_correct": true },
+        { "option": "B", "text": "while", "is_correct": false },
+        { "option": "C", "text": "for", "is_correct": false },
+        { "option": "D", "text": "then", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "that", "is_correct": true },
+        { "option": "B", "text": "who", "is_correct": false },
+        { "option": "C", "text": "whose", "is_correct": false },
+        { "option": "D", "text": "these", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "franchisees", "is_correct": true },
+        { "option": "B", "text": "candidatures", "is_correct": false },
+        { "option": "C", "text": "interviewees", "is_correct": false },
+        { "option": "D", "text": "networkers", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "outlet", "is_correct": true },
+        { "option": "B", "text": "setting", "is_correct": false },
+        { "option": "C", "text": "light", "is_correct": false },
+        { "option": "D", "text": "opening", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'Since' is used with the present perfect tense to indicate growth starting from a past date (1997). 2. 'That' is the relative pronoun used for non-human subjects (solutions). 3. 'Franchisees' is the correct term for people joining a franchise network. 4. An 'outlet' is a specific commercial term for a store or point of sale."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "You should find a copy of this form inside the seat pocket in front of you; {{1}}, if there is no form please ask... Passengers... are required {{2}} either a white I-94 form {{3}} a green I-94W form. ...All forms must be {{4}} in block capital using a black or blue pen.",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "however", "is_correct": true },
+        { "option": "B", "text": "even though", "is_correct": false },
+        { "option": "C", "text": "despite the fact", "is_correct": false },
+        { "option": "D", "text": "additionally", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "to fill out", "is_correct": true },
+        { "option": "B", "text": "to fill through", "is_correct": false },
+        { "option": "C", "text": "to fill of", "is_correct": false },
+        { "option": "D", "text": "to fill up", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "or", "is_correct": true },
+        { "option": "B", "text": "also", "is_correct": false },
+        { "option": "C", "text": "either", "is_correct": false },
+        { "option": "D", "text": "and", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "completed", "is_correct": true },
+        { "option": "B", "text": "complete", "is_correct": false },
+        { "option": "C", "text": "completing", "is_correct": false },
+        { "option": "D", "text": "being completed", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'However' introduces a contrast (form usually there vs. form missing). 2. 'To fill out' is the standard phrasal verb for completing a document. 3. The structure is 'either... or'. 4. 'Must be completed' is the passive voice required here (past participle)."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "I've been giving some thought to an idea, and I'd like to find out what {{1}} of you think about it. Since the Sales and Marketing departments collaborate so much, I'm considering putting the two offices in the same room. So Sales would no longer be on the first floor, {{2}} would Marketing be on the third floor. Instead, they'll be on the second floor in a large, open area... I believe this would foster a sense of teamwork between the members of both departments. By {{3}} what the salespeople are doing, the marketing people could create better advertisements... What do you two think of this proposal? {{4}}",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "both", "is_correct": true },
+        { "option": "B", "text": "each", "is_correct": false },
+        { "option": "C", "text": "some", "is_correct": false },
+        { "option": "D", "text": "either", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "nor", "is_correct": true },
+        { "option": "B", "text": "which", "is_correct": false },
+        { "option": "C", "text": "and", "is_correct": false },
+        { "option": "D", "text": "thus", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "knowing", "is_correct": true },
+        { "option": "B", "text": "nowing", "is_correct": false },
+        { "option": "C", "text": "knowable", "is_correct": false },
+        { "option": "D", "text": "will know", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "How about providing feedback on this idea when you have some time?", "is_correct": true },
+        { "option": "B", "text": "When will you two have some time to start moving the desks around?", "is_correct": false },
+        { "option": "C", "text": "Don’t you think that everyone approves of the changes we made?", "is_correct": false },
+        { "option": "D", "text": "Wouldn’t you agree that everything I did worked out well?", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'Both' is required because the following verb 'think' is plural. 'Each' would require the singular 'thinks'. 2. 'Nor' is used here to continue the negative state started by 'no longer', triggering an inversion of the auxiliary verb 'would'. 3. The gerund 'knowing' is required after the preposition 'by'. 4. This sentence politely solicits an opinion on the proposed idea, fitting the context of the email."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "Dear Dave Scott, This is to confirm the {{1}} reached this morning in the conference call between yourself and our president, Jed Sanders... Payment will be sent once a month upon {{2}} of invoice from Ace Consulting. Ace agrees that invoices must be submitted no later than the 20th of each month. JB Sanders Corporation has agreed to {{3}} up a formal contract and send it to Dave Scott... At that time, the contract may be extended upon approval of both {{4}}, or a new arrangement may be negotiated.",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "agreement", "is_correct": true },
+        { "option": "B", "text": "conversation", "is_correct": false },
+        { "option": "C", "text": "election", "is_correct": false },
+        { "option": "D", "text": "argument", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "receipt", "is_correct": true },
+        { "option": "B", "text": "receive", "is_correct": false },
+        { "option": "C", "text": "receiving", "is_correct": false },
+        { "option": "D", "text": "receiver", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "draw", "is_correct": true },
+        { "option": "B", "text": "tear", "is_correct": false },
+        { "option": "C", "text": "make", "is_correct": false },
+        { "option": "D", "text": "get", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "parties", "is_correct": true },
+        { "option": "B", "text": "counerparts", "is_correct": false },
+        { "option": "C", "text": "collaborators", "is_correct": false },
+        { "option": "D", "text": "actors", "is_correct": false }
+      ]
+    },
+    "explanation": "1. The collocated phrase is to 'reach an agreement'. 2. 'Upon receipt' is standard business terminology meaning 'when the item is received'. 3. The phrasal verb 'draw up' means to prepare a written document, like a contract. 4. In legal and contractual contexts, the entities involved are referred to as 'parties'."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "To: Customer Service Department\nFrom: Kenneth Venkman\nSubject: Incorrect billing statement\n\nI am contacting you once {{1}} after receiving no reply to my prior e-mail regarding the problem with my gas bill for the month of June.\n\nAfter receiving my bill for last month, I {{2}} the charge that was included for unpaid gas in May. When I called your department about the issue, I {{3}} that the incorrect charges would be removed and that a new bill would be sent to me by e-mail.\n\nHowever, the new bill still includes these erroneous charges, which I have no intention of paying. Therefore, I have attached an image of a receipt {{4}} that I paid my bill for the month of May in full on June 12. I would like you to rectify this situation as soon as possible.",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "again", "is_correct": true },
+        { "option": "B", "text": "before", "is_correct": false },
+        { "option": "C", "text": "previously", "is_correct": false },
+        { "option": "D", "text": "much", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "queried", "is_correct": true },
+        { "option": "B", "text": "demanded", "is_correct": false },
+        { "option": "C", "text": "asked", "is_correct": false },
+        { "option": "D", "text": "interrogated", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "was informed", "is_correct": true },
+        { "option": "B", "text": "had been informing", "is_correct": false },
+        { "option": "C", "text": "will be informed", "is_correct": false },
+        { "option": "D", "text": "would have informed", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "confirming", "is_correct": true },
+        { "option": "B", "text": "converting", "is_correct": false },
+        { "option": "C", "text": "convincing", "is_correct": false },
+        { "option": "D", "text": "collaborating", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'Once again' implies repetition, fitting the context of having received no previous reply. 2. 'Queried' means to ask a question about something (checking validity), whereas 'asked' usually requires a preposition like 'about'. 3. 'Was informed' is the passive voice, meaning the customer service representative told him. 4. 'Confirming' is used to describe the receipt's function (providing proof/confirmation)."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "Sid's Stationery\n\nDear Ms. Michaels: Seasons Greetings.\n\nHoliday Sale\n\nAs a {{1}} customer, we wanted you to be among the first to know about our upcoming holiday sale. All craft paper, specialty printer paper, and decorative envelopes will be reduced by 50% for the month of December.\n\nAs per tradition at Sid's Stationery, we will be having a Christmas raffle. This year the grand prize is a 2-night stay for two at the Meridian Inn {{2}} Toronto Island. The winner will receive a free double occupancy stay in the penthouse suite as well as a free dinner on the moonlit patio.\n\nMoney from ticket sales will be {{3}} to The Family Foundation, a local organization that provides food and clothing to those who need it most this Christmas. We look forward {{4}} you this Christmas season.",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "valued", "is_correct": true },
+        { "option": "B", "text": "valid", "is_correct": false },
+        { "option": "C", "text": "value", "is_correct": false },
+        { "option": "D", "text": "validate", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "on", "is_correct": true },
+        { "option": "B", "text": "at", "is_correct": false },
+        { "option": "C", "text": "over", "is_correct": false },
+        { "option": "D", "text": "through", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "donated", "is_correct": true },
+        { "option": "B", "text": "funded", "is_correct": false },
+        { "option": "C", "text": "collect", "is_correct": false },
+        { "option": "D", "text": "purchased", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "to seeing", "is_correct": true },
+        { "option": "B", "text": "seeing", "is_correct": false },
+        { "option": "C", "text": "see", "is_correct": false },
+        { "option": "D", "text": "to see", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'Valued customer' is the standard business collocation for an appreciated client. 2. We use the preposition 'on' for islands (on Toronto Island). 3. Money is 'donated to' a charity. 4. The phrasal verb is 'look forward to' followed by a gerund (-ing form), so 'to seeing' is the only correct grammar."
+  },
+  {
+    "category": "text_completion",
+    "text_with_gaps": "Dear Professor Clarke,\n\nI am a recent {{1}} of the University of Tayforth, where I obtained a first-class honors degree in biotechnology. As a {{2}} motivated individual, I felt that I should contact you directly rather than simply wait for a vacancy to be posted.\n\nIt is specifically for that reason that I {{3}} to you to inquire whether there are any available positions your research team.\n\nAfter following your work and achievements closely over the past few years, I feel that I could greatly benefit from your expertise in a working laboratory environment. I hope that one day in the future I can work {{4}} you and learn many things from you.",
+    "gap_choices": {
+      "1": [
+        { "option": "A", "text": "graduate", "is_correct": true },
+        { "option": "B", "text": "undergraduate", "is_correct": false },
+        { "option": "C", "text": "doctor", "is_correct": false },
+        { "option": "D", "text": "bachelor", "is_correct": false }
+      ],
+      "2": [
+        { "option": "A", "text": "highly", "is_correct": true },
+        { "option": "B", "text": "barely", "is_correct": false },
+        { "option": "C", "text": "widely", "is_correct": false },
+        { "option": "D", "text": "likely", "is_correct": false }
+      ],
+      "3": [
+        { "option": "A", "text": "am writing", "is_correct": true },
+        { "option": "B", "text": "have written", "is_correct": false },
+        { "option": "C", "text": "will write", "is_correct": false },
+        { "option": "D", "text": "between", "is_correct": false }
+      ],
+      "4": [
+        { "option": "A", "text": "alongside", "is_correct": true },
+        { "option": "B", "text": "near", "is_correct": false },
+        { "option": "C", "text": "above", "is_correct": false },
+        { "option": "D", "text": "within", "is_correct": false }
+      ]
+    },
+    "explanation": "1. 'A recent graduate' is the correct term for someone who has just finished their degree. 2. 'Highly motivated' is a common collocation to express strong enthusiasm. 3. 'Am writing' (Present Continuous) describes the action happening right now (in the letter). 4. 'Work alongside' implies working together or in collaboration with someone."
+  }
+]

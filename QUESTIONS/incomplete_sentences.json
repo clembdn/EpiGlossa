@@ -1,0 +1,4626 @@
+[
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The satellite photographed a ___ moon in orbit around Saturn.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "previous undetecting",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "previous undetected",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "previously undetected",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "previously undectecting",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'previously undetected' because the adverb 'previously' modifies the adjective 'undetected'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "We were __ unaware of the problems with the air-conditioning units in the hotel rooms until this week.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Completely",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Completed",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Completing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Complete",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'completely' because an adverb is needed to modify the adjective 'unaware'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr. Kemper’s donation to the KSC Community Foundation broke the record for the largest private gift __ given to the organization.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Once",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Rarely",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Ever",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Always",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'ever' to indicate 'at any time'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "“Accounts receivable” is money owed to a company. __ “accounts payable” is money owed by the company to creditors.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Otherwise",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Whereas",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Such as",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "In order that",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'whereas' because it contrasts two ideas."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The lectures will cover the relevant methods of __ the impact of currency fluctuations on international transactions.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Determination",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Determining",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Determined",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Determine",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'determining' because the phrase requires a gerund after 'methods of'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The comptroller has __ that in ten years the space used by the research department will have to double.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Predicted",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Preceded",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Premeditated",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Prepared",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'predicted' because it fits the context of forecasting future needs."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Many workers can’t use computers; __, training is required.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "For example",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Consequently",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Besides",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "On the whole",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'consequently' because it expresses a logical result."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "In Piazzo’s latest architectural project, he hopes to __ his flair for blending contemporary and traditional ideas.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Position",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Valve",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Appear",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Demonstrate",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The correct answer is 'demonstrate' because it means 'to show clearly'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Cooks must remember that some raw foods are very __ and should be refrigerated or chilled until ready to be eaten or cooked.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Periodic",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Peripheral",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Permanent",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Perishable",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The correct answer is 'perishable' because it describes food that can spoil quickly."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Could you have the assistant __ my office before he leaves today?",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Stop off",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Stop to",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Stop by",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Stop for",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'stop by', which means to make a short visit."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Automobiles are put __ of gear by moving the gear shift to neutral.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Out",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Above",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Across",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Off",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'out' because the idiom is 'out of gear'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "__ tell the media too much about the deal.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Don’t you",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Does",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Let’s not",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Let not",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'Let’s not' because it expresses a suggestion in the negative form."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Before __ a particular distribution strategy, a segment of the market should be tested.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Influencing",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Adopting",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Engaging",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Founding",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'adopting' because it means to start using something new, such as a strategy."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Unfortunately, there are __ will probably not respect the arbiter’s decision.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Which",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Those who",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Whoever",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Of whom",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'those who' because it refers to people as a group."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I am surprised they moved your office next to __.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "I",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Myself",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "My",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Mine",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The correct answer is 'mine' because it replaces a possessive noun phrase."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Practically __ in the group passed up the opportunity to attend the computer skills seminar.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Someone",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Each one",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "No one",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Anyone",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'no one' because it makes sense in the negative statement."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The members would resign if they __ asked to do so.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Were",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Would be",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Are",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Will be",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'were' because it is the correct form for an unreal conditional sentence."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "There was hardly __ food left when we arrived at the party.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Any",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "No",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Never",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Some",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'any' because it follows 'hardly' in negative-like sentences."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Unfortunately, neither Mr. Sachs __ Mrs. Flynn will be able to attend the awards banquet this evening.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Either",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Nor",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "And",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "But",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'nor' because it completes the correlative conjunction 'neither...nor'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "It’s important that the clients __ interested.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Will seem",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Is seeming",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Are seeming",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Seem",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The correct answer is 'seem' because the subjunctive form is used after expressions like 'It is important that...'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Would you please buy me __ beer when you go to the SOG market",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Several",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "one",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "any",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "some",
+        "is_correct": true
+      }
+    ],
+    "explanation": "In a polite request or offer (a non-negative context), 'some' is the correct quantifier for an uncountable noun ('beer')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "In order to place a call outside the office, you have to __ nine first",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Dial",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Make",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Tip",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Number",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'dial' specifically refers to pressing the keys to enter a telephone number or code."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I was so busy today that I __ time to eat at all",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Had hard",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Never have",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Could have",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Hardly had",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The structure 'so... that' implies an extreme result. 'Hardly had' means 'almost had no time', which is the logical consequence of being 'so busy'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Though their performance was relatively unpolished, the actors had the audience’s __ for the duration of the play",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Attentiveness",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Attentively",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Attention",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Attentive",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The possessive ('audience's') requires a noun to follow it. 'Attention' is the correct noun, meaning focused concentration."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Today many managers reward only good performers and tend to dismiss __ employees more frequently",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Incisive",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Inevitable",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Incompetent",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Intact",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The context contrasts 'good performers' with those who are dismissed. 'Incompetent' (lacking necessary skill or knowledge) is the correct adjective to describe employees who are frequently let go."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I’m not going to stay here any longer. I won’t come here __.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Any longer",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Any more",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "again",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "once more",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Any more' and 'any longer' are often interchangeable when referring to time, but 'any more' is slightly more common with 'come here' to denote cessation of future actions. It is technically more accurate in this context where both are options."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "After the main course, choose from our wide __ of homemade desserts.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Various",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Variety",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Vary",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Varied",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adjective 'wide' modifies the noun 'variety', meaning a broad range or collection of things, which fits the context of desserts."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "This identification card is valid as long as your policy remains in __",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Effect",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Power",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Check",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Payment",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct idiomatic phrase is 'in effect', meaning 'in force' or 'operational'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "When you cross the street, you must __ speedy cars",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Be careful of",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "To take care of",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "To care of",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Take care of",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The modal verb 'must' requires the base form of the verb. 'Take care of' means to be careful or to look after, which is appropriate when crossing a street with speedy cars."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I'm afraid Ms. Quattrano __ if she had not applied earlier this month",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Would not have hired",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Would not hire",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Would not have been hired",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Would not be hired",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 3 conditional structure (unreal past). The main clause requires the Conditional Perfect ('would not have hired') in the active voice, meaning the company would not have done the hiring."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If you send in an order __ mail, we recommend that you phone our sales division directly to confirm the order",
+    "choices": [
+      {
+        "option": "A",
+        "text": "On",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "by",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "for",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "neither",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'By' is the correct preposition used to describe the method or medium of transport/delivery ('by mail', 'by bus', 'by car')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Private financing can __ a variety of forms",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Take",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Make",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Do",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Occur",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct verb collocation is 'take forms' or 'take a form', meaning to adopt or assume a particular appearance or manifestation."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If they __ like it, they can have another one",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Will",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Do not",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Won’t",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Didn’t",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 1 conditional (likely future scenario). The 'if' clause requires the Present Simple: 'If they do not like it...'. The consequence is stated with 'can have'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Although we had left home on time, we arrived at the airport much __ than we expected",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Latest",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Late",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Later",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Lately",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'much __ than' requires the comparative form. 'Later' is the correct comparative adverb, meaning 'at a time further into the future or past'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "__ in the local bus service have brought increased business to the area",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Lifts",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Elevations",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Progressions",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Improvements",
+        "is_correct": true
+      }
+    ],
+    "explanation": "'Improvements' (changes that make something better) is the logical subject, as positive changes in bus service lead to positive results (increased business)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "This company attempts to make its employees __ like family",
+    "choices": [
+      {
+        "option": "A",
+        "text": "feel",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "felt",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "feeling",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "feels",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The causative verb 'make' is followed by the object ('its employees') and the base form of the verb ('feel')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "We are pleased to inform __ that the missing order has been found",
+    "choices": [
+      {
+        "option": "A",
+        "text": "you",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "your",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "yourself",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "yours",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'inform' requires the object pronoun 'you' to directly receive the information."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Rates for the use of recreational facilities do not include tax and are subject to change without __",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Cash",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Notice",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Signal",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Report",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct collocation is 'without notice', meaning without prior announcement or warning."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Responses to the proposed work schedule changes are __ outstanding from several departments",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Still",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "since",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "yet",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "until",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adverb 'still' correctly indicates that the outstanding responses continue to be expected or delayed. 'Yet' is usually used with negatives or questions."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If it __ rained yesterday, Mary might have come",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Had not",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Not had",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Wouldn’t have",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Would not",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 3 conditional (unreal past event). The 'if' clause requires the Past Perfect tense: 'If it had not rained'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Naturally the company will try to borrow money at a low rate of interest, but loans of this kind are not __ obtainable",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Presumably",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Obviously",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Genuinely",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Frequently",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The adverb 'frequently' (often) is the only choice that fits the logical context: loans are possible, but not often available. The sentence expresses a contrast."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "A recent global survey suggests __ demand for aluminum and tin will remain at its current level for the next five to ten years",
+    "choices": [
+      {
+        "option": "A",
+        "text": "That",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Both",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Which",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "It",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct answer is 'both' because it refers to both aluminum and tin as the subjects of the demand."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The survey shows that the product will be popular in the market, ___ the company cuts down the selling price of 10%",
+    "choices": [
+      {
+        "option": "A",
+        "text": "When",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Whether",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "If",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Unless",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The conjunction 'unless' (meaning 'if not') sets a condition: the product will be popular only *if* the price is cut, suggesting a dependency."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The director of Educational Programs works collaboratively with the Ministry of Education to ___ that the programs are meeting the needs of the institution",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Define",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Accept",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Ensure",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Imply",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'ensure' (to make certain that something will happen) correctly describes the goal of working with the Ministry regarding program quality."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Costs should be cut, ___, the number of staff positions will be reduced",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Therefore",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "But",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "However",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Meanwhile",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Therefore' is the logical transitional adverb needed to show that the reduction in staff positions is a consequence of cutting costs."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "You can't rent any vehicle __ you have a license",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Unless",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "When",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "If",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "That",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Unless' (meaning 'if not') is the correct subordinating conjunction to establish the necessary condition (having a license) for the rental to be permitted."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "We'll go on with the work, __ we can find the essential tools or not",
+    "choices": [
+      {
+        "option": "A",
+        "text": "If",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "No matter",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Unless",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Whether",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The phrase 'or not' following the gap requires the conjunction 'whether' to express a choice between two alternatives."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The meeting __ going on since eight o’clock this morning",
+    "choices": [
+      {
+        "option": "A",
+        "text": "is",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Has been",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "will be",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "was",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The time marker 'since eight o’clock this morning' indicates an action that started in the past and is ongoing, requiring the Present Perfect Continuous tense (implied by 'has been [going]')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If the National Park __ constructed 30 years ago, the citizens might still be looking for recreation among the rocks.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "had been",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "had not been",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "was",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "was not",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a mixed conditional (unreal past condition affecting the present result). The condition must be Past Perfect Negative ('had not been') to express that the lack of construction in the past is the reason for the current situation ('might still be looking')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The recent storms have led to the __ closure of our overseas office.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "temporal",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "temporaries",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "temporarily",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "temporary",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The phrase requires an adjective ('temporary') to modify the noun 'closure'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Savant National Park is __ by train, bus, charter plane, and rental car.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "accesses",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "accessibility",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "accessing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "accessible",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The linking verb 'is' requires an adjective. 'Accessible' means 'capable of being reached or used', which fits the context of different modes of transport."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The young intern who was hired last month is quite ___ about accounting.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "knowledgeable",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "knowledge",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "knowing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "known",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adverb 'quite' modifies an adjective. 'Knowledgeable' (having knowledge or intelligence) is the correct adjective to describe the intern's aptitude."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The consultant __ his business if he had advertised.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "could have doubled",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "will double",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "doubled",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "would doubled",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 3 conditional (unreal past). The main clause requires the Conditional Perfect: 'could have doubled' expresses a possibility that did not happen."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I haven’t ____ my aunt since she left Taiwan",
+    "choices": [
+      {
+        "option": "A",
+        "text": "heard from",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "heard of",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "listened",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "listened to",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'heard from' means to receive communication from someone. The time marker 'since' requires the Present Perfect tense."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The bank ___ another branch in Houston within the next year",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Would open",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Will be opening",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Opened",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Have opened",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The time marker 'within the next year' indicates a planned, ongoing action in the future, best expressed by the Future Continuous tense ('will be opening')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The purchaser wanted the equipment ___ by Monday morning",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Will be delivered",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Must be delivered",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Delivering",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Delivered",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The verb 'wanted' in the causative sense requires the object ('the equipment') followed by the passive past participle ('delivered')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The company offers a ___ plan for its workers.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "retire",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "retiring",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "retirement",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "retired",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Retirement' is the correct noun used adjectivally to specify the type of plan."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The human heart is wider at the top __ at the bottom.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "from",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "than",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "but",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "as",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The comparative adjective 'wider' requires the conjunction 'than' to complete the comparison."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The chairman suggests ___ new international markets",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Targeting",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Targeted",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "To target",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Target",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'suggests' is typically followed by a gerund ('targeting') or a 'that' clause with a subjunctive (e.g., 'suggests that they target...')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mrs Barker gave a short speech after lunch to express her __ for the retirement gift",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Applause",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Apportionment",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Appreciation",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Appeasement",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Appreciation' (thankfulness or gratitude) is the correct noun that fits the context of thanking someone for a gift."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Coral, popular for necklaces, __ made of tiny sea animals",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Is",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "And",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Which",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "It",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The subject 'Coral' (singular) requires the singular verb 'is' to form the passive voice for the main clause. The phrase in commas is an appositive."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The bank __ another branch in Houston within the next year",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Would open",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Will be opening",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Opened",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Have opened",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The time phrase 'within the next year' indicates a planned, ongoing future action or arrangement, correctly expressed by the Future Continuous tense ('will be opening')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The purchaser wanted the equipment __ by Monday morning",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Will be delivered",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Must be delivered",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Delivering",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Delivered",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The passive causative structure 'wanted [object] [past participle]' is correct when the purchaser wants someone else to perform the action ('delivered') on the object ('the equipment')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Tina spent a long time __ for the right way to go.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "for looking",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "looking",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "to looking",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "to looking at",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb structure 'spend time' must be followed by the gerund form of the verb ('looking')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "___ our productivity figures improve in the near future, we foresee having to hire more people between now and July.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "only",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "because",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "unless",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "during",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The subordinate clause provides the reason for the main clause. 'Because' is the correct conjunction to introduce the reason ('productivity improvement is the reason for hiring')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If our candidates __ elected, we’ll have a strong board.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "will be",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "have been",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "were",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "are",
+        "is_correct": true
+      }
+    ],
+    "explanation": "This is a Type 1 conditional (likely event). The 'if' clause requires the Present Simple Passive voice ('are elected')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "After four years in domestic sales, Mr Leconte ____ was able to transfer to the international division.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "following",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "in ending",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "finally",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "conclusively",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adverb 'finally' means 'after a long time' and logically concludes the four-year period, leading to the result."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Ms. Lopez has __ learned to created zip files.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "certain",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "already",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "yet",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "ever",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Already' is the correct adverb to use with the Present Perfect ('has learned') to indicate that the action happened sooner than expected."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Some employees get their paychecks automatically __ in their bank accounts.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "deposit",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "deposited",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "depositing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "are deposited",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The causative structure 'get [object] [past participle]' is correct for passive actions performed by someone else (the paychecks are deposited)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If I __ in San Francisco, I would have visited the Golden Gate bridge.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "were",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "am",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "was",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "had been",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a mixed conditional. The subjunctive 'were' (Type 2 condition) is used to express a hypothetical status in the present ('If I were living there now')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr Kekkonen accused Boris of __ when he handed in this report a week late.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "proliferating",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "professing",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "procrastinating",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "profiling",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'accused... of' requires a gerund. 'Procrastinating' (delaying work) logically relates to handing in a report late."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The bank invites you to keep your securities safe in our vault __ strict audit controls.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "under",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "inside",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "beneath",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "herein",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The preposition 'under' is used to express being governed by rules or conditions ('strict audit controls')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "What a shame! If Mrs. Dwayne __ so disorganized, she would be given far more responsibilities.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "hadn’t been",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "wasn’t being",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "wasn’t",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "isn't",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 2 conditional (present unreal). The 'if' clause requires the Simple Past tense ('wasn’t') to refer to a hypothetical present condition."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Make sure to use an __ dealer.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "authorized",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "authorization",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "authority",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "authoritarian",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The past participle 'authorized' functions as an adjective, meaning the dealer has official permission."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Extreme __ should be used when the forklift truck is being operated.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Cautiously",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "cautioned",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "cautious",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "caution",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The adjective 'Extreme' modifies the noun 'caution'. The resulting phrase 'Extreme caution' is the subject of the sentence."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Dance is the subject of __ movies playing over the holiday season.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Hardly",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Any",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Several",
+        "is_correct": true
+      }
+    ],
+    "explanation": "An indefinite quantity ('several') is required to modify the plural noun 'movies'. 'Several' is the only logical choice."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "What __ about the Skeyes case three days ago?",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Had you decided to do",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Did you decided to do",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Decided you to do",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Did you decide to do",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The question is in the Simple Past tense. The structure is 'WH-word' + 'did' + 'subject' + 'base form of the verb' ('decide')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The trend toward shorter working hours __",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Continues",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Continually",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Continuation",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Continuous",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The singular subject 'The trend' requires the Simple Present verb form 'continues' to describe an ongoing general situation."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Economic experts believe there will be a gradual __ in October.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Slowdown",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Closedown",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Countdown",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Rundown",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The context of 'economic experts' and 'gradual' requires the noun 'slowdown', meaning a decline in economic activity."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Ms Nyguen had submitted her resume before she __ the position was filled",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Has known",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Will know",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Knew",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Knows",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The sentence describes past events, with 'had submitted' (Past Perfect) showing the earlier action. The subsequent action following 'before' should be in the Simple Past ('knew') for consistency."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The paychecks will be delivered __ they arrive from the accounting department",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Before",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "When",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "During",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Soon",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The conjunction 'when' correctly introduces the time clause, specifying the moment the delivery action will occur."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The ceiling fans were on, but unfortunately they only __ the hot, humid air",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Stirred up",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Turned into",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Poured through",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Cut back",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'stirred up' means to move or circulate something (the air), which is the intended meaning in the context of a fan."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The country hospital is currently __ volunteers to staff the reception",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Looking for",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Looking to",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Looking around",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Looking into",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'looking for' means to search or seek, which fits the context of finding volunteers."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I __ a heavy workload this month",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Have",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Having",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Am having",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "To have",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The continuous form 'am having' is correct because 'this month' indicates a temporary state currently in progress."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Many employees seem more __ now about how to use the new telephone system than they did before they attended the workshop",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Confusing",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Confusion",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Confused",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Confuse",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adjective must end in '-ed' ('confused') because it describes the feeling experienced by the subject ('employees')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The administration allows thailand __ indonesia trade benefits",
+    "choices": [
+      {
+        "option": "A",
+        "text": "But",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "And so",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "And",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Nor",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The coordinating conjunction 'and' is necessary to correctly link two parallel nouns ('Thailand' and 'Indonesia') that are both receiving the trade benefits."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "A storm is coming and our radio doesn’t work. Don’t forget __",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Buying another",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "To buy another",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "To buy the other",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Buying others",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'forget' takes the infinitive ('to buy') to refer to a necessary action that still needs to be done. 'Another' refers correctly to one more radio."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The __ was settled on Saturday",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Dispute",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Disputable",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Disputing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Disputant",
+        "is_correct": false
+      }
+    ],
+    "explanation": "A singular noun ('dispute') is required to function as the subject of the passive verb phrase ('was settled')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "He drinks too much, __?",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Does he",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Is he",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Doesn’t he",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Isn’t he",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The tag question must be negative and use the Simple Present auxiliary ('does') corresponding to the positive main verb ('drinks')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "From the turn of the century, concern for wildlife __ to numerous international conservation programs",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Has led",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Is leading",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Leads",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Lead",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The time expression 'From the turn of the century' indicates an action started in the past with current relevance, requiring the Present Perfect tense."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "My car __, and I had to walk five miles to the nearest garage",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Broke up",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Turned up",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Broke down",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Took off",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'broke down' means the car stopped working, providing the logical reason for walking to the garage."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "When corporations decide to buy life insurance for their executives, the various plans should be __ like any other financial commitment",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Acquainted",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Contributed",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Evaluated",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Estimated",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The passive structure requires the past participle 'evaluated' (assessed or judged), as financial plans must be reviewed."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I generally used to __ my wife’s opinion about my previous jobs",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Values",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Valuing",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Value",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Valued",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The structure 'used to' must be followed by the base form of the verb (infinitive without 'to'), which is 'value'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "A __ firm will help us find software",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Consultation",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Consult",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Consultation",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Consulting",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The present participle 'Consulting' functions as an adjective to modify the noun 'firm', describing its type (a firm that consults)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If the bills __ in five days, the company will seek damages",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Aren’t paid",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Weren’t paid",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Don’t pay",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Won’t have paid",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 1 conditional (future consequence). The 'if' clause requires the Present Simple Passive voice: 'are not paid' ('bills' are passive). 'Don't pay' is active."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The printer apologized for __ two names on the program.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "leaving out",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "leaving to",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "leaving for",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "leaving from",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'leaving out' means omitting or forgetting to include something, which is the logical error requiring an apology from a printer."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "One of the most frequent complaints among airline passengers is that there is not __ legroom.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "very",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "plenty",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "enough",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "many",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Legroom' is an uncountable noun. 'Enough' is the correct quantifier to express a lack of sufficiency (not enough space)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr Kekkonen accused Boris of __ when he handed in his report a week late.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "procrastinating",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "profiling",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "proliferating",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "professing",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'accused... of' requires a gerund. 'Procrastinating' (delaying or putting off work) is the only verb that fits the context of handing in a report late."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The satellite photographed a __ moon in orbit around Saturn.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "previous undetection",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "previously undetecteding",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "previously undetected",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "previously undetection",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct structure is Adverb ('previously') + Adjective/Past Participle ('undetected') to modify the noun 'moon'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "You can't rent any vehicle __ you have a licence.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "unless",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "that",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "when",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "if",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The conjunction 'unless' means 'if not' and sets the necessary condition (having a license) for the main clause to be false (you can't rent the vehicle)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Jenna is unemployed, so she __.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "is currently working",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "hasn't currently worked",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "doesn't currently work",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "isn't currently working",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The definition of 'unemployed' is 'not working', making 'doesn't currently work' the most direct and logical consequence. While 'isn't currently working' is also true, 'doesn't currently work' is the typical way to state the current status."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Price quotes __ daily.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "have been announced.",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "have been daily announced.",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "have daily been announced.",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "daily have been announced.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The passive voice is required since 'Price quotes' do not announce themselves. The Present Perfect Passive ('have been announced') is the most appropriate verb tense, with the adverb 'daily' correctly placed at the end of the sentence."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The telecommunications department is completing a detailed __ of each factory site to determine the types of equipment and features needed in each area.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Evolution",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Evaluation",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Expansion",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Elaboration",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Evaluation' (assessment) is the correct noun, fitting the context of reviewing a site to determine specific equipment needs."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "I’m __ with catching a bus all the time.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Fed up",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Tired of",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Tired",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Had it",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Fed up' is the idiomatic expression meaning 'annoyed or bored with something that has been happening for a long time'. 'Tired of' is also possible, but 'fed up' is more forceful."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The company offers a __ plan for its workers.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Retire",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Retirement",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Retired",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Retiring",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The noun 'plan' requires a preceding noun or adjective to describe its type. 'Retirement' is the noun used adjectivally (a 'retirement plan')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "You need about forty different nutrients to stay ___.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "health",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "healthiness",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "healthily",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "healthy",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The verb 'stay' is a linking verb and requires an adjective ('healthy') to describe the state of the subject ('you')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The report outlines the products for the quarter ____ the year.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "form",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "to",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "at",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "of",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The preposition 'of' is used to link a part ('products for the first quarter') to the whole ('the year')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "James has been sick for a while; he seems unable to ___ himself.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "take after",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "look into",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "take care of",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "care of",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Take care of' is the correct phrasal verb meaning 'to look after or manage'. It fits the context of being sick and needing self-care."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "She ___ her old grandmother.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "took care",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "cared form",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "took care of",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "cared of",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct idiom for providing care is 'take care of'. The past tense form is 'took care of'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "____ Mr Hague finished the job interview, he felt relieved.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Because of",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "During",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "After",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "While",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The conjunction 'After' is required to show that the feeling of relief was the result of the interview having been completed."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The prime is expected to arrive at the convention hall at ____ 7:00 P.M.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "approximated",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "approximately",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "approximate",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "approximates",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adverb 'approximately' is needed to modify the arrival time, meaning 'around' or 'close to' 7:00 P.M."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "On ___, employees reach their peak performance level when they have been in the job for at least two years.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "common",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "general",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "average",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "standard",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The complete idiom is 'On average,' meaning based on a calculation of a typical number or outcome. 'On common' or 'on general' are incorrect idioms."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The performance of Michael is better than ____ member in the team.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "other",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "all the other",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "every other",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "any other",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The comparison structure 'better than' requires 'any other' when comparing a singular subject (Michael) to the rest of the group (member in the team)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Armstrong has the ___ management team of the three companies under consideration.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "impressive",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "more impressive",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "most impressive",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "impressively",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The sentence compares the team to a group of three ('of the three companies'), requiring the superlative form: 'the most impressive'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The notebook computer is the ___ profitable of all the products that are presently on sale.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "more",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "most",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "much",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "only",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'of all the products' indicates a comparison to an entire group, requiring the superlative degree of comparison: 'the most profitable'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr Dalla would like the invoices ____ directly to Milan.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "faxing",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "fax",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "faxed",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "be faxed",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'would like' used in the causative sense with an object ('the invoices') followed by a passive action requires the past participle ('faxed'): 'would like [object] [past participle]'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Tina spent a long time ___ for the right way to go.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "for looking",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "looking",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "to looking",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "to look at",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The structure 'spend time' is correctly followed by the gerund form of the verb ('looking')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If our candidates ___ elected, we’ll have a strong board.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "will be",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "have been",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "were",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "are",
+        "is_correct": true
+      }
+    ],
+    "explanation": "This is a Type 1 conditional (likely event). The 'if' clause requires the Present Simple Passive voice, which is 'are elected' (the candidates are the object of the action)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Ms. Lopez has ___ learned to created zip files.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "certain",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "already",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "yet",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "ever",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Already' is the correct adverb to use with the Present Perfect ('has learned') to indicate that the action happened sooner than expected. 'Yet' is usually used in negative statements."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Some employees get their paychecks automatically ___ in their bank accounts.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "deposit",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "deposited",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "depositing",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "are deposited",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The structure 'get [object] [past participle]' is the passive causative, meaning the employees arrange for the action ('deposited') to be done to the object ('paychecks') by someone else."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr Kekkonen accused Boris of ____ when he handed in this report a week late.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "proliferating",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "professing",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "procrastinating",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "profiling",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The idiom 'accused... of' requires a gerund. 'Procrastinating' (delaying work) is the only verb that relates to handing in a report late."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The bank invites you to keep your securities safe in our vault ___ strict audit controls.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "under",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "inside",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "beneath",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "herein",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The preposition 'under' is used to express that something is subject to or governed by rules or conditions ('strict audit controls')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "What a shame! If Mrs. Dwayne ___ so disorganized, she would be given far more responsibilities.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "hadn’t been",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "wasn’t being",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "wasn’t",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "isn't",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 2 conditional (present unreal). The 'if' clause requires the Simple Past tense ('wasn’t') to refer to an unreal or hypothetical condition in the present."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Make sure to use an ____ dealer.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "authorized",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "authorization",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "authority",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "authoritarian",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The past participle 'authorized' functions as an adjective to describe the noun 'dealer', meaning the dealer has official permission."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Extreme ___ should be used when the forklift truck is being operated.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Cautiously",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "cautioned",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "cautious",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "caution",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The adjective 'Extreme' requires the noun 'caution' to follow it, forming the noun phrase 'Extreme caution', which is the subject of the sentence."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Since when ___ with Japanese potential customers?",
+    "choices": [
+      {
+        "option": "A",
+        "text": "did you negotiate",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "have you been negotiating",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "have you negotiate",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "will you negotiate",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The time expression 'Since when' implies an action that started in the past and is ongoing, requiring the Present Perfect Continuous tense."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "It is worth examining the ___ nations can take to facilitate the removal barriers.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "stages",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "levels",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "grades",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "steps",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The noun 'steps' is the most idiomatic choice in the context of actions taken to solve a problem or achieve a goal ('steps nations can take')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If savings could have been made elsewhere, we ___ to give financial support to local community service organizations last year.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "continued",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "had continued",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "continue",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "would have continued",
+        "is_correct": true
+      }
+    ],
+    "explanation": "This is a Type 3 conditional structure (unreal past), where the consequence requires the Conditional Perfect: 'would have' + past participle."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Find ___ the details and write a report.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "about",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "out",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "around",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "up",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'find out' means to discover or get information, which is the required meaning before writing a report."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "In this company there has been little ___ for the needs of part-time workers",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Regard",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Favor",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Reception",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Manners",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The noun 'regard' is the correct term, used in the collocation 'little regard for,' meaning little care or consideration for."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Battery-operated reading lamps ____ very well right now.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Sale",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Were sold",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Are selling",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Sold",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb phrase 'are selling' is the correct use of the passive continuous to describe the lamps' current popularity or market performance ('selling well')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "We are a major international company with a growing number of ____ in North America",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Instincts",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Inferences",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Interests",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Instances",
+        "is_correct": false
+      }
+    ],
+    "explanation": "'Interests' (business stakes or investments) is the correct term for a major international company expanding in North America."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Quarterly earnings are ___ reported to the shareholders.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "ever",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "rare",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "seldom",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "unusually",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The Present Simple structure requires an adverb of frequency, and 'seldom' (rarely) is a suitable choice, modifying the verb 'reported'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Management let the employees ___ at two o’clock.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Leave",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Left",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "was leaving",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "was leaft",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The causative verb 'let' is always followed by the object ('the employees') and the base form of the verb ('leave')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Participation in the saving plan is ___, but often reaches ninety percent.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Voluntarily",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Volunteer",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Voluntary",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Volunteering",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The linking verb 'is' requires an adjective ('voluntary') to describe the subject ('Participation')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Price quotes ___.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Have daily been announced",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Have been announced daily",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Daily have been announced",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Have been daily announced",
+        "is_correct": true
+      }
+    ],
+    "explanation": "In the Present Perfect Passive, the adverb of frequency ('daily') can be placed between the auxiliary verbs, making 'have been daily announced' the correct option."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "We conduct our audits in accordance ___ generally accepted auditing standards",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Across",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "With",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "of",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "in",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct and fixed prepositional phrase is 'in accordance with', meaning 'in conformity to' or 'according to'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The manager of the accounting department ___ to France next week.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Would fly",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Is flying",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Flew",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Flies",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The Present Continuous ('is flying') is used here to express a fixed future arrangement, confirmed by the time marker 'next week'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Faculty members are planning to ___ a party in honor of Dr. Walker, who will retire at the end of the semester",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Carry",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "take",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "hold",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "do",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'hold' is the correct verb used with 'a party' to mean organizing or hosting an event ('to hold a party')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The comptroller has __that in ten years the space used by research department will have to double.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Predicted",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Preceded",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Premeditated",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Prepared",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The context of forecasting a future required increase ('will have to double') demands the verb 'Predicted', which means to state what will happen in the future."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "In Piazzo’s latest architectural project, he hopes to __ his flare for blending contemporary and traditional ideas.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Position",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Valve",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Appear",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Demonstrate",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The verb 'demonstrate' means to show or prove clearly. Piazzo hopes to display his talent ('flare') through his project."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Cooks must remember that some raw foods are very __ and should be refrigerated or chilled until ready to be eaten or cooked.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Periodic",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Peripheral",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Permanent",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Perishable",
+        "is_correct": true
+      }
+    ],
+    "explanation": "'Perishable' is the correct adjective to describe food that spoils quickly and thus requires refrigeration."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Practically __ in the group passed up the opportunity to attend computer skills seminar",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Someone",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Each one",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "No one",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "anyone",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'passed up the opportunity' implies a negative action (they didn't take it). 'Practically no one' is the correct logical phrase, meaning almost everyone in the group took the opportunity."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The paychecks will be delivered __ they arrive from the accounting departement",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Before",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "When",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "During",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Soon",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The conjunction 'When' is used to connect two future actions, specifying the time when the delivery will happen relative to the accounting department's arrival."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "As the filming location has not yet been __, the release date has been postponed",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Detained",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Determined",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Deleted",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Delayed",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The context implies that the location must be officially fixed or 'Determined' before other events can proceed. 'Delayed' is an incorrect synonym here, as the location itself cannot be delayed."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Tom strongly recommends that the sales people __ more proactive",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Were",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "be",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "are",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "is",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'recommends that' triggers the mandatory subjunctive mood in the subordinate clause, which requires the base form of the verb ('be') regardless of the subject."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The business lunch organizers will call us as soon as they __ time",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Will have",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "has",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "have",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "are going to",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'as soon as' introduces a time clause referring to a future event, which must use the Present Simple tense ('have') in English, even though the main clause is future ('will call')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Proposed changes that are not __ with existing safety regulations will not be considered",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Relating",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Dependent",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Compliant",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Supportive",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct collocation is 'compliant with', meaning 'in agreement with' or 'adhering to rules/standards', which is necessary for safety regulations."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Nick is a top salesman in our office, __?",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Doesn’t he",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Does he",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Isn’t he",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Isn’t him",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a tag question. The main sentence uses the positive linking verb 'is', so the tag must use the negative form of the same verb and pronoun: 'isn't he?'"
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr. Pollock __ for work when the weather conditions suddenly worsened",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Was reporting",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Reported",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Has reported",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Had reported",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'when the weather conditions suddenly worsened' suggests a shorter, interrupted action. 'Was reporting' (Past Continuous) describes the longer action in progress that was interrupted by the sudden change in weather (Simple Past)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The work orders have been __ to the production department",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Released",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Resisted",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Remarked",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Reduced",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The verb 'Released' means sent or issued, which is the logical action when transferring 'work orders' from one department to another (production)."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "This presentation will demonstrate how Metron computers are superior __ those of our competitors in terms of both features and speed",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Than",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "as",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "from",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "to",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The adjective 'superior' is always followed by the preposition 'to' to make a comparison (e.g., 'superior to'). It does not use 'than'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The talks will take place __ Brussels",
+    "choices": [
+      {
+        "option": "A",
+        "text": "in",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "at",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "to",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "the",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The preposition 'in' is used when referring to large geographical areas such as countries or major cities ('in Brussels'). 'At' is for specific addresses or venues."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Executives of small companies earn __ salaries on the west coast than on the east coast",
+    "choices": [
+      {
+        "option": "A",
+        "text": "taller",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "richer",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "higher",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "more impressive",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adjective 'higher' is the correct term to describe the level or amount of money or wages ('higher salaries')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If I __ seen it, I wouldn’t have believed it possible",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Wouldn’t have",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Had not",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Did not",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Would not",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 3 Conditional (unreal past). The 'if' clause requires the Past Perfect tense, which is 'had not' + past participle ('seen')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "For the museum visitor __ for the veteran museum goer, the Museum Highlights Tour offers an excellent opportunity to see the most popular exhibits",
+    "choices": [
+      {
+        "option": "A",
+        "text": "As well as",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Further",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "In addition",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "too",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'as well as' connects the two parallel groups of people (new visitors and veterans), meaning 'in addition to'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Consumer confidence fell __ April",
+    "choices": [
+      {
+        "option": "A",
+        "text": "on",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "in",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "next",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "the",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The preposition 'in' is used when referring to months ('in April'). 'On' is used for specific days or dates."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Before anyone could even think about it, our accountant __ that their company would go bankrupt",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Has predicted",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Predicted",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "was predicting",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Had predicted",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The Past Perfect tense ('Had predicted') is required because this action happened before another past action ('Before anyone could even think about it')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "__ Mr Jeffries to get the job done",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Count from",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Count on",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Count up",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Count in",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrasal verb 'Count on' means to rely or depend on someone, which fits the context of expecting someone to finish a job."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The corporate headquarters are located in the capital __ the country",
+    "choices": [
+      {
+        "option": "A",
+        "text": "for",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "to",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "in",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "of",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The preposition 'of' is used to show belonging or association between a part ('the capital') and the whole ('the country')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "A __ trade union would not accept the layoffs of the employees",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Demanded",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Demand",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Demanding",
+        "is_correct": true
+      },
+      {
+        "option": "D",
+        "text": "Demands",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The present participle 'Demanding' functions as an adjective to describe the trade union as one that makes strong requests or insists on things."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "To vacation at the mountain resort, you must make reservations two to three months __",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Beforehand",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "Advanced",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Notice",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "First",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The adverb 'Beforehand' means 'in advance' or 'ahead of time', which is the required meaning when making reservations."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "There are over thirty keyboard commands that can prompt word-processing procedures, but common usage __ only a few",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Receives",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Corresponds",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Subscribes",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Involves",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The verb 'involves' means includes or uses. It is the only verb that fits the context of what 'common usage' includes from the thirty available commands."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The consultant ____ his business if had advertised.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "could have doubled",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "will double",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "doubled",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "would doubled",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 3 Conditional (unreal past). The main clause requires the Conditional Perfect: 'could have doubled' expresses a missed possibility in the past."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Inflation is ___ to affect personal spending quite a bit in July",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Presuming",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Likely",
+        "is_correct": true
+      },
+      {
+        "option": "C",
+        "text": "Depending",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Aptly",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The phrase 'is likely to' means 'is probable to' and is the standard way to express future probability in English."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The new office is almost ___ the old one.",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Three times the size of",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "As three times as",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Three times of",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Larger three times to",
+        "is_correct": false
+      }
+    ],
+    "explanation": "The correct structure for expressing a multiplication comparison is 'number + times the size/length/width of'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If is one of the most ___ books on the topic",
+    "choices": [
+      {
+        "option": "A",
+        "text": "Interested",
+        "is_correct": false
+      },
+      {
+        "option": "B",
+        "text": "Interests",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "Interest",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "Interesting",
+        "is_correct": true
+      }
+    ],
+    "explanation": "The adjective must end in '-ing' ('interesting') because it describes a characteristic of the noun ('books'), meaning the books cause interest."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "If Mr Darwin were looking for a permanent job, our recuiter ___ help",
+    "choices": [
+      {
+        "option": "A",
+        "text": "could",
+        "is_correct": true
+      },
+      {
+        "option": "B",
+        "text": "can",
+        "is_correct": false
+      },
+      {
+        "option": "C",
+        "text": "will",
+        "is_correct": false
+      },
+      {
+        "option": "D",
+        "text": "may",
+        "is_correct": false
+      }
+    ],
+    "explanation": "This is a Type 2 Conditional (present unreal). The 'if' clause uses the Past Simple ('were looking'), so the main clause requires the simple conditional ('could' or 'would' + base verb) to express a hypothetical possibility."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Ambition, talent, ______ desire are ingredients for success.",
+    "choices": [
+      { "option": "A", "text": "or", "is_correct": false },
+      { "option": "B", "text": "and", "is_correct": true },
+      { "option": "C", "text": "never", "is_correct": false },
+      { "option": "D", "text": "yet", "is_correct": false }
+    ],
+    "explanation": "The correct conjunction is 'and' because it connects similar elements in a series."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mrs Kawabata is ready to see you now. Thank you for ______.",
+    "choices": [
+      { "option": "A", "text": "waiting", "is_correct": true },
+      { "option": "B", "text": "waited", "is_correct": false },
+      { "option": "C", "text": "to wait", "is_correct": false },
+      { "option": "D", "text": "wait", "is_correct": false }
+    ],
+    "explanation": "After a preposition like 'for', the verb must be in the gerund form ('waiting')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The Executive Council of the Fashion Buyers Congress is ______ of fifteen members from various branches of the fashion industry.",
+    "choices": [
+      { "option": "A", "text": "to compose", "is_correct": false },
+      { "option": "B", "text": "composed", "is_correct": true },
+      { "option": "C", "text": "composing", "is_correct": false },
+      { "option": "D", "text": "compose", "is_correct": false }
+    ],
+    "explanation": "The correct form is 'composed of', meaning 'made up of'."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Office branches are located ______ the metropolitan area.",
+    "choices": [
+      { "option": "A", "text": "at", "is_correct": false },
+      { "option": "B", "text": "on", "is_correct": false },
+      { "option": "C", "text": "throughout", "is_correct": true },
+      { "option": "D", "text": "about", "is_correct": false }
+    ],
+    "explanation": "'Throughout' is used to indicate something distributed across an entire area."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "According to the manufacturer, the new generator is capable of ______ the amount of power consumed bu out facility by nearly ten percent.",
+    "choices": [
+      { "option": "A", "text": "reducing", "is_correct": true },
+      { "option": "B", "text": "reduce", "is_correct": false },
+      { "option": "C", "text": "reduced", "is_correct": false },
+      { "option": "D", "text": "reduces", "is_correct": false }
+    ],
+    "explanation": "The preposition 'of' must always be followed by a verb in the gerund form (-ing), so 'reducing' is the only correct answer."
+  },
+  {
+  "category": "incomplete_sentences",
+  "question_text": "_____ substantial layoffs, cost were reduced.",
+  "choices": [
+    { "option": "A", "text": "Although", "is_correct": false },
+    { "option": "B", "text": "When", "is_correct": false },
+    { "option": "C", "text": "Because of", "is_correct": true },
+    { "option": "D", "text": "Since", "is_correct": false }
+  ],
+  "explanation": "'Because of' is a compound preposition used to show cause and is followed by a noun phrase ('substantial layoffs'). The other options ('Although', 'When', 'Since') function as conjunctions in this context and would require a full clause (subject + verb) to follow them (e.g., 'Although there were layoffs...')."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "The recession is not expected to ______ until year's end.",
+    "choices": [
+      { "option": "A", "text": "abandon", "is_correct": false },
+      { "option": "B", "text": "abduct", "is_correct": false },
+      { "option": "C", "text": "abate", "is_correct": true },
+      { "option": "D", "text": "abdicate", "is_correct": false }
+    ],
+    "explanation": "'Abate' means to become less intense or widespread (to subside), which is the correct context for a recession. 'Abandon' means to leave, 'abduct' means to kidnap, and 'abdicate' is for a monarch giving up power."
+  },
+  {
+    "category": "incomplete_sentences",
+    "question_text": "Mr Fox ______ the results tomorrow afternoon.",
+    "choices": [
+      { "option": "A", "text": "will be knowing", "is_correct": false },
+      { "option": "B", "text": "will know", "is_correct": true },
+      { "option": "C", "text": "is going to be knowing", "is_correct": false },
+      { "option": "D", "text": "will have known", "is_correct": false }
+    ],
+    "explanation": "The verb 'to know' is a stative verb (describing a state of mind), which is generally not used in continuous or progressive forms (ending in -ing). Therefore, the simple future 'will know' is the correct grammatical choice."
+  }
+]
