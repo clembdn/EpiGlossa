@@ -64,12 +64,25 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-// Fonction pour mélanger les choix en gardant les lettres A, B, C, D dans l'ordre
+// ⚡ MODE RAPIDE: Mettre la bonne réponse en premier (A)
+const FAST_MODE = true; // ← Mettre à false pour désactiver le mode rapide
+
+// Fonction pour ordonner les choix (bonne réponse en A si mode rapide)
 function shuffleChoicesKeepingLabels(choices: Choice[]): Choice[] {
   const labels: Array<'A' | 'B' | 'C' | 'D'> = ['A', 'B', 'C', 'D'];
-  const shuffledTexts = shuffleArray(choices);
   
-  return shuffledTexts.map((choice, index) => ({
+  let orderedChoices: Choice[];
+  if (FAST_MODE) {
+    // Mode rapide: bonne réponse en premier
+    const correct = choices.find(c => c.is_correct);
+    const others = choices.filter(c => !c.is_correct);
+    orderedChoices = correct ? [correct, ...others] : choices;
+  } else {
+    // Mode normal: mélanger
+    orderedChoices = shuffleArray(choices);
+  }
+  
+  return orderedChoices.map((choice, index) => ({
     option: labels[index],
     text: choice.text,
     is_correct: choice.is_correct
@@ -269,6 +282,64 @@ export default function QuestionPage() {
     return selectedChoice?.is_correct === true;
   };
 
+  // ⚡ MODE RAPIDE: Clic = sélection + validation + question suivante
+  const handleFastModeClick = async (choiceOption: string) => {
+    if (!FAST_MODE || isSubmitted) return;
+    
+    // Sélectionner la réponse
+    setSelectedAnswer(choiceOption);
+    
+    // Attendre un court instant pour voir la sélection
+    await new Promise(resolve => setTimeout(resolve, 150));
+    
+    // Soumettre la réponse (enregistrer la progression)
+    const currentQuestion = shuffledQuestion;
+    if (currentQuestion) {
+      const selectedChoice = currentQuestion.choices?.find(c => c.option === choiceOption);
+      const correct = selectedChoice?.is_correct === true;
+      
+      // Enregistrer la progression
+      await submitAnswer(questionId, correct);
+      if (correct) {
+        await updateStreak();
+      }
+      await refreshProgress();
+    }
+    
+    // Passer à la question suivante
+    handleNextQuestion();
+  };
+
+  // ⚡ MODE RAPIDE pour Reading Comprehension
+  const handleFastModeClickRC = async (questionIdx: number, choiceOption: string) => {
+    if (!FAST_MODE || isSubmitted) return;
+    
+    const q = shuffledQuestions[questionIdx];
+    if (!q) return;
+    
+    // Mettre à jour les réponses
+    const newAnswers = { ...selectedAnswers, [q.id]: choiceOption };
+    setSelectedAnswers(newAnswers);
+    
+    // Si toutes les questions sont répondues, soumettre et passer au suivant
+    if (Object.keys(newAnswers).length === shuffledQuestions.length) {
+      await new Promise(resolve => setTimeout(resolve, 150));
+      
+      // Soumettre toutes les réponses
+      for (const question of shuffledQuestions) {
+        const answer = newAnswers[question.id];
+        const choice = question.choices.find(c => c.option === answer);
+        const correct = choice?.is_correct === true;
+        await submitAnswer(question.id, correct);
+        if (correct) await updateStreak();
+      }
+      await refreshProgress();
+      
+      // Passer au passage suivant
+      handleNextQuestion();
+    }
+  };
+
   const handleNextQuestion = () => {
     // Récupérer l'ordre des questions depuis sessionStorage
     const orderStr = sessionStorage.getItem(`question_order_${category}`);
@@ -431,7 +502,14 @@ export default function QuestionPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: choiceIndex * 0.1 }}
-                        onClick={() => !isSubmitted && setSelectedAnswers(prev => ({ ...prev, [q.id]: choice.option }))}
+                        onClick={() => {
+                          if (isSubmitted) return;
+                          if (FAST_MODE) {
+                            handleFastModeClickRC(qIndex, choice.option);
+                          } else {
+                            setSelectedAnswers(prev => ({ ...prev, [q.id]: choice.option }));
+                          }
+                        }}
                         disabled={isSubmitted}
                         
                         className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 ${borderColor} ${bgColor} transition-all ${
@@ -814,7 +892,14 @@ export default function QuestionPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => !isSubmitted && setSelectedAnswer(choice.option)}
+                  onClick={() => {
+                    if (isSubmitted) return;
+                    if (FAST_MODE) {
+                      handleFastModeClick(choice.option);
+                    } else {
+                      setSelectedAnswer(choice.option);
+                    }
+                  }}
                   disabled={isSubmitted}
                   
                   className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 ${borderColor} ${bgColor} transition-all ${
