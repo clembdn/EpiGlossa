@@ -315,7 +315,7 @@ export default function QuestionPage() {
           <p className="text-6xl mb-4">❌</p>
           <p className="text-gray-600 text-lg font-semibold mb-2">Question introuvable</p>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push(`/train/${category}`)}
             className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
           >
             Retour
@@ -339,7 +339,7 @@ export default function QuestionPage() {
             className="mb-6"
           >
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push(`/train/${category}`)}
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 font-medium transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -600,7 +600,7 @@ export default function QuestionPage() {
           <p className="text-6xl mb-4">❌</p>
           <p className="text-gray-600 text-lg font-semibold mb-2">Question introuvable</p>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push(`/train/${category}`)}
             className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
           >
             Retour
@@ -620,7 +620,7 @@ export default function QuestionPage() {
           className="mb-6"
         >
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push(`/train/${category}`)}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 font-medium transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />

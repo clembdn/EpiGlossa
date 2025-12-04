@@ -179,7 +179,7 @@ export default function ComprehensionLessonPage() {
             </motion.button>
 
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push('/learn/comprehension')}
               className="w-full mt-4 text-gray-600 hover:text-gray-800 font-medium flex items-center justify-center gap-2"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -200,7 +200,7 @@ export default function ComprehensionLessonPage() {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/learn/comprehension')}
                 className="text-gray-600 hover:text-gray-800"
               >
                 <ChevronLeft className="w-6 h-6" />
