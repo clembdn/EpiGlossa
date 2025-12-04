@@ -316,10 +316,10 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
             .select('current_streak, longest_streak')
             .eq('user_id', userId)
             .single(),
-          // Questions progress
+          // Questions progress - use user_progress table and aggregate
           supabase
-            .from('user_question_progress')
-            .select('category, correct_count, total_xp')
+            .from('user_progress')
+            .select('category, is_correct')
             .eq('user_id', userId),
           // TEPITECH tests
           supabase
@@ -344,12 +344,15 @@ export function useBadges(userId: string | undefined): UseBadgesReturn {
         let totalXp = 0;
 
         if (progressData) {
+          // Aggregate from individual progress records
           progressData.forEach((p) => {
-            totalXp += p.total_xp || 0;
-            if (p.category === 'incomplete_sentences' || p.category === 'text_completion') {
-              vocabCorrect += p.correct_count || 0;
-            } else if (p.category === 'grammar' || p.category === 'reading_comprehension') {
-              grammarCorrect += p.correct_count || 0;
+            if (p.is_correct) {
+              totalXp += 50; // 50 XP per correct answer
+              if (p.category === 'incomplete_sentences' || p.category === 'text_completion') {
+                vocabCorrect += 1;
+              } else if (p.category === 'reading_comprehension') {
+                grammarCorrect += 1;
+              }
             }
           });
         }
