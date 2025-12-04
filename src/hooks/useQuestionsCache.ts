@@ -10,7 +10,7 @@ interface CacheEntry<T> {
   version: string
 }
 
-const CACHE_VERSION = '2.0.0' // Version mise à jour pour le nouveau format RC
+const CACHE_VERSION = '2.1.0' // Version mise à jour pour inclure les IDs de BDD dans les questions RC
 const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes en millisecondes
 
 // Clés de cache
@@ -143,6 +143,7 @@ export function useQuestionsCache(category: string) {
           const qNum = q.question_number || (Object.keys(passage.questions).length + 1);
           
           passage.questions[qNum.toString()] = {
+            id: q.id,  // Conserver l'ID de la BDD pour le suivi de progression
             question_text: q.question_text,
             choices: q.choices
           };

@@ -49,6 +49,7 @@ export interface AnswerState {
 
 // Une question individuelle dans un passage RC
 export interface RCQuestion {
+  id: string  // ID de la BDD pour le suivi de progression
   question_text: string
   choices: Choice[]
 }

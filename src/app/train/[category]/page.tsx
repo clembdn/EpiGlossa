@@ -99,9 +99,8 @@ export default function TrainCategoryPage() {
     return Object.entries(passage.questions)
       .sort(([a], [b]) => parseInt(a) - parseInt(b))
       .map(([num, q]) => ({
-        id: `${getPassageId(passage.image_url)}_q${num}`,
+        ...q,
         questionNumber: num,
-        ...q
       }));
   };
   
